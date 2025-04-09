@@ -41,7 +41,7 @@ body {
   
 
   .menu-toggle {
-    display: none !important; /* Oculto por defecto */
+    display: none !important; 
     background: none;
     border: none;
     color: inherit;
@@ -252,26 +252,26 @@ body {
   }
 
   [data-theme="light"] .section {
-    background: rgba(255, 255, 255, 0.95); /* Mayor opacidad */
-    color: #333; /* Texto más oscuro */
+    background: rgba(255, 255, 255, 0.95); 
+    color: #333; 
   }
 
   [data-theme="light"] .project-techs span {
-    background: rgba(0, 0, 0, 0.1); /* Fondo visible en modo claro */
+    background: rgba(0, 0, 0, 0.1); 
   }
   
   [data-theme="light"] .section:nth-child(even) {
-    background: rgba(240, 240, 240, 0.8); /* Fondo alternativo */
+    background: rgba(240, 240, 240, 0.8); 
   }
 
   [data-theme="light"] header, [data-theme="light"] footer {
-    background: rgba(255, 255, 255, 0.9); /* Fondo semi-transparente */
+    background: rgba(255, 255, 255, 0.9); 
     color: #000; /* Texto oscuro */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
 }
 
 [data-theme="light"] header a {
-  color: #000; /* Enlaces oscuros */
+  color: #000; 
 }
 
 [data-theme="light"] .card {
@@ -447,7 +447,6 @@ body {
       
     }
     
-    /* Mejoras en tarjetas para móviles */
     .project-card {
       grid-template-columns: 1fr;
     }
@@ -456,7 +455,6 @@ body {
       flex: 1 1 100%;
     }
     
-    /* Ajustes en formación complementaria */
     .skill-box {
       width: 100%;
       margin-bottom: 1rem;
@@ -467,7 +465,7 @@ body {
     }
     
   .menu-toggle {
-    display: block !important; /* Visible en móviles */
+    display: block !important; 
   }
       
       nav {
@@ -503,7 +501,6 @@ body {
       }
     
     
-    /* Cerrar menú al hacer scroll */
     nav.active ~ main {
       filter: blur(5px);
       pointer-events: none;

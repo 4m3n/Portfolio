@@ -4,24 +4,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const root = document.documentElement;
   let currentLanguage = 'es';
 
-  // Cambiar entre tema oscuro y claro
   let currentTheme = localStorage.getItem('theme') || 'dark';
   if (currentTheme === 'light') root.setAttribute('data-theme', 'light');
   
-  // En el event listener del themeToggle
   themeToggle.addEventListener('click', () => {
     currentTheme = currentTheme === 'light' ? 'dark' : 'light';
     localStorage.setItem('theme', currentTheme);
     root.setAttribute('data-theme', currentTheme);
   });
   
-  // Actualizar etiquetas ARIA dinámicas
   function updateAriaLabels() {
     themeToggle.setAttribute('aria-label', currentTheme === 'light' ? 'Switch to dark theme' : 'Switch to light theme');
     languageToggle.setAttribute('aria-label', currentLanguage === 'es' ? 'Change to English' : 'Cambiar a Español');
   }
 
-  // Cambiar entre español e inglés
   if (languageToggle) {
     languageToggle.addEventListener('click', () => {
       currentLanguage = currentLanguage === 'es' ? 'en' : 'es';
@@ -29,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-// Reemplaza el código existente del menú con esto:
 const menuToggle = document.querySelector('.menu-toggle');
 const nav = document.querySelector('nav');
 
@@ -38,7 +33,6 @@ menuToggle.addEventListener('click', () => {
   document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : 'auto';
 });
 
-// Cerrar menú al hacer clic en un enlace
 document.querySelectorAll('nav a').forEach(link => {
   link.addEventListener('click', () => {
     nav.classList.remove('active');
@@ -46,7 +40,6 @@ document.querySelectorAll('nav a').forEach(link => {
   });
 });
 
-// Cerrar menú al hacer scroll
 window.addEventListener('scroll', () => {
   if (nav.classList.contains('active')) {
     nav.classList.remove('active');
@@ -54,7 +47,6 @@ window.addEventListener('scroll', () => {
   }
 });
 
-  // Animación del fondo espacial
   const stars = [];
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
@@ -110,7 +102,6 @@ window.addEventListener('scroll', () => {
 
   window.addEventListener('resize', resizeCanvas);
 
-  // Limpiar al salir de la página
   window.addEventListener('beforeunload', () => {
     if (animationFrameId) {
       cancelAnimationFrame(animationFrameId);
@@ -118,7 +109,6 @@ window.addEventListener('scroll', () => {
     window.removeEventListener('resize', resizeCanvas);
   });
 
-  // Inicializar AOS (Animate On Scroll)
   AOS.init({
     duration: 1000,
     once: true,
