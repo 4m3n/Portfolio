@@ -156,7 +156,7 @@ const translations = {
     css3: "CSS3",
     bootstrap: "Bootstrap",
     androidStudio: "Android Studio",
-    Idioma1: "Español(Nativo)",
+    Idioma1: "Español",
     Idioma2: "Inglés(B2)",
     Idioma3: "Bengalí(Nativo)",
     Idioma4: "Hindi",
