@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Portfolio</title>
+  <link rel="stylesheet" href="MiPagina.css">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+</head>
+
+<body>
+  <header>
+    <div class="header-content"> 
+      <button class="menu-toggle">☰</button>
+      <img class="logo" src="./imagenes/logo.png"></img>
+    <nav>
+      <a href="atajo" data-translate="about">Sobre mí</a>
+      <a href="atajo" data-translate="projects">Proyectos</a>
+      <a href="atajo" data-translate="skills">Habilidades</a>
+      <a href="atajo" data-translate="contact">Contacto</a>
+      <div class="theme-toggles">
+        <button id="themeToggle" aria-label="Cambiar tema">🌙</button>
+        <button id="languageToggle" aria-label="Cambiar idioma">🌐</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+          <div>
+            <h1 data-translate="hello">¡Hola, soy Hameem! 👋</h1>
+            <div class="photo">
+              <img src="./imagenes/mi-cara.webp" alt="Mi foto">
+            </div>
+            <h2 data-translate="role">Técnico superior en desarrollo de aplicaciones multiplataforma</h2>
+            <p data-translate="description">Apasionado por crear soluciones innovadoras y aprender nuevas tecnologías.</p>
+            <div class="buttons">
+              <a target="_blank" rel="noopener noreferrer" href="./imagenes/CV Currículum Vitae (2).pdf" class="btn" data-translate="cv">Ver CV</a>
+              <a target="_blank" rel="noopener noreferrer" href="https://github.com/4m3n" class="btn" data-translate="GitHub<">GitHub</a>
+              <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/hameem-afnan" class="btn" data-translate="Linkedin">Linkedln</a>
+            </div>
+          </div>
+        </div>
+      </section>
+  
+      <section id="about" class="section">
+        <h2 data-translate="about">Sobre mí</h2>
+        <p data-translate="aboutText">Mi pasión por el software se materializa en el desarrollo de proyectos como aplicaciones móviles con Android Studio, sistemas de comunicación en tiempo real mediante sockets en Java, plataformas web interactivas con PHP y MySQL, y soluciones CRUD completas que integran tanto FrontEnd como BackEnd. Cada proyecto es una oportunidad para combinar lógica, creatividad y funcionalidad, siempre buscando superar los retos técnicos con enfoques innovadores.</p>
+      </section>
+      <section id="Formacion" class="section">
+        <h1 data-translate="academicTitle">Formación Académica</h1> <!-- Nueva clave -->
+        <div class="skills-container">
+        <p data-translate="academicText"> <!-- Nueva clave -->
+          2024 - 2026 | Técnico Superior en Desarrollo de Aplicaciones Multiplataforma <br>
+          Institución: DIGI-TECH
+        </p>
+        </div>
+        <h1 data-translate="complementaryTitle">Formación Complementaria</h1> <!-- Nueva clave -->
+        <br>
+      <div class="skills-container">
+            <div class="skill-box">
+              <a href="#" class="badge" >MySQL </a>
+              <div class="progress-bar"><div class="progress" style="width: 50%"></div></div>
+            </div>
+            <div class="skill-box">
+              <a href="#" class="badge" >Python </a>
+              <div class="progress-bar"><div class="progress" style="width: 50%"></div></div>
+            </div>
+            <div class="skill-box">
+              <a href="#" class="badge" >C# </a>
+              <div class="progress-bar"><div class="progress" style="width: 50%"></div></div>
+            </div>
+            <div class="skill-box">
+              <a href="#" class="badge" >Flutter </a>
+              <div class="progress-bar"><div class="progress" style="width: 50%"></div></div>
+            </div>
+          </div>
+      </section>
+
+      <br><br><br><br>
+      
+      <section id="projects" class="section">
+        <h2 data-translate="projects">Proyectos</h2>
+
+        <div class="projects-container">
+          <article class="project-card" data-aos="fade-up">
+            <div class="project-image">
+              <img src="./imagenes/GeekHub.webp" alt="Página-Web" loading="lazy">
+            </div>
+            <div class="project-content">
+              <h3 data-translate="project1">Página Web (GeekHub)</h3>
+              <p data-translate="project1Desc">GeekHub es una tienda online de electrónica que combina usabilidad y diseño atractivo. Incluye un slider de productos destacados, menú categorizado y diseño responsive. Desarrollada con JavaScript, HTML5/CSS3 y PHP, ofrece una experiencia fluida para usuarios, garantizando comunicación eficiente y navegación intuitiva.</p>
+              <div class="project-techs">
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>JavaScript</span>
+                <span>PHP</span>
+              </div>
+              <a href="https://4m3n.github.io/GeekHub/Index" class="btn" data-translate="viewProject">Ver Proyecto</a>
+            </div>
+          </article>
+      
+          <article class="project-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="project-image">
+              <img src="./imagenes/DEMONBORNE.webp" alt="Game" loading="lazy">
+            </div>
+            <div class="project-content">
+              <h3 data-translate="project2">Juego (Demonborne - En desarrollo)</h3>
+              <p data-translate="project2Desc">Demonborne es un videojuego 2D en desarrollo ambientado en un mundo de fantasía oscura, donde el jugador controla a un protagonista sin poderes mágicos que, tras pactar con un demonio, adquiere habilidades elementales únicas. Desarrollado con el motor Godot (para mecánicas de juego y diseño de escenas) y Kotlin (para integración de funciones nativas en Android), el juego combina exploración, combate estratégico basado en elementos (fuego, agua, etc.) y un sistema de progresión de habilidades vinculado a la narrativa. La arquitectura técnica prioriza escalabilidad, permitiendo futuras expansiones de mundos y mecánicas.</p>
+              <div class="project-techs">
+                <span>Android Studio</span>
+                <span>Godot</span>
+                <span>Kotlin</span>
+              </div>
+              <a href="#" class="btn" data-translate="viewProject">Ver Proyecto</a>
+            </div>
+          </article>
+        </div>
+      </section>
+      
+      <br><br>
+
+      <section id="skills" class="section">
+        <h2 data-translate="skills">Habilidades</h2>
+        <div class="skills-container">
+          <div class="skill">
+            <img src=".\imagenes\450_1000.webp" alt="Java Logo" loading="lazy">
+            <p data-translate="java">Java</p>
+          </div>
+          <div class="skill">
+            <img src=".\imagenes\Python-logo-notext.svg.webp" alt="Python Logo" loading="lazy">
+            <p data-translate="python">Python</p>
+          </div>
+          <div class="skill">
+            <img src=".\imagenes\javascript.webp" alt="JavaScript Logo" loading="lazy">
+            <p data-translate="javascript">JavaScript</p>
+          </div>
+          <div class="skill">
+            <img src=".\imagenes\SQL.webp" alt="SQL Logo" loading="lazy">
+            <p data-translate="sql">SQL</p>
+          </div>
+          <div class="skill">
+            <img src=".\imagenes\mysql.webp" alt="MySQL Logo" loading="lazy">
+            <p data-translate="mysql">MySQL</p>
+          </div>
+          <div class="skill">
+            <img src=".\imagenes\PHP-logo.svg.webp" alt="PHP Logo" loading="lazy">
+            <p data-translate="php">PHP</p>
+          </div>
+          <div class="skill">
+            <img src=".\imagenes\html.webp" alt="HTML5 Logo" loading="lazy">
+            <p data-translate="html5">HTML5</p>
+          </div>
+          <div class="skill">
+            <img src=".\imagenes\CSS3_logo_and_wordmark.svg.webp" alt="CSS3 Logo" loading="lazy">
+            <p data-translate="css3">CSS3</p>
+          </div>
+          <div class="skill">
+            <img src=".\imagenes\bootstrap.webp" alt="Bootstrap Logo" loading="lazy">
+            <p data-translate="bootstrap">Bootstrap</p>
+          </div>
+          <div class="skill">
+            <img src=".\imagenes\android-studio-logo-1.webp" alt="Android Studio Logo" loading="lazy">
+            <p data-translate="androidStudio">Android Studio</p>
+          </div>
+        </div>
+      </section>
+<br><br>
+      <section id="projects" class="section">
+        <h2 data-translate="Lenguajes">Idiomas</h2>
+        <div class="cards">
+          <div class="card" data-translate="Idioma1">Español</div>
+          <div class="card" data-translate="Idioma2">Inglés(B2)</div>
+          <div class="card" data-translate="Idioma3">Bengalí(Nativo)</div>
+          <div class="card" data-translate="Idioma4">Hindi</div>
+        </div>
+      </section>
+  <br>
+  <br>
+      <section id="contact" class="section">
+        <h2 data-translate="contact">Contacto</h2>
+        <p data-translate="email">📧 - hameemafnan777@gmail.com</p>
+        <p data-translate="phone">📱 - (+34) 632 881 026</p>
+        <p data-translate="location">🚩 - Madrid</p>
+      </section>
+    </main>
+  <br><br>
+    <footer>
+      <p data-translate="footer">© 2025 Hameem. Todos los derechos reservados.</p>
+    </footer>
+  
+    <script src="MiPagina.js"></script>
+  </body>
+</html>
