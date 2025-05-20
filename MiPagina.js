@@ -25,6 +25,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if(target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  });
+});
+
+document.querySelector('.logo-link').addEventListener('click', (e) => {
+  e.preventDefault();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(() => location.reload(), 500);
+});
+
+document.querySelectorAll('nav a').forEach(link => {
+  link.addEventListener('click', () => {
+    if(window.innerWidth < 768) {
+      nav.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+  });
+});
+
 const menuToggle = document.querySelector('.menu-toggle');
 const nav = document.querySelector('nav');
 
@@ -46,6 +74,8 @@ window.addEventListener('scroll', () => {
     document.body.style.overflow = 'auto';
   }
 });
+
+
 
   const stars = [];
   const canvas = document.createElement('canvas');
