@@ -1,294 +1,632 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-lang="es">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hameem | Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Hameem Afnan Akther Faroquee — Desarrollador de Software en Madrid. Integraciones ERP (Odoo), APIs RESTful, Java, Python y bases de datos. Portfolio, proyectos y CV.">
+  <meta name="author" content="Hameem Afnan Akther Faroquee">
+  <meta name="keywords" content="desarrollador software, Madrid, Odoo, ERP, API REST, Java, Python, MySQL, DAM, portfolio">
+  <meta name="theme-color" content="#14120f">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Hameem Afnan — Desarrollador de Software">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:description" content="Integraciones ERP · APIs RESTful · Desarrollo multiplataforma. Madrid, España.">
+  <meta property="og:image" content="./imagenes/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <title>Hameem Afnan — Desarrollador de Software · Madrid</title>
+
+  <link rel="icon" href="./imagenes/marca.svg" type="image/svg+xml">
+  <link rel="icon" href="./imagenes/icono-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="./imagenes/icono-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=EB+Garamond:ital,wght@0,400..600;1,400..600&family=Barlow+Condensed:wght@400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="MiPagina.css">
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com/css2">
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+  <!-- Marca de que hay JavaScript. Va aquí, antes del primer pintado, para que
+       el contenido nunca parpadee: sin script todo se ve, con script se anima. -->
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 
-<body style="overflow:hidden">
+<body>
 
-  <!-- ===================== P5 INTRO SCREEN ===================== -->
-  <div id="p5-intro">
-    <div class="p5-intro-bg">
-      <div class="p5-bg-slash"></div>
-      <div class="p5-bg-slash2"></div>
-      <div class="p5-bg-comet"></div>
-      <div class="p5-bg-stripe"></div>
-      <div class="p5-scanlines"></div>
+  <!-- ============================================================
+       FILTROS SVG — bordes rasgados y manchas de tinta
+       ============================================================ -->
+  <svg class="svg-defs" aria-hidden="true" focusable="false" width="0" height="0">
+    <defs>
+      <filter id="fx-torn" x="-6%" y="-40%" width="112%" height="180%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.14" numOctaves="2" seed="11" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="11" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <filter id="fx-torn-sm" x="-8%" y="-50%" width="116%" height="200%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02 0.2" numOctaves="2" seed="5" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <filter id="fx-torn-big" x="-4%" y="-8%" width="108%" height="116%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.008 0.06" numOctaves="2" seed="3" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <filter id="fx-splat" x="-14%" y="-30%" width="128%" height="160%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.035 0.07" numOctaves="2" seed="17" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="13" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ============================================================
+       AMBIENTE
+       ============================================================ -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="fx-strokes" aria-hidden="true">
+    <span class="stroke stroke--rose"></span>
+    <span class="stroke stroke--aqua"></span>
+  </div>
+  <div class="fx-grain" aria-hidden="true"></div>
+  <div class="fx-lines" aria-hidden="true"></div>
+
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+  <!-- ============================================================
+       INTRO
+       ============================================================ -->
+  <div id="gate" class="gate" aria-hidden="true">
+    <div class="gate__mark">
+      <svg viewBox="0 0 200 200" width="180" height="180">
+        <circle class="r-out" cx="100" cy="100" r="86" />
+        <circle class="r-mid" cx="100" cy="100" r="70" />
+        <g class="r-ticks">
+          <path d="M100 6 V26 M100 174 V194 M6 100 H26 M174 100 H194" />
+          <path d="M33 33 L47 47 M167 33 L153 47 M33 167 L47 153 M167 167 L153 153" />
+        </g>
+      </svg>
+      <span class="gate__letter">H</span>
     </div>
-    <div class="p5-intro-tag">HAMEEM</div>
-    <div class="p5-intro-logo">
-      <div class="p5-logo-h">H</div>
-      <div class="p5-logo-right">
-        <span class="p5-logo-name">AMEEM</span>
-        <span class="p5-logo-sub">SOFTWARE PORTFOLIO</span>
-      </div>
-    </div>
-    <div class="p5-any-key-wrap">
-      <div class="p5-any-key">PRESS ANY KEY</div>
-    </div>
-    <div class="p5-intro-bottom">© 2025 HAMEEM. ALL RIGHTS RESERVED.</div>
-    <div class="p5-wipe"></div>
   </div>
 
-  <!-- ===================== P5 MAIN MENU ===================== -->
-  <div id="p5-menu-screen">
-    <div class="p5-menu-bg">
-      <div class="p5-menu-red-area"></div>
-      <div class="p5-menu-scanlines"></div>
-    </div>
-    <div class="p5-menu-logo-area">
-      <div class="p5-menu-h-logo">H</div>
-    </div>
-    <nav class="p5-menu-nav">
-      <a href="#about"       class="p5-menu-item active">PLAYER INFO</a>
-      <span class="p5-menu-sep">×</span>
-      <a href="#experience"  class="p5-menu-item">MISSION LOG</a>
-      <span class="p5-menu-sep">×</span>
-      <a href="#Formacion"   class="p5-menu-item">LORE</a>
-      <span class="p5-menu-sep">×</span>
-      <a href="#projects"    class="p5-menu-item">ACHIEVEMENTS</a>
-      <span class="p5-menu-sep">×</span>
-      <a href="#skills"      class="p5-menu-item">SKILL TREE</a>
-      <span class="p5-menu-sep">×</span>
-      <a href="#contact"     class="p5-menu-item">COMMS LINK</a>
+  <a class="skip" href="#perfil">Ir al contenido</a>
+
+  <!-- ============================================================
+       BARRA SUPERIOR
+       ============================================================ -->
+  <header class="topbar" id="topbar">
+    <a class="brand" href="#inicio" aria-label="Inicio">
+      <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64">
+            <polygon class="m-slab" points="15.74,5 59.74,5 48.26,59 4.26,59" />
+            <g class="m-h" transform="matrix(1 0 -0.2126 1 6.803 0)">
+              <rect x="20.5" y="15" width="7" height="34" />
+              <rect x="36.5" y="15" width="7" height="34" />
+              <rect x="27.5" y="30.4" width="9" height="3.2" />
+              <rect x="17.2" y="15" width="13.6" height="2.4" />
+              <rect x="17.2" y="46.6" width="13.6" height="2.4" />
+              <rect x="33.2" y="15" width="13.6" height="2.4" />
+              <rect x="33.2" y="46.6" width="13.6" height="2.4" />
+            </g>
+            <path class="m-star" d="M53 3 L55.2 10.3 L62 12.5 L55.2 14.7 L53 22 L50.8 14.7 L44 12.5 L50.8 10.3 Z" />
+          </svg>
+        </span>
+      <span class="brand__txt">
+        <b>HAMEEM</b>
+        <i data-en="SOFTWARE DEVELOPER">DESARROLLADOR</i>
+      </span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Secciones">
+      <a href="#perfil"      class="nav__link"><b>01</b><span data-en="Profile">Perfil</span></a>
+      <a href="#trayectoria" class="nav__link"><b>02</b><span data-en="Career">Trayectoria</span></a>
+      <a href="#proyectos"   class="nav__link"><b>03</b><span data-en="Work">Proyectos</span></a>
+      <a href="#habilidades" class="nav__link"><b>04</b><span data-en="Skills">Habilidades</span></a>
+      <a href="#formacion"   class="nav__link"><b>05</b><span data-en="Education">Formación</span></a>
+      <a href="#contacto"    class="nav__link"><b>06</b><span data-en="Contact">Contacto</span></a>
     </nav>
-    <div class="p5-menu-controls">
-      <span>[◀ ▶] SELECT</span>
-      <span>[ENTER] CONFIRM</span>
-    </div>
-    <div class="p5-menu-controls-right">
-      <span>© 2025 HAMEEM · ALL RIGHTS RESERVED</span>
-    </div>
-  </div>
 
-  <!-- ===================== P5 SECTION VIEWER ===================== -->
-  <div id="p5-section-viewer">
-    <canvas id="p5-city-canvas"></canvas>
-    <div class="p5-v-rays"></div>
-
-    <div class="p5-v-top">
-      <button class="p5-trigger-btn" id="p5-btn-prev"><span class="p5-t-key">L1</span><span class="p5-t-arr">◀</span></button>
-      <div class="p5-v-title" id="p5-v-title">PLAYER INFO</div>
-      <button class="p5-trigger-btn p5-t-right" id="p5-btn-next"><span class="p5-t-arr">▶</span><span class="p5-t-key">R1</span></button>
-    </div>
-
-    <div class="p5-v-body" id="p5-v-body"></div>
-
-    <div class="p5-v-bottom">
-      <button class="p5-v-back-btn" id="p5-btn-back">○ BACK</button>
-      <span class="p5-v-counter" id="p5-v-counter">01 / 06</span>
-    </div>
-  </div>
-
-  <header>
-    <div class="header-content"> 
-      <button class="menu-toggle">☰</button>
-      <a href="#" class="logo-link">
-        <span class="logo-text glitch-text">HAMEEM.sys</span>
-      </a>
-      <nav>
-        <a href="#about" data-translate="about">Sobre mí</a>
-        <a href="#experience" data-translate="experience">Experiencia</a>
-        <a href="#projects" data-translate="projects">Proyectos</a>
-        <a href="#skills" data-translate="skills">Skill Tree</a>
-        <a href="#contact" data-translate="contact">Contacto</a>
-        <div class="theme-toggles">
-          <button id="themeToggle" aria-label="Cambiar tema">🌙</button>
-          <button id="languageToggle" aria-label="Cambiar idioma">🌐</button>
-        </div>
-      </nav>
+    <div class="topbar__side">
+      <button id="langBtn" class="pill-btn" type="button" aria-label="Cambiar idioma / Switch language">
+        <span id="langLabel">ES</span>
+      </button>
+      <button id="menuBtn" class="burger" type="button" aria-expanded="false" aria-controls="nav" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="hero-content terminal-box">
-        <div>
-          <h1 data-translate="hello" class="glitch-text">¡Hola, soy Hameem! 👋</h1>
-          <div class="photo avatar-container">
-            <img src="./imagenes/mi-cara.webp" alt="Avatar de Hameem">
-          </div>
-          <h2 data-translate="role" class="cyber-subtitle">Desarrollador de Software | Especialista Enterprise</h2>
-          <p data-translate="description">Arquitectura escalable, APIs y código limpio con alma friki.</p>
-          <div class="buttons">
-            <a target="_blank" rel="noopener noreferrer" href="./imagenes/CV - Hameem Afnan Akther Faroquee.pdf" class="btn btn-primary" data-translate="cv">Cargar CV</a>
-            <a target="_blank" rel="noopener noreferrer" href="https://github.com/4m3n" class="btn btn-secondary" data-translate="github">GitHub</a>
-            <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/hameem-afnan" class="btn btn-secondary" data-translate="linkedin">LinkedIn</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  
-    <section id="about" class="section">
-      <div class="container">
-        <h2 data-translate="about" class="section-title">Sobre mí (Player Info)</h2>
-        <p data-translate="aboutText" class="text-box">
-          Programador multiplataforma con experiencia en entornos corporativos diseñando e implementando integraciones complejas... 
-        </p>
-      </div>
-    </section>
 
-    <section id="experience" class="section">
-      <div class="container">
-        <h2 class="section-title">Historial de Misiones (Experiencia)</h2>
-        <div class="timeline">
-          <div class="timeline-item" data-aos="fade-right">
-            <div class="timeline-content">
-              <h3>Desarrollador de Software e Integraciones</h3>
-              <h4 class="company">Tailored Spain</h4>
-              <p class="date">2023 - Presente</p>
-              <ul>
-                <li>Desarrollo e integración de sistemas ERP (Odoo) mediante flujos HTTP y APIs RESTful.</li>
-                <li>Gestión de migraciones de entornos web internacionales (ALM) en Dataverse.</li>
-                <li>Resolución de incidencias críticas de arquitectura web y sincronización de bases de datos.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- ==========================================================
+         PORTADA
+         ========================================================== -->
+    <section id="inicio" class="hero">
+      <div class="hero__inner">
 
-    <section id="Formacion" class="section">
-      <div class="container">
-        <h2 data-translate="academicTitle" class="section-title">Formación (Lore)</h2>
-        <div class="info-card" data-aos="fade-up">
-          <p data-translate="academicText">
-            <strong>2024 - 2026 | Técnico Superior en Desarrollo de Aplicaciones Multiplataforma</strong><br>
-            Institución: DIGI-TECH
+        <div class="hero__text">
+          <p class="hero__eyebrow reveal">
+            <span class="stripe stripe--rose" data-en="AVAILABLE FOR WORK">DISPONIBLE PARA TRABAJAR</span>
+            <span class="hero__place">MADRID · ESPAÑA</span>
           </p>
-        </div>
-      </div>
-    </section>
-      
-    <section id="projects" class="section">
-      <div class="container">
-        <h2 data-translate="projects" class="section-title">Proyectos (Logros)</h2>
 
-        <h3 class="sub-section-title">Main Quests (Enterprise)</h3>
-        <div class="projects-container">
-          <article class="project-card cyber-card" data-aos="fade-up">
-            <div class="project-content">
-              <h3 data-translate="project1">Caso de Estudio: Integración ERP Odoo</h3>
-              <p data-translate="project1Desc">Diseño e implementación de infraestructura de comunicación eficiente mediante flujos automatizados y consumo de APIs RESTful.</p>
-              <div class="project-techs">
-                <span>APIs RESTful</span>
-                <span>Odoo ERP</span>
-                <span>Dataverse</span>
-              </div>
-            </div>
-          </article>
-        </div>
+          <h1 class="hero__name reveal">
+            <span class="hero__first"><em>H</em>AMEEM</span>
+            <span class="hero__last"><span class="stripe stripe--paper">AFNAN</span></span>
+          </h1>
 
-        <h3 class="sub-section-title mt-4">Side Quests (Personal & Gaming)</h3>
-        <div class="projects-container">
-          <article class="project-card cyber-card" data-aos="fade-up" data-aos-delay="100">
-            <div class="project-image">
-              <img src="./imagenes/DEMONBORNE.webp" alt="Game Demonborne" loading="lazy">
-            </div>
-            <div class="project-content">
-              <h3 data-translate="project2">Demonborne (Indie Game)</h3>
-              <p data-translate="project2Desc">Videojuego 2D con mecánicas de combate elemental y físicas personalizadas.</p>
-              <div class="project-techs">
-                <span>Godot</span>
-                <span>Kotlin</span>
-                <span>Android Studio</span>
-              </div>
-              <a href="https://github.com/4m3n/DemonBorne.git" class="btn btn-outline" data-translate="viewProject">Ver Repositorio</a>
-            </div>
-          </article>
+          <p class="hero__surname reveal">Akther Faroquee</p>
 
-          <article class="project-card cyber-card" data-aos="fade-up" data-aos-delay="200">
-            <div class="project-image">
-              <img src="./imagenes/Chat Sockets.png" alt="Chat Sockets Java" loading="lazy">
-            </div>
-            <div class="project-content">
-              <h3 data-translate="projectChatJava">Arquitectura Servidor & Sockets</h3>
-              <p data-translate="projectChatJavaDesc">Desarrollo de comunicaciones Cliente/Servidor en tiempo real, gestión de hilos y despliegue en Linux. Ideal para bots y sistemas multicliente.</p>
-              <div class="project-techs">
-                <span>Java Sockets</span>
-                <span>Ubuntu Server</span>
-                <span>Multithreading</span>
-              </div>
-              <a href="https://github.com/4m3n/ChatSockets.git" class="btn btn-outline" data-translate="viewProject">Ver Repositorio</a>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
+          <p class="hero__role reveal" data-en="Software Developer · Enterprise integrations and RESTful APIs">
+            Desarrollador de Software · Integraciones enterprise y APIs RESTful
+          </p>
 
-    <section id="skills" class="section">
-      <div class="container">
-        <h2 data-translate="skills" class="section-title">Skill Tree (Habilidades)</h2>
-        
-        <div class="skills-grid">
-          <div class="skill-category" data-aos="zoom-in">
-            <h3>Backend & Data</h3>
-            <div class="skills-list">
-              <span class="skill-badge">Java</span>
-              <span class="skill-badge">Python</span>
-              <span class="skill-badge">SQL / MySQL</span>
-              <span class="skill-badge">PHP</span>
-              <span class="skill-badge">C#</span>
-            </div>
+          <p class="hero__lede reveal" data-en="I build the bridges between systems that were never designed to talk to each other. Odoo ERP, RESTful APIs, Linux servers — and video games when the day is over.">
+            Construyo los puentes entre sistemas que nunca fueron pensados para hablarse entre sí. ERP Odoo, APIs RESTful, servidores Linux — y videojuegos cuando acaba la jornada.
+          </p>
+
+          <div class="hero__cta reveal">
+            <a class="btn btn--solid" href="#proyectos" data-en="VIEW PROJECTS">VER PROYECTOS</a>
+            <a class="btn" href="./imagenes/cv-hameem-afnan.pdf" target="_blank" rel="noopener" data-en="DOWNLOAD CV">DESCARGAR CV</a>
           </div>
 
-          <div class="skill-category" data-aos="zoom-in" data-aos-delay="100">
-            <h3>Frontend & Apps</h3>
-            <div class="skills-list">
-              <span class="skill-badge">JavaScript</span>
-              <span class="skill-badge">HTML5</span>
-              <span class="skill-badge">CSS3 / Bootstrap</span>
-              <span class="skill-badge">Flutter</span>
+          <ul class="hero__links reveal">
+            <li><a href="mailto:hameemafnan777@gmail.com">hameemafnan777@gmail.com</a></li>
+            <li><a href="https://github.com/4m3n" target="_blank" rel="noopener">github.com/4m3n</a></li>
+            <li><a href="https://www.linkedin.com/in/hameem-afnan" target="_blank" rel="noopener">linkedin</a></li>
+          </ul>
+        </div>
+
+        <div class="hero__portrait reveal">
+          <div class="portrait">
+            <svg class="portrait__ring" viewBox="0 0 320 320" aria-hidden="true">
+              <circle class="p-ring" cx="160" cy="160" r="150" />
+              <circle class="p-ring p-ring--dash" cx="160" cy="160" r="138" />
+              <g class="p-ticks">
+                <path d="M160 2 V22 M160 298 V318 M2 160 H22 M298 160 H318" />
+                <path d="M47 47 L61 61 M273 47 L259 61 M47 273 L61 259 M273 273 L259 259" />
+              </g>
+              <path class="p-arc" d="M160 14 A146 146 0 0 1 306 160" />
+            </svg>
+            <div class="portrait__photo">
+              <img src="./imagenes/mi-cara.webp" alt="Retrato de Hameem Afnan Akther Faroquee" width="742" height="932" decoding="async" fetchpriority="high">
             </div>
+            <span class="portrait__tag">
+              <b>MMXXVI</b>
+              <i data-en="MULTI-PLATFORM DEV">DAM · MULTIPLATAFORMA</i>
+            </span>
           </div>
+        </div>
 
-          <div class="skill-category" data-aos="zoom-in" data-aos-delay="200">
-            <h3>Tools & Entornos</h3>
-            <div class="skills-list">
-              <span class="skill-badge">Android Studio</span>
-              <span class="skill-badge">Git / GitHub</span>
-              <span class="skill-badge">Linux Server</span>
+      </div>
+
+      <a class="scroll-cue" href="#perfil" aria-label="Bajar">
+        <span data-en="SCROLL">DESLIZA</span><i aria-hidden="true"></i>
+      </a>
+    </section>
+
+    <!-- ==========================================================
+         01 · PERFIL
+         ========================================================== -->
+    <section id="perfil" class="section">
+      <header class="sec-head reveal">
+        <span class="sec-head__flavor" data-en="THE PROTAGONIST">EL PROTAGONISTA</span>
+        <span class="sec-head__num" aria-hidden="true">01</span>
+        <h2 class="sec-head__title"><span class="stripe stripe--paper" data-en="Profile">Perfil</span></h2>
+      </header>
+
+      <div class="profile-grid">
+        <article class="slab reveal">
+          <p class="drop" data-en="I am a multi-platform developer with real experience in corporate environments, designing and implementing complex integrations between systems that were never meant to talk to each other. I move comfortably between an ERP, a RESTful API and a Linux server, and I especially enjoy the problems that demand understanding the whole architecture before touching a single line of code.">
+            Soy programador multiplataforma con experiencia real en entornos corporativos, diseñando e implementando integraciones complejas entre sistemas que no fueron pensados para hablarse entre sí. Me muevo con soltura entre un ERP, una API RESTful y un servidor Linux, y disfruto especialmente de los problemas que exigen entender la arquitectura completa antes de tocar una sola línea de código.
+          </p>
+          <p data-en="Outside work I develop video games, which is where I learned that a good system is one nobody notices. That obsession with what happens under the surface is what I bring to a team: clean code, documented decisions and integrations that keep running when nobody is watching.">
+            Fuera del trabajo desarrollo videojuegos, que es donde aprendí que un buen sistema se nota cuando nadie repara en él. Esa obsesión por lo que ocurre bajo la superficie es lo que aporto a un equipo: código limpio, decisiones documentadas e integraciones que siguen funcionando cuando nadie las mira.
+          </p>
+
+          <dl class="facts">
+            <div><dt data-en="BASE">BASE</dt><dd data-en="Madrid, Spain (28021)">Madrid, España (28021)</dd></div>
+            <div><dt data-en="SPECIALTY">ESPECIALIDAD</dt><dd data-en="ERP · RESTful APIs · Cloud integration">ERP · APIs RESTful · Integración cloud</dd></div>
+            <div><dt data-en="LANGUAGES">IDIOMAS</dt><dd data-en="Spanish · English B2 · Bengali · Hindi">Español · Inglés B2 · Bengalí · Hindi</dd></div>
+            <div><dt data-en="EDUCATION">FORMACIÓN</dt><dd data-en="Higher Degree — Multi-Platform App Development">CFGS Desarrollo de Aplicaciones Multiplataforma</dd></div>
+            <div class="facts__hot"><dt data-en="STATUS">ESTADO</dt><dd><span class="dot" aria-hidden="true"></span><span data-en="AVAILABLE FOR HIRE">DISPONIBLE PARA PROYECTOS</span></dd></div>
+          </dl>
+        </article>
+
+        <article class="slab slab--stats reveal">
+          <h3 class="slab__title"><span data-en="ROYAL VIRTUES">VIRTUDES</span></h3>
+          <p class="slab__sub" data-en="How I work, measured honestly.">Cómo trabajo, medido con honestidad.</p>
+
+          <ul class="virtues">
+            <li class="virtue" data-pct="88" style="--pct:0.88">
+              <span class="virtue__rank" aria-hidden="true">5</span>
+              <span class="virtue__name" data-en="WISDOM">SABIDURÍA</span>
+              <span class="virtue__track"><i></i></span>
+              <span class="virtue__hint" data-en="Architecture, patterns and system design.">Arquitectura, patrones y diseño de sistemas.</span>
+            </li>
+            <li class="virtue" data-pct="90" style="--pct:0.9">
+              <span class="virtue__rank" aria-hidden="true">5</span>
+              <span class="virtue__name" data-en="IMAGINATION">IMAGINACIÓN</span>
+              <span class="virtue__track"><i></i></span>
+              <span class="virtue__hint" data-en="Speed and creativity when implementing solutions.">Velocidad y creatividad al implementar soluciones.</span>
+            </li>
+            <li class="virtue" data-pct="84" style="--pct:0.84">
+              <span class="virtue__rank" aria-hidden="true">4</span>
+              <span class="virtue__name" data-en="COURAGE">VALOR</span>
+              <span class="virtue__track"><i></i></span>
+              <span class="virtue__hint" data-en="Critical production incidents, handled calmly.">Incidencias críticas en producción, sin dramatizar.</span>
+            </li>
+            <li class="virtue" data-pct="80" style="--pct:0.8">
+              <span class="virtue__rank" aria-hidden="true">4</span>
+              <span class="virtue__name" data-en="TOLERANCE">TOLERANCIA</span>
+              <span class="virtue__track"><i></i></span>
+              <span class="virtue__hint" data-en="Code review, mentoring and teamwork.">Code review, mentoría y trabajo en equipo.</span>
+            </li>
+            <li class="virtue" data-pct="76" style="--pct:0.76">
+              <span class="virtue__rank" aria-hidden="true">4</span>
+              <span class="virtue__name" data-en="ELOQUENCE">ELOCUENCIA</span>
+              <span class="virtue__track"><i></i></span>
+              <span class="virtue__hint" data-en="Translating the technical into language clients understand.">Traducir lo técnico a un lenguaje que el cliente entiende.</span>
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         02 · TRAYECTORIA
+         ========================================================== -->
+    <section id="trayectoria" class="section">
+      <header class="sec-head reveal">
+        <span class="sec-head__flavor" data-en="THE CHRONICLE">LA CRÓNICA</span>
+        <span class="sec-head__num" aria-hidden="true">02</span>
+        <h2 class="sec-head__title"><span class="stripe stripe--paper" data-en="Career">Trayectoria</span></h2>
+      </header>
+
+      <ol class="log">
+        <li class="entry reveal">
+          <div class="entry__emblem" aria-hidden="true">
+            <svg viewBox="0 0 100 100">
+              <circle class="e-ring" cx="50" cy="50" r="44" />
+              <circle class="e-ring e-ring--in" cx="50" cy="50" r="34" />
+              <path class="e-star" d="M50 18 L57 43 L82 50 L57 57 L50 82 L43 57 L18 50 L43 43 Z" />
+            </svg>
+            <b>I</b>
+          </div>
+          <div class="entry__body">
+            <p class="entry__when"><span class="skewpill">2023 — <span data-en="PRESENT">PRESENTE</span></span> <span class="live" data-en="ONGOING">EN CURSO</span></p>
+            <h3 class="entry__role" data-en="Software &amp; Integrations Developer">Desarrollador de Software e Integraciones</h3>
+            <p class="entry__org">TAILORED SPAIN</p>
+            <ul class="entry__tasks">
+              <li data-en="Development and integration of ERP systems (Odoo) through HTTP flows and RESTful APIs.">Desarrollo e integración de sistemas ERP (Odoo) mediante flujos HTTP y APIs RESTful.</li>
+              <li data-en="Management of international web environment migrations (ALM) on Dataverse.">Gestión de migraciones de entornos web internacionales (ALM) sobre Dataverse.</li>
+              <li data-en="Resolution of critical web architecture incidents and database synchronisation.">Resolución de incidencias críticas de arquitectura web y sincronización de bases de datos.</li>
+              <li data-en="Automation of internal processes and communication between heterogeneous platforms.">Automatización de procesos internos y comunicación entre plataformas heterogéneas.</li>
+            </ul>
+            <div class="chips"><span>Odoo ERP</span><span>REST APIs</span><span>Dataverse</span><span>SQL</span><span>HTTP Flows</span></div>
+          </div>
+        </li>
+
+        <li class="entry reveal">
+          <div class="entry__emblem" aria-hidden="true">
+            <svg viewBox="0 0 100 100">
+              <circle class="e-ring" cx="50" cy="50" r="44" />
+              <circle class="e-ring e-ring--in" cx="50" cy="50" r="34" />
+              <path class="e-star" d="M50 18 L57 43 L82 50 L57 57 L50 82 L43 57 L18 50 L43 43 Z" />
+            </svg>
+            <b>II</b>
+          </div>
+          <div class="entry__body">
+            <p class="entry__when"><span class="skewpill">2022 — <span data-en="PRESENT">PRESENTE</span></span> <span class="live" data-en="ONGOING">EN CURSO</span></p>
+            <h3 class="entry__role" data-en="Independent development">Desarrollo independiente</h3>
+            <p class="entry__org" data-en="PERSONAL PROJECTS">PROYECTOS PROPIOS</p>
+            <ul class="entry__tasks">
+              <li data-en="Design and programming of Demonborne, a 2D dark-fantasy game with elemental combat.">Diseño y programación de Demonborne, videojuego 2D de fantasía oscura con combate elemental.</li>
+              <li data-en="Real-time client/server architecture with Java sockets, deployed on Ubuntu Server.">Arquitectura cliente/servidor en tiempo real con sockets Java y despliegue en Ubuntu Server.</li>
+              <li data-en="Full-stack web platform development with PHP, MySQL and JavaScript.">Desarrollo full-stack de plataformas web con PHP, MySQL y JavaScript.</li>
+            </ul>
+            <div class="chips"><span>Godot</span><span>Kotlin</span><span>Java</span><span>PHP</span><span>MySQL</span></div>
+          </div>
+        </li>
+
+        <li class="entry entry--quiet reveal">
+          <div class="entry__emblem" aria-hidden="true">
+            <svg viewBox="0 0 100 100">
+              <circle class="e-ring" cx="50" cy="50" r="44" />
+              <circle class="e-ring e-ring--in" cx="50" cy="50" r="34" />
+            </svg>
+            <b>III</b>
+          </div>
+          <div class="entry__body">
+            <p class="entry__when"><span class="skewpill">2021 — 2023</span> <span class="live live--off" data-en="RETAIL">COMERCIO</span></p>
+            <h3 class="entry__role" data-en="Sales assistant · Cashier · Stock replenishment">Dependiente · Cajero · Reponedor</h3>
+            <p class="entry__org">LOLA REY · SOUVENIRS — MADRID</p>
+            <ul class="entry__tasks">
+              <li data-en="Three consecutive seasons of customer-facing work: sales, cash handling and stock control.">Tres campañas consecutivas de cara al público: venta, caja y control de stock.</li>
+              <li data-en="Where I learned responsibility, pace under pressure and real teamwork.">Donde aprendí responsabilidad, ritmo bajo presión y trabajo en equipo de verdad.</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ==========================================================
+         03 · PROYECTOS
+         ========================================================== -->
+    <section id="proyectos" class="section">
+      <header class="sec-head reveal">
+        <span class="sec-head__flavor" data-en="THE DEEDS">LAS GESTAS</span>
+        <span class="sec-head__num" aria-hidden="true">03</span>
+        <h2 class="sec-head__title"><span class="stripe stripe--paper" data-en="Projects">Proyectos</span></h2>
+      </header>
+
+      <article class="feature reveal">
+        <div class="feature__body">
+          <p class="kicker kicker--rose" data-en="CASE STUDY · ENTERPRISE">CASO DE ESTUDIO · ENTERPRISE</p>
+          <h3 class="feature__title"><em>I</em><span data-en="NTEGRATION — ODOO ERP">NTEGRACIÓN ERP ODOO</span></h3>
+          <p data-en="Design and implementation of a communication infrastructure between the ERP and the company's satellite systems, through automated flows and RESTful API consumption in a real production environment. It removed manual data entry and the desynchronisation between platforms.">
+            Diseño e implementación de una infraestructura de comunicación entre el ERP y los sistemas satélite de la compañía, mediante flujos automatizados y consumo de APIs RESTful en un entorno de producción real. Eliminó la introducción manual de datos y la desincronización entre plataformas.
+          </p>
+          <div class="chips"><span>REST APIs</span><span>Odoo ERP</span><span>Dataverse</span><span>HTTP Flows</span><span>SQL</span></div>
+        </div>
+        <div class="feature__mark" aria-hidden="true">
+          <svg viewBox="0 0 220 220">
+            <circle class="f-ring" cx="110" cy="110" r="100" />
+            <circle class="f-ring f-ring--in" cx="110" cy="110" r="78" />
+            <g class="f-ticks">
+              <path d="M110 4 V30 M110 190 V216 M4 110 H30 M190 110 H216" />
+              <path d="M39 39 L57 57 M181 39 L163 57 M39 181 L57 163 M181 181 L163 163" />
+            </g>
+            <path class="f-star" d="M110 40 L124 96 L180 110 L124 124 L110 180 L96 124 L40 110 L96 96 Z" />
+          </svg>
+        </div>
+      </article>
+
+      <div class="cards">
+        <article class="card reveal">
+          <div class="card__shot">
+            <img src="./imagenes/DEMONBORNE.webp" alt="Demonborne, videojuego 2D de fantasía oscura" loading="lazy" decoding="async" width="1022" height="661">
+          </div>
+          <p class="kicker" data-en="INDIE GAME · IN DEV">VIDEOJUEGO · EN DESARROLLO</p>
+          <h3 class="card__title"><em>D</em>EMONBORNE</h3>
+          <p data-en="A 2D dark-fantasy game: a powerless protagonist makes a pact with a demon and gains elemental abilities. Element-based strategic combat, custom physics and progression tied to the narrative.">
+            Videojuego 2D de fantasía oscura: un protagonista sin poderes pacta con un demonio y adquiere habilidades elementales. Combate estratégico por elementos, físicas propias y progresión ligada a la narrativa.
+          </p>
+          <div class="chips"><span>Godot</span><span>Kotlin</span><span>Android Studio</span></div>
+          <a class="act" href="https://github.com/4m3n/DemonBorne.git" target="_blank" rel="noopener"><span data-en="REPOSITORY">REPOSITORIO</span><i aria-hidden="true">→</i></a>
+        </article>
+
+        <article class="card reveal">
+          <div class="card__shot">
+            <img src="./imagenes/Chat%20Sockets.png" alt="Arquitectura de sockets en Java" loading="lazy" decoding="async" width="463" height="362">
+          </div>
+          <p class="kicker" data-en="SERVER · REAL TIME">SERVIDOR · TIEMPO REAL</p>
+          <h3 class="card__title"><em>S</em>OCKETS</h3>
+          <p data-en="Real-time client/server communication over Java sockets, with thread management for multiple simultaneous clients and deployment on Ubuntu Server. A reusable base for bots and multi-client systems.">
+            Comunicación cliente/servidor en tiempo real sobre sockets Java, con gestión de hilos para múltiples clientes simultáneos y despliegue en Ubuntu Server. Base reutilizable para bots y sistemas multicliente.
+          </p>
+          <div class="chips"><span>Java Sockets</span><span>Multithreading</span><span>Ubuntu Server</span></div>
+          <a class="act" href="https://github.com/4m3n/ChatSockets.git" target="_blank" rel="noopener"><span data-en="REPOSITORY">REPOSITORIO</span><i aria-hidden="true">→</i></a>
+        </article>
+
+        <article class="card reveal">
+          <div class="card__shot">
+            <img src="./imagenes/GeekHub.webp" alt="GeekHub, tienda online de electrónica" loading="lazy" decoding="async" width="631" height="451">
+          </div>
+          <p class="kicker" data-en="E-COMMERCE · FULL STACK">E-COMMERCE · FULL STACK</p>
+          <h3 class="card__title"><em>G</em>EEKHUB</h3>
+          <p data-en="Electronics online store with a featured-product slider, categorised menu and responsive layout. Custom front and back end, focused on intuitive navigation and efficient database communication.">
+            Tienda online de electrónica con slider de productos destacados, menú categorizado y diseño responsive. Front y back propios, con foco en navegación intuitiva y comunicación eficiente con la base de datos.
+          </p>
+          <div class="chips"><span>PHP</span><span>MySQL</span><span>JavaScript</span><span>HTML5 / CSS3</span></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         04 · HABILIDADES
+         ========================================================== -->
+    <section id="habilidades" class="section">
+      <header class="sec-head reveal">
+        <span class="sec-head__flavor" data-en="THE ARCHETYPES">LOS ARQUETIPOS</span>
+        <span class="sec-head__num" aria-hidden="true">04</span>
+        <h2 class="sec-head__title"><span class="stripe stripe--paper" data-en="Skills">Habilidades</span></h2>
+      </header>
+
+      <p class="lede reveal" data-en="Each archetype groups the tools I work with. The percentages are honest: they reflect real fluency, not aspirations.">
+        Cada arquetipo agrupa las herramientas con las que trabajo. Los porcentajes son honestos: reflejan soltura real, no aspiraciones.
+      </p>
+
+      <div class="archs">
+        <section class="arch reveal">
+          <header class="arch__head">
+            <span class="arch__glyph" aria-hidden="true">
+              <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" /><path d="M30 10 L35 25 L50 30 L35 35 L30 50 L25 35 L10 30 L25 25 Z" /></svg>
+            </span>
+            <h3><em>A</em><span data-en="RCHITECT">RQUITECTO</span></h3>
+            <span class="arch__tier" data-en="BACKEND &amp; DATA">BACKEND Y DATOS</span>
+          </header>
+          <ul class="skills">
+            <li class="skill" data-pct="85" style="--pct:0.85"><span class="skill__n">Java</span><span class="skill__track"><i></i></span><span class="skill__p">85</span></li>
+            <li class="skill" data-pct="82" style="--pct:0.82"><span class="skill__n">SQL / MySQL</span><span class="skill__track"><i></i></span><span class="skill__p">82</span></li>
+            <li class="skill" data-pct="80" style="--pct:0.8"><span class="skill__n">Python</span><span class="skill__track"><i></i></span><span class="skill__p">80</span></li>
+            <li class="skill" data-pct="70" style="--pct:0.7"><span class="skill__n">PHP</span><span class="skill__track"><i></i></span><span class="skill__p">70</span></li>
+            <li class="skill" data-pct="65" style="--pct:0.65"><span class="skill__n">PL/SQL</span><span class="skill__track"><i></i></span><span class="skill__p">65</span></li>
+          </ul>
+        </section>
+
+        <section class="arch reveal">
+          <header class="arch__head">
+            <span class="arch__glyph" aria-hidden="true">
+              <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" /><path d="M30 10 L35 25 L50 30 L35 35 L30 50 L25 35 L10 30 L25 25 Z" /></svg>
+            </span>
+            <h3><em>A</em><span data-en="RTIFICER">RTÍFICE</span></h3>
+            <span class="arch__tier" data-en="FRONTEND &amp; APPS">FRONTEND Y APPS</span>
+          </header>
+          <ul class="skills">
+            <li class="skill" data-pct="88" style="--pct:0.88"><span class="skill__n">HTML5</span><span class="skill__track"><i></i></span><span class="skill__p">88</span></li>
+            <li class="skill" data-pct="82" style="--pct:0.82"><span class="skill__n">CSS3 / Bootstrap</span><span class="skill__track"><i></i></span><span class="skill__p">82</span></li>
+            <li class="skill" data-pct="78" style="--pct:0.78"><span class="skill__n">JavaScript</span><span class="skill__track"><i></i></span><span class="skill__p">78</span></li>
+            <li class="skill" data-pct="72" style="--pct:0.72"><span class="skill__n">Android Studio</span><span class="skill__track"><i></i></span><span class="skill__p">72</span></li>
+            <li class="skill" data-pct="68" style="--pct:0.68"><span class="skill__n">Godot</span><span class="skill__track"><i></i></span><span class="skill__p">68</span></li>
+          </ul>
+        </section>
+
+        <section class="arch reveal">
+          <header class="arch__head">
+            <span class="arch__glyph" aria-hidden="true">
+              <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" /><path d="M30 10 L35 25 L50 30 L35 35 L30 50 L25 35 L10 30 L25 25 Z" /></svg>
+            </span>
+            <h3><em>G</em><span data-en="UARDIAN">UARDIÁN</span></h3>
+            <span class="arch__tier" data-en="TOOLS &amp; OPS">HERRAMIENTAS Y OPS</span>
+          </header>
+          <ul class="skills">
+            <li class="skill" data-pct="90" style="--pct:0.9"><span class="skill__n">Odoo ERP</span><span class="skill__track"><i></i></span><span class="skill__p">90</span></li>
+            <li class="skill" data-pct="87" style="--pct:0.87"><span class="skill__n">Git / GitHub</span><span class="skill__track"><i></i></span><span class="skill__p">87</span></li>
+            <li class="skill" data-pct="78" style="--pct:0.78"><span class="skill__n">Dataverse</span><span class="skill__track"><i></i></span><span class="skill__p">78</span></li>
+            <li class="skill" data-pct="75" style="--pct:0.75"><span class="skill__n">Linux Server</span><span class="skill__track"><i></i></span><span class="skill__p">75</span></li>
+            <li class="skill" data-pct="70" style="--pct:0.7"><span class="skill__n">Windows Server</span><span class="skill__track"><i></i></span><span class="skill__p">70</span></li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="stack reveal" aria-label="Tecnologías">
+        <img src="./imagenes/min/450_1000.webp" alt="Java" loading="lazy" decoding="async" width="96" height="96">
+        <img src="./imagenes/min/Python-logo-notext.svg.webp" alt="Python" loading="lazy" decoding="async" width="87" height="96">
+        <img src="./imagenes/min/javascript.webp" alt="JavaScript" loading="lazy" decoding="async" width="207" height="96">
+        <img src="./imagenes/min/html.webp" alt="HTML5" loading="lazy" decoding="async" width="114" height="96">
+        <img src="./imagenes/min/CSS3_logo_and_wordmark.svg.webp" alt="CSS3" loading="lazy" decoding="async" width="82" height="96">
+        <img src="./imagenes/min/bootstrap.webp" alt="Bootstrap" loading="lazy" decoding="async" width="96" height="96">
+        <img src="./imagenes/min/PHP-logo.svg.webp" alt="PHP" loading="lazy" decoding="async" width="178" height="96">
+        <img src="./imagenes/min/mysql.webp" alt="MySQL" loading="lazy" decoding="async" width="144" height="96">
+        <img src="./imagenes/min/SQL.webp" alt="SQL" loading="lazy" decoding="async" width="183" height="96">
+        <img src="./imagenes/min/android-studio-logo-1.webp" alt="Android Studio" loading="lazy" decoding="async" width="192" height="96">
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         05 · FORMACIÓN
+         ========================================================== -->
+    <section id="formacion" class="section">
+      <header class="sec-head reveal">
+        <span class="sec-head__flavor" data-en="THE ORIGINS">LOS ORÍGENES</span>
+        <span class="sec-head__num" aria-hidden="true">05</span>
+        <h2 class="sec-head__title"><span class="stripe stripe--paper" data-en="Education">Formación</span></h2>
+      </header>
+
+      <div class="edu-grid">
+        <article class="slab reveal">
+          <p class="kicker kicker--rose" data-en="XXI · THE SCHOLAR">XXI · EL ERUDITO</p>
+          <h3 class="slab__title" data-en="Higher Degree in Multi-Platform Application Development">Técnico Superior en Desarrollo de Aplicaciones Multiplataforma</h3>
+          <dl class="facts">
+            <div><dt data-en="Institution">INSTITUCIÓN</dt><dd>DIGI-TECH</dd></div>
+            <div><dt data-en="Period">PERÍODO</dt><dd>2024 — 2026</dd></div>
+            <div><dt data-en="Level">NIVEL</dt><dd data-en="Higher Vocational Education (CFGS)">Formación Profesional Superior (CFGS)</dd></div>
+            <div><dt data-en="Focus">ENFOQUE</dt><dd data-en="Mobile · Web · Desktop · Databases">Móvil · Web · Escritorio · Bases de datos</dd></div>
+          </dl>
+          <p data-en="Vocational programme focused on developing applications for multiple platforms, emphasising enterprise architectures, integration systems and professional software development methodologies.">
+            Ciclo formativo orientado al desarrollo de aplicaciones para múltiples plataformas, con énfasis en arquitecturas empresariales, sistemas de integración y metodologías profesionales de desarrollo de software.
+          </p>
+
+          <hr class="rule">
+
+          <h4 class="mini" data-en="SECONDARY EDUCATION">BACHILLERATO</h4>
+          <p>IES Enrique Tierno Galván — Madrid</p>
+
+          <h4 class="mini" data-en="FURTHER TRAINING">FORMACIÓN COMPLEMENTARIA</h4>
+          <ul class="ticks">
+            <li data-en="CISCO — Networking course">CISCO — Curso de redes</li>
+            <li data-en="Linux Unhatched — in progress">Linux Unhatched — en proceso</li>
+          </ul>
+        </article>
+
+        <article class="slab reveal">
+          <p class="kicker kicker--rose" data-en="0 · THE TRAVELLER">0 · EL VIAJERO</p>
+          <h3 class="slab__title" data-en="Four languages, a single mental compiler">Cuatro idiomas, un solo compilador mental</h3>
+
+          <ul class="langs">
+            <li><span data-en="Spanish">Español</span><span class="pips" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><b data-en="Native">NATIVO</b></li>
+            <li><span data-en="Bengali">Bengalí</span><span class="pips" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><b data-en="Native">NATIVO</b></li>
+            <li><span data-en="English">Inglés</span><span class="pips" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><b data-en="B2 · Professional">B2 · PROFESIONAL</b></li>
+            <li><span>Hindi</span><span class="pips" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><b data-en="Conversational">CONVERSACIONAL</b></li>
+          </ul>
+
+          <p data-en="Working in multinational environments means switching languages as often as stacks. That flexibility is what makes it possible to document in English, negotiate in Spanish, and lose no nuance along the way.">
+            Trabajar en entornos multinacionales significa cambiar de idioma tan a menudo como de stack. Esa flexibilidad es la que permite documentar en inglés, negociar en español y no perder matices por el camino.
+          </p>
+
+          <hr class="rule">
+
+          <h4 class="mini" data-en="SOFT SKILLS">APTITUDES</h4>
+          <div class="splats">
+            <span data-en="Problem solving">Resolución de problemas</span>
+            <span data-en="Teamwork">Trabajo en equipo</span>
+            <span data-en="Critical thinking">Pensamiento crítico</span>
+            <span data-en="Adaptability">Adaptabilidad</span>
+            <span data-en="Continuous learning">Aprendizaje continuo</span>
+            <span data-en="Autonomy">Autonomía</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         06 · CONTACTO
+         ========================================================== -->
+    <section id="contacto" class="section section--last">
+      <header class="sec-head reveal">
+        <span class="sec-head__flavor" data-en="THE SUMMONS">LA CONVOCATORIA</span>
+        <span class="sec-head__num" aria-hidden="true">06</span>
+        <h2 class="sec-head__title"><span class="stripe stripe--paper" data-en="Contact">Contacto</span></h2>
+      </header>
+
+      <div class="contact reveal">
+        <div class="contact__inner">
+          <p class="contact__claim" data-en="Looking for someone who understands the whole system before touching a single line?">
+            ¿Buscas a alguien que entienda el sistema completo antes de tocar una sola línea?
+          </p>
+          <p class="contact__sub" data-en="I am open to new opportunities, in Madrid or remote. Write to me and I will reply.">
+            Estoy abierto a nuevas oportunidades, en Madrid o en remoto. Escríbeme y te respondo.
+          </p>
+
+          <div class="contact__grid">
+            <a class="ccard" href="mailto:hameemafnan777@gmail.com">
+              <span class="ccard__k">EMAIL</span>
+              <span class="ccard__v">hameemafnan777@gmail.com</span>
+            </a>
+            <a class="ccard" href="tel:+34632881026">
+              <span class="ccard__k" data-en="PHONE">TELÉFONO</span>
+              <span class="ccard__v">(+34) 632 881 026</span>
+            </a>
+            <a class="ccard" href="https://github.com/4m3n" target="_blank" rel="noopener">
+              <span class="ccard__k">GITHUB</span>
+              <span class="ccard__v">github.com/4m3n</span>
+            </a>
+            <a class="ccard" href="https://www.linkedin.com/in/hameem-afnan" target="_blank" rel="noopener">
+              <span class="ccard__k">LINKEDIN</span>
+              <span class="ccard__v">hameem-afnan</span>
+            </a>
+            <div class="ccard ccard--static">
+              <span class="ccard__k" data-en="LOCATION">UBICACIÓN</span>
+              <span class="ccard__v" data-en="Madrid, Spain (28021)">Madrid, España (28021)</span>
             </div>
+            <a class="ccard ccard--cv" href="./imagenes/cv-hameem-afnan.pdf" target="_blank" rel="noopener">
+              <span class="ccard__k">CV</span>
+              <span class="ccard__v" data-en="Download PDF">Descargar PDF</span>
+            </a>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="languages" class="section">
-      <div class="container">
-        <h2 data-translate="Lenguajes" class="section-title">Idiomas</h2>
-        <div class="cards language-cards">
-          <div class="card" data-translate="Idioma1">Español (Nativo)</div>
-          <div class="card" data-translate="Idioma2">Inglés (B2)</div>
-          <div class="card" data-translate="Idioma3">Bengalí (Nativo)</div>
-          <div class="card" data-translate="Idioma4">Hindi</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact" class="section">
-      <div class="container">
-        <h2 data-translate="contact" class="section-title">Comms Link (Contacto)</h2>
-        <div class="contact-box terminal-box">
-          <p><span class="prompt">> Email:</span> <a href="mailto:hameemafnan777@gmail.com">hameemafnan777@gmail.com</a></p>
-          <p><span class="prompt">> Phone:</span> (+34) 632 881 026</p>
-          <p><span class="prompt">> Location:</span> Madrid, Base de Operaciones</p>
-        </div>
-      </div>
-    </section>
   </main>
 
-  <footer>
-    <p>System Online. © 2025 Hameem. Todos los derechos reservados.</p>
+  <footer class="foot">
+    <p>© <span id="year">2026</span> HAMEEM AFNAN AKTHER FAROQUEE</p>
+    <p data-en="Built from scratch with HTML, CSS and JavaScript.">Hecho desde cero con HTML, CSS y JavaScript.</p>
   </footer>
+
+  <a class="to-top" id="toTop" href="#inicio" aria-label="Volver arriba">↑</a>
 
   <script src="MiPagina.js"></script>
 </body>

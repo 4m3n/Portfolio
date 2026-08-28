@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>CV — Hameem Afnan Akther Faroquee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ==========================================================================
+     CV — Hameem Afnan Akther Faroquee
+     Mismo diseño de siempre (banda tan, franja azul, foto circular, lateral
+     crema) con la maquetación rehecha: rejillas alineadas, ritmo constante
+     entre secciones y contenido actualizado.
+
+     Para exportar:  Ctrl+P  →  Guardar como PDF  →  A4,
+                     márgenes: ninguno, gráficos de fondo: activados.
+     ========================================================================== */
+
+  @page { size: A4; margin: 0; }
+
+  :root {
+    --tan:    #cdbb95;   /* banda superior    */
+    --cream:  #fce9c6;   /* columna izquierda */
+    --navy:   #17346c;   /* franja y filetes  */
+    --ink:    #1a1a18;
+    --ink-2:  #33322e;
+  }
+
+  * { box-sizing: border-box; margin: 0; }
+  ul { padding: 0; list-style: none; }
+
+  body {
+    width: 210mm;
+    font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+    font-size: 8.6pt;
+    line-height: 1.38;
+    color: var(--ink-2);
+    background: #fff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page { position: relative; width: 210mm; height: 297mm; overflow: hidden; }
+
+  /* ------------------------------------------------------- CABECERA ----- */
+  .header {
+    position: relative;
+    height: 47mm;
+    background: var(--tan);
+    border-bottom: 3mm solid var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 10mm 0 78mm;
+    text-align: center;
+  }
+  .name {
+    font-size: 25pt; font-weight: 800; line-height: 1.04;
+    color: var(--ink); letter-spacing: -.015em;
+  }
+  .title {
+    margin-top: 3mm;
+    font-size: 9.4pt; font-weight: 700; line-height: 1.35;
+    letter-spacing: .02em; color: var(--ink);
+  }
+
+  /* Foto circular con aro, montada sobre la banda y el lateral */
+  .photo {
+    position: absolute; left: 9mm; top: 6mm;
+    width: 52mm; height: 52mm; border-radius: 50%;
+    border: 3.2mm solid #12100e;
+    overflow: hidden; background: #12100e; z-index: 3;
+  }
+  .photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
+
+  /* --------------------------------------------------------- CUERPO ----- */
+  .body { display: grid; grid-template-columns: 68mm 1fr; height: calc(297mm - 50mm); }
+
+  .aside {
+    background: var(--cream);
+    padding: 19mm 8mm 8mm;   /* aire arriba para la foto que se le monta encima */
+  }
+  .main { padding: 4mm 9mm 5mm 8mm; }
+
+  /* Titulares de sección */
+  h2 {
+    font-size: 13pt; font-weight: 800; color: var(--ink);
+    letter-spacing: -.01em; line-height: 1.1;
+    margin-bottom: 2mm;
+  }
+  .aside h2 { padding-top: 3mm; border-top: .6mm solid #6f6350; }
+  .aside .block:first-child h2 { padding-top: 0; border-top: 0; }
+  .main h2 { padding-top: 2.2mm; border-top: .6mm solid var(--navy); }
+  .main .block:first-child h2 { padding-top: 0; border-top: 0; }
+
+  .block { margin-bottom: 2.9mm; }
+  .block:last-child { margin-bottom: 0; }
+
+  /* --------------------------------------------------- INFORMACIÓN ------ */
+  .info { display: grid; gap: 2.6mm; }
+  .info div { display: grid; grid-template-columns: 6mm 1fr; align-items: center; gap: 2.2mm; }
+  .info svg { width: 5mm; height: 5mm; stroke: var(--ink); fill: none;
+              stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .info svg.brand { fill: var(--ink); stroke: none; }
+  .info span { font-size: 7.8pt; font-weight: 600; color: var(--ink); }
+  .info a { color: var(--ink); text-decoration: underline; }
+
+  /* ------------------------------------------------------ APTITUDES ----- */
+  .skills { display: grid; gap: 2.2mm; }
+  .skills li { list-style: none; font-size: 8.6pt; font-weight: 600; color: var(--ink); }
+
+  /* -------------------------------------------------------- IDIOMAS ----- */
+  .langs { display: grid; gap: 2.2mm; }
+  .langs li {
+    list-style: none;
+    display: flex; justify-content: space-between; align-items: baseline; gap: 2mm;
+    font-size: 8.6pt; font-weight: 600; color: var(--ink);
+  }
+  .langs b { font-weight: 500; color: #5c554a; font-size: 8pt; }
+
+  /* --------------------------------------------------------- PERFIL ----- */
+  .profile {
+    font-size: 8.8pt; font-weight: 500; line-height: 1.5;
+    color: var(--ink-2);
+    margin-bottom: 4mm;
+  }
+  .profile b { font-weight: 700; color: var(--ink); }
+
+  /* ------------------------------------------------------ FORMACIÓN ----- */
+  .edu { display: grid; gap: 2mm; }
+  .edu > div { display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: baseline; }
+  .edu strong { font-size: 9pt; font-weight: 700; color: var(--ink); }
+  .edu em {
+    font-style: normal; font-size: 8pt; font-weight: 600; color: var(--navy);
+    white-space: nowrap;
+  }
+  .edu p { grid-column: 1 / -1; margin-top: -.8mm; font-size: 8.2pt; }
+
+  /* ------------------------------------------------------ PROYECTOS ----- */
+  .proj { display: grid; gap: 1.8mm; }
+  .proj > div { display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: baseline; }
+  .proj strong { font-size: 9pt; font-weight: 700; color: var(--ink); }
+  .proj em {
+    font-style: normal; font-size: 7.6pt; font-weight: 600; color: #6a6459;
+    white-space: nowrap; letter-spacing: .02em;
+  }
+  .proj p { grid-column: 1 / -1; margin-top: -.8mm; font-size: 8.2pt; }
+  .proj u { text-decoration: none; font-weight: 600; color: var(--navy); }
+
+  /* ---------------------------------------------- COMPETENCIAS TÉC. ----- */
+  .tech { display: grid; gap: 1.4mm; }
+  .tech div { display: grid; grid-template-columns: 26mm 1fr; gap: 3mm; align-items: baseline; }
+  .tech b {
+    font-size: 7.8pt; font-weight: 700; color: var(--navy);
+    letter-spacing: .04em; text-transform: uppercase;
+  }
+  .tech span { font-size: 8.2pt; font-weight: 500; }
+
+  /* ----------------------------------------------------- EXPERIENCIA ---- */
+  .job { margin-bottom: 3mm; }
+  .job:last-child { margin-bottom: 0; }
+  .job__top { display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: baseline; }
+  .job__role { font-size: 9.4pt; font-weight: 700; color: var(--ink); }
+  .job__when { font-size: 8pt; font-weight: 700; color: var(--navy); white-space: nowrap; }
+  .job__org { font-size: 8.4pt; font-weight: 600; color: #6a6459; margin-bottom: 1mm; }
+  .job ul { padding: 0; list-style: none; }
+  .job li { position: relative; padding-left: 3.6mm; margin-bottom: .4mm; font-size: 8.3pt; }
+  .job li::before {
+    content: ''; position: absolute; left: 0; top: 1.5mm;
+    width: 1.4mm; height: 1.4mm; border-radius: 50%; background: var(--navy);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ====================================================== CABECERA ==== -->
+  <div class="photo">
+    <img src="./imagenes/mi-cara.webp" alt="Hameem Afnan Akther Faroquee">
+  </div>
+
+  <header class="header">
+    <div>
+      <h1 class="name">Hameem Afnan,<br>Akther Faroquee</h1>
+      <p class="title">TÉCNICO SUPERIOR EN DESARROLLO DE APLICACIONES<br>MULTIPLATAFORMA</p>
+    </div>
+  </header>
+
+  <div class="body">
+
+    <!-- ================================================ COLUMNA IZQ. ==== -->
+    <aside class="aside">
+
+      <div class="block">
+        <h2>INFORMACIÓN:</h2>
+        <div class="info">
+          <div>
+            <svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="1.5"/><path d="M3 6.5l9 6.5 9-6.5"/></svg>
+            <span>hameemafnan777@gmail.com</span>
+          </div>
+          <div>
+            <svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+            <span>Madrid (28021)</span>
+          </div>
+          <div>
+            <svg viewBox="0 0 24 24"><path d="M5 3.5h4l2 5-2.5 1.5a12 12 0 0 0 5.5 5.5L15.5 13l5 2v4a1.5 1.5 0 0 1-1.7 1.5C10.6 19.6 4.4 13.4 3.5 5.2A1.5 1.5 0 0 1 5 3.5z"/></svg>
+            <span>(+34) 632 881 026</span>
+          </div>
+          <div>
+            <svg class="brand" viewBox="0 0 24 24"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.2 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.62-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.83.58A12 12 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"/></svg>
+            <span><a href="https://github.com/4m3n">github.com/4m3n</a></span>
+          </div>
+          <div>
+            <svg class="brand" viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zm1.78 13.02H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+            <span><a href="https://www.linkedin.com/in/hameem-afnan">in/hameem-afnan</a></span>
+          </div>
+          <div>
+            <svg viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="13" rx="1.6"/><path d="M9 7V5.2c0-.7.6-1.2 1.3-1.2h3.4c.7 0 1.3.5 1.3 1.2V7M2.5 12.5h19"/></svg>
+            <span><a href="https://4m3n.github.io/Portfolio/">4m3n.github.io/Portfolio</a></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h2>APTITUDES:</h2>
+        <ul class="skills">
+          <li>RESOLUCIÓN DE PROBLEMAS</li>
+          <li>TRABAJO EN EQUIPO</li>
+          <li>PENSAMIENTO CRÍTICO</li>
+          <li>ADAPTABILIDAD</li>
+          <li>APRENDIZAJE CONTINUO</li>
+          <li>AUTONOMÍA</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <h2>IDIOMAS:</h2>
+        <ul class="langs">
+          <li><span>ESPAÑOL</span><b>Nativo</b></li>
+          <li><span>BENGALÍ</span><b>Nativo</b></li>
+          <li><span>INGLÉS</span><b>B2 · Profesional</b></li>
+          <li><span>HINDI</span><b>Conversacional</b></li>
+        </ul>
+      </div>
+
+    </aside>
+
+    <!-- ================================================ COLUMNA DCHA. === -->
+    <main class="main">
+
+      <p class="profile">
+        Programador multiplataforma con <b>experiencia real en entornos corporativos</b>, especializado en
+        integrar sistemas que no fueron pensados para comunicarse entre sí: ERP Odoo, APIs RESTful, bases
+        de datos y servidores Linux. Busco un equipo donde crecer en desarrollo backend e integraciones.
+      </p>
+
+      <div class="block">
+        <h2>EXPERIENCIA:</h2>
+
+        <div class="job">
+          <div class="job__top">
+            <span class="job__role">Desarrollador de Software e Integraciones</span>
+            <span class="job__when">2023 — ACTUALIDAD</span>
+          </div>
+          <p class="job__org">TAILORED SPAIN</p>
+          <ul>
+            <li>Integración de sistemas ERP (Odoo) mediante flujos HTTP y APIs RESTful, eliminando la
+                introducción manual de datos entre plataformas.</li>
+            <li>Migraciones de entornos web internacionales (ALM) sobre Dataverse.</li>
+            <li>Resolución de incidencias críticas de arquitectura web y sincronización de bases de datos
+                en producción.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job__top">
+            <span class="job__role">Dependiente, Reponedor</span>
+            <span class="job__when">JUN 2023 — OCT 2023</span>
+          </div>
+          <p class="job__org">LOLA REY</p>
+        </div>
+
+        <div class="job">
+          <div class="job__top">
+            <span class="job__role">Dependiente · Cajero</span>
+            <span class="job__when">2021 — 2022</span>
+          </div>
+          <p class="job__org">SOUVENIRS · CAMPAÑAS DE VERANO</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h2>FORMACIÓN:</h2>
+        <div class="edu">
+          <div>
+            <strong>Grado Superior — Desarrollo de Aplicaciones Multiplataforma</strong>
+            <em>2024 — 2026</em>
+            <p>DIGITECH · Madrid</p>
+          </div>
+          <div>
+            <strong>Bachillerato</strong>
+            <em>Finalizado</em>
+            <p>IES Enrique Tierno Galván · Madrid</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h2>FORMACIÓN COMPLEMENTARIA:</h2>
+        <div class="edu">
+          <div>
+            <strong>CISCO — Curso de redes</strong>
+            <em>Completado</em>
+          </div>
+          <div>
+            <strong>Linux Unhatched</strong>
+            <em>En proceso</em>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h2>PROYECTOS:</h2>
+        <div class="proj">
+          <div>
+            <strong>Demonborne</strong>
+            <em>GODOT · KOTLIN · ANDROID STUDIO</em>
+            <p>Videojuego 2D con combate por elementos y físicas propias. <u>github.com/4m3n/DemonBorne</u></p>
+          </div>
+          <div>
+            <strong>Aplicación con sockets de Java</strong>
+            <em>JAVA · MULTIHILO · UBUNTU SERVER</em>
+            <p>Cliente/servidor en tiempo real con hilos, sobre Ubuntu Server. <u>github.com/4m3n/ChatSockets</u></p>
+          </div>
+          <div>
+            <strong>GeekHub — Tienda online</strong>
+            <em>PHP · MYSQL · JAVASCRIPT</em>
+            <p>Front y back propios: catálogo, slider de destacados y diseño responsive.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h2>COMPETENCIAS TÉCNICAS:</h2>
+        <div class="tech">
+          <div><b>Lenguajes</b><span>Java, Swing, Python, JavaScript, PHP, Kotlin, JSON</span></div>
+          <div><b>Bases de datos</b><span>SQL, PL/SQL, MySQL, Dataverse, ADO</span></div>
+          <div><b>Web</b><span>HTML5, CSS3, Bootstrap, XML, XSLT, XQuery</span></div>
+          <div><b>Integraciones</b><span>Odoo ERP, APIs RESTful, flujos HTTP</span></div>
+          <div><b>Entornos</b><span>Linux, Windows Server, Git / GitHub, Android Studio</span></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+</div>
+</body>
+</html>
