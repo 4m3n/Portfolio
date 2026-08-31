@@ -852,6 +852,11 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
   gap: clamp(1rem, 2.4vw, 1.6rem);
 }
+/* Con cuatro tarjetas, auto-fit sólo cabe a tres por fila y deja la última
+   suelta. A partir de tablet las repartimos en dos columnas: 2 × 2. */
+@media (min-width: 700px) {
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 .card {
   display: flex; flex-direction: column;
   padding: clamp(1.1rem, 2.4vw, 1.5rem);
@@ -879,6 +884,27 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   transition: transform 0.8s var(--ease), filter 0.5s;
 }
 .card:hover .card__shot img { transform: scale(1.05); filter: none; }
+
+/* Variante sin captura: emblema vectorial con el mismo lenguaje gráfico que
+   la ficha destacada, para que la tarjeta conserve la altura de las demás. */
+.card__shot--art {
+  display: grid; place-items: center;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(51, 212, 196, 0.11), rgba(20, 18, 15, 0) 62%),
+    var(--ink);
+}
+.card__shot--art::after { background: linear-gradient(to top, rgba(20, 18, 15, 0.7), transparent 46%); }
+.card__shot--art svg { width: 58%; height: auto; }
+.b-ring { fill: none; stroke: rgba(244, 241, 232, 0.28); stroke-width: 1.4;
+          transform-origin: 60px 60px; animation: spin 48s linear infinite; }
+.b-ring--in { stroke: var(--aqua); opacity: 0.5; stroke-dasharray: 5 9;
+              animation-duration: 26s; animation-direction: reverse; }
+.b-ticks path { fill: none; stroke: var(--paper); stroke-width: 1.4; opacity: 0.42; }
+.b-body { fill: rgba(20, 18, 15, 0.55); stroke: var(--paper); stroke-width: 1.6; opacity: 0.8; }
+.b-ant  { fill: none; stroke: var(--paper); stroke-width: 1.6; opacity: 0.55; }
+.b-eye  { fill: var(--rose); }
+.b-slash { fill: none; stroke: var(--aqua); stroke-width: 2.4; stroke-linecap: round; opacity: 0.85; }
+.card:hover .b-eye { fill: var(--gold); }
 
 /* Reservamos dos líneas para el epígrafe: así los títulos de las tres
    tarjetas quedan a la misma altura aunque el texto sea más largo. */

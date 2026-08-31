@@ -89,15 +89,15 @@
   }
   .aside h2 { font-size: 12.4pt; margin-bottom: 1.7mm; padding-top: 2.2mm; border-top: .6mm solid #6f6350; }
   .aside .block:first-child h2 { padding-top: 0; border-top: 0; }
-  .main h2 { padding-top: 4.4mm; margin-bottom: 3.6mm; border-top: .6mm solid var(--navy); }
+  .main h2 { padding-top: 3.6mm; margin-bottom: 3mm; border-top: .6mm solid var(--navy); }
   .main .block:first-child h2 { padding-top: 0; border-top: 0; }
 
   .block { margin-bottom: 2.4mm; }
-  .main .block { margin-bottom: 7.2mm; }
+  .main .block { margin-bottom: 5mm; }
   .block:last-child { margin-bottom: 0; }
 
   /* --------------------------------------------------- INFORMACIÓN ------ */
-  .info { display: grid; gap: 2.3mm; }
+  .info { display: grid; gap: 2.1mm; }
   .info div { display: grid; grid-template-columns: 6mm 1fr; align-items: center; gap: 2.2mm; }
   .info svg { width: 5mm; height: 5mm; stroke: var(--ink); fill: none;
               stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
@@ -106,11 +106,11 @@
   .info a { color: var(--ink); text-decoration: underline; }
 
   /* ------------------------------------------------------ APTITUDES ----- */
-  .skills { display: grid; gap: 1.9mm; }
+  .skills { display: grid; gap: 1.6mm; }
   .skills li { list-style: none; font-size: 8.6pt; font-weight: 600; color: var(--ink); }
 
   /* -------------------------------------------------------- IDIOMAS ----- */
-  .langs { display: grid; gap: 1.9mm; }
+  .langs { display: grid; gap: 1.7mm; }
   .langs li {
     list-style: none;
     display: flex; justify-content: space-between; align-items: baseline; gap: 2mm;
@@ -122,12 +122,12 @@
   .profile {
     font-size: 9.2pt; font-weight: 500; line-height: 1.62;
     color: var(--ink-2);
-    margin-bottom: 6mm;
+    margin-bottom: 5mm;
   }
   .profile b { font-weight: 700; color: var(--ink); }
 
   /* ------------------------------------------------------ FORMACIÓN ----- */
-  .edu { display: grid; gap: 6mm; }
+  .edu { display: grid; gap: 4mm; }
   .edu > div { display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: baseline; }
   .edu strong { font-size: 9.6pt; font-weight: 700; color: var(--ink); }
   .edu em {
@@ -137,7 +137,7 @@
   .edu p { grid-column: 1 / -1; margin-top: -.4mm; font-size: 8.6pt; }
 
   /* ------------------------------------------------------ PROYECTOS ----- */
-  .proj { display: grid; gap: 6mm; }
+  .proj { display: grid; gap: 3.2mm; }
   .proj > div { display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: baseline; }
   .proj strong { font-size: 9.6pt; font-weight: 700; color: var(--ink); }
   .proj em {
@@ -148,7 +148,7 @@
   .proj u { text-decoration: none; font-weight: 600; color: var(--navy); }
 
   /* ------------------------------- COMPETENCIAS TÉC. (columna izq.) ----- */
-  .tech { display: grid; gap: 1.7mm; }
+  .tech { display: grid; gap: 1.5mm; }
   .tech b {
     display: block;
     font-size: 7.4pt; font-weight: 700; color: var(--navy);
@@ -163,7 +163,7 @@
   .certs em { font-style: normal; font-size: 7.6pt; font-weight: 600; color: #6a6459; }
 
   /* ----------------------------------------------------- EXPERIENCIA ---- */
-  .job { margin-bottom: 7.5mm; }
+  .job { margin-bottom: 5.5mm; }
   .job:last-child { margin-bottom: 0; }
   .job__top { display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: baseline; }
   .job__role { font-size: 9.8pt; font-weight: 700; color: var(--ink); }
@@ -258,7 +258,7 @@
           <div><b>Bases de datos</b><span>SQL, PL/SQL, MySQL, Dataverse, ADO</span></div>
           <div><b>Web</b><span>HTML5, CSS3, Bootstrap, XML, XSLT, XQuery</span></div>
           <div><b>Integraciones</b><span>Odoo ERP, APIs RESTful, flujos HTTP</span></div>
-          <div><b>Entornos</b><span>Linux, Windows Server, Git / GitHub, Android Studio</span></div>
+          <div><b>Entornos</b><span>Linux, Windows Server, Node.js, Git / GitHub, Android Studio</span></div>
         </div>
       </div>
 
@@ -345,6 +345,11 @@
             <strong>Aplicación con sockets de Java</strong>
             <em>JAVA · MULTIHILO · UBUNTU SERVER</em>
             <p>Cliente/servidor en tiempo real con hilos, sobre Ubuntu Server. <u>github.com/4m3n/ChatSockets</u></p>
+          </div>
+          <div>
+            <strong>Bot de Discord</strong>
+            <em>NODE.JS · DISCORD.JS · APIS REST</em>
+            <p>Comandos slash, moderación automática y sistema de niveles con perfiles persistentes.</p>
           </div>
           <div>
             <strong>GeekHub — Tienda online</strong>
