@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://4m3n.github.io/Portfolio/sitemap.xml

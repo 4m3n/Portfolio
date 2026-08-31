@@ -87,16 +87,17 @@
     letter-spacing: -.01em; line-height: 1.1;
     margin-bottom: 2mm;
   }
-  .aside h2 { padding-top: 3mm; border-top: .6mm solid #6f6350; }
+  .aside h2 { font-size: 12.4pt; margin-bottom: 1.7mm; padding-top: 2.2mm; border-top: .6mm solid #6f6350; }
   .aside .block:first-child h2 { padding-top: 0; border-top: 0; }
-  .main h2 { padding-top: 2.2mm; border-top: .6mm solid var(--navy); }
+  .main h2 { padding-top: 4.4mm; margin-bottom: 3.6mm; border-top: .6mm solid var(--navy); }
   .main .block:first-child h2 { padding-top: 0; border-top: 0; }
 
-  .block { margin-bottom: 2.9mm; }
+  .block { margin-bottom: 2.4mm; }
+  .main .block { margin-bottom: 7.2mm; }
   .block:last-child { margin-bottom: 0; }
 
   /* --------------------------------------------------- INFORMACIÓN ------ */
-  .info { display: grid; gap: 2.6mm; }
+  .info { display: grid; gap: 2.3mm; }
   .info div { display: grid; grid-template-columns: 6mm 1fr; align-items: center; gap: 2.2mm; }
   .info svg { width: 5mm; height: 5mm; stroke: var(--ink); fill: none;
               stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
@@ -105,11 +106,11 @@
   .info a { color: var(--ink); text-decoration: underline; }
 
   /* ------------------------------------------------------ APTITUDES ----- */
-  .skills { display: grid; gap: 2.2mm; }
+  .skills { display: grid; gap: 1.9mm; }
   .skills li { list-style: none; font-size: 8.6pt; font-weight: 600; color: var(--ink); }
 
   /* -------------------------------------------------------- IDIOMAS ----- */
-  .langs { display: grid; gap: 2.2mm; }
+  .langs { display: grid; gap: 1.9mm; }
   .langs li {
     list-style: none;
     display: flex; justify-content: space-between; align-items: baseline; gap: 2mm;
@@ -119,53 +120,61 @@
 
   /* --------------------------------------------------------- PERFIL ----- */
   .profile {
-    font-size: 8.8pt; font-weight: 500; line-height: 1.5;
+    font-size: 9.2pt; font-weight: 500; line-height: 1.62;
     color: var(--ink-2);
-    margin-bottom: 4mm;
+    margin-bottom: 6mm;
   }
   .profile b { font-weight: 700; color: var(--ink); }
 
   /* ------------------------------------------------------ FORMACIÓN ----- */
-  .edu { display: grid; gap: 2mm; }
+  .edu { display: grid; gap: 6mm; }
   .edu > div { display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: baseline; }
-  .edu strong { font-size: 9pt; font-weight: 700; color: var(--ink); }
+  .edu strong { font-size: 9.6pt; font-weight: 700; color: var(--ink); }
   .edu em {
-    font-style: normal; font-size: 8pt; font-weight: 600; color: var(--navy);
+    font-style: normal; font-size: 8.2pt; font-weight: 600; color: var(--navy);
     white-space: nowrap;
   }
-  .edu p { grid-column: 1 / -1; margin-top: -.8mm; font-size: 8.2pt; }
+  .edu p { grid-column: 1 / -1; margin-top: -.4mm; font-size: 8.6pt; }
 
   /* ------------------------------------------------------ PROYECTOS ----- */
-  .proj { display: grid; gap: 1.8mm; }
+  .proj { display: grid; gap: 6mm; }
   .proj > div { display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: baseline; }
-  .proj strong { font-size: 9pt; font-weight: 700; color: var(--ink); }
+  .proj strong { font-size: 9.6pt; font-weight: 700; color: var(--ink); }
   .proj em {
-    font-style: normal; font-size: 7.6pt; font-weight: 600; color: #6a6459;
+    font-style: normal; font-size: 7.8pt; font-weight: 600; color: #6a6459;
     white-space: nowrap; letter-spacing: .02em;
   }
-  .proj p { grid-column: 1 / -1; margin-top: -.8mm; font-size: 8.2pt; }
+  .proj p { grid-column: 1 / -1; margin-top: -.2mm; font-size: 8.6pt; }
   .proj u { text-decoration: none; font-weight: 600; color: var(--navy); }
 
-  /* ---------------------------------------------- COMPETENCIAS TÉC. ----- */
-  .tech { display: grid; gap: 1.4mm; }
-  .tech div { display: grid; grid-template-columns: 26mm 1fr; gap: 3mm; align-items: baseline; }
+  /* ------------------------------- COMPETENCIAS TÉC. (columna izq.) ----- */
+  .tech { display: grid; gap: 1.7mm; }
   .tech b {
-    font-size: 7.8pt; font-weight: 700; color: var(--navy);
-    letter-spacing: .04em; text-transform: uppercase;
+    display: block;
+    font-size: 7.4pt; font-weight: 700; color: var(--navy);
+    letter-spacing: .05em; text-transform: uppercase;
   }
-  .tech span { font-size: 8.2pt; font-weight: 500; }
+  .tech span { display: block; font-size: 8.1pt; font-weight: 500; color: var(--ink-2); }
+
+  /* ------------------------------- CERTIFICACIONES (columna izq.) ------ */
+  .certs { display: grid; gap: 1.8mm; }
+  .certs li { list-style: none; }
+  .certs strong { display: block; font-size: 8.4pt; font-weight: 700; color: var(--ink); }
+  .certs em { font-style: normal; font-size: 7.6pt; font-weight: 600; color: #6a6459; }
 
   /* ----------------------------------------------------- EXPERIENCIA ---- */
-  .job { margin-bottom: 3mm; }
+  .job { margin-bottom: 7.5mm; }
   .job:last-child { margin-bottom: 0; }
   .job__top { display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: baseline; }
-  .job__role { font-size: 9.4pt; font-weight: 700; color: var(--ink); }
-  .job__when { font-size: 8pt; font-weight: 700; color: var(--navy); white-space: nowrap; }
-  .job__org { font-size: 8.4pt; font-weight: 600; color: #6a6459; margin-bottom: 1mm; }
+  .job__role { font-size: 9.8pt; font-weight: 700; color: var(--ink); }
+  .job__when { font-size: 8.2pt; font-weight: 700; color: var(--navy); white-space: nowrap; }
+  .job__dur { font-weight: 800; color: var(--ink); }
+  .job__org { font-size: 8.6pt; font-weight: 600; color: #6a6459; margin-bottom: 1.6mm; }
+  .job__kind { font-weight: 500; font-style: italic; color: #857e70; }
   .job ul { padding: 0; list-style: none; }
-  .job li { position: relative; padding-left: 3.6mm; margin-bottom: .4mm; font-size: 8.3pt; }
+  .job li { position: relative; padding-left: 3.6mm; margin-bottom: 1.2mm; font-size: 8.7pt; }
   .job li::before {
-    content: ''; position: absolute; left: 0; top: 1.5mm;
+    content: ''; position: absolute; left: 0; top: 1.6mm;
     width: 1.4mm; height: 1.4mm; border-radius: 50%; background: var(--navy);
   }
 </style>
@@ -242,15 +251,35 @@
         </ul>
       </div>
 
+      <div class="block">
+        <h2>TECNOLOGÍAS:</h2>
+        <div class="tech">
+          <div><b>Lenguajes</b><span>Java, Swing, Python, JavaScript, PHP, Kotlin, JSON</span></div>
+          <div><b>Bases de datos</b><span>SQL, PL/SQL, MySQL, Dataverse, ADO</span></div>
+          <div><b>Web</b><span>HTML5, CSS3, Bootstrap, XML, XSLT, XQuery</span></div>
+          <div><b>Integraciones</b><span>Odoo ERP, APIs RESTful, flujos HTTP</span></div>
+          <div><b>Entornos</b><span>Linux, Windows Server, Git / GitHub, Android Studio</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h2>CERTIFICACIONES:</h2>
+        <ul class="certs">
+          <li><strong>CISCO — Curso de redes</strong><em>Completado</em></li>
+          <li><strong>Linux Unhatched</strong><em>En proceso</em></li>
+        </ul>
+      </div>
+
     </aside>
 
     <!-- ================================================ COLUMNA DCHA. === -->
     <main class="main">
 
       <p class="profile">
-        Programador multiplataforma con <b>experiencia real en entornos corporativos</b>, especializado en
-        integrar sistemas que no fueron pensados para comunicarse entre sí: ERP Odoo, APIs RESTful, bases
-        de datos y servidores Linux. Busco un equipo donde crecer en desarrollo backend e integraciones.
+        Programador multiplataforma con <b>10 meses de experiencia en un entorno corporativo real</b> (Tailored
+        Spain), especializado en integrar sistemas que no fueron pensados para comunicarse entre sí: ERP Odoo,
+        APIs RESTful, bases de datos y servidores Linux. Busco un equipo donde crecer en desarrollo backend
+        e integraciones.
       </p>
 
       <div class="block">
@@ -259,9 +288,9 @@
         <div class="job">
           <div class="job__top">
             <span class="job__role">Desarrollador de Software e Integraciones</span>
-            <span class="job__when">2023 — ACTUALIDAD</span>
+            <span class="job__when">SEP 2025 — JUN 2026 <b class="job__dur">· 10 MESES</b></span>
           </div>
-          <p class="job__org">TAILORED SPAIN</p>
+          <p class="job__org">TAILORED SPAIN <em class="job__kind">· Prácticas de empresa (FCT) del ciclo DAM</em></p>
           <ul>
             <li>Integración de sistemas ERP (Odoo) mediante flujos HTTP y APIs RESTful, eliminando la
                 introducción manual de datos entre plataformas.</li>
@@ -305,20 +334,6 @@
       </div>
 
       <div class="block">
-        <h2>FORMACIÓN COMPLEMENTARIA:</h2>
-        <div class="edu">
-          <div>
-            <strong>CISCO — Curso de redes</strong>
-            <em>Completado</em>
-          </div>
-          <div>
-            <strong>Linux Unhatched</strong>
-            <em>En proceso</em>
-          </div>
-        </div>
-      </div>
-
-      <div class="block">
         <h2>PROYECTOS:</h2>
         <div class="proj">
           <div>
@@ -336,17 +351,6 @@
             <em>PHP · MYSQL · JAVASCRIPT</em>
             <p>Front y back propios: catálogo, slider de destacados y diseño responsive.</p>
           </div>
-        </div>
-      </div>
-
-      <div class="block">
-        <h2>COMPETENCIAS TÉCNICAS:</h2>
-        <div class="tech">
-          <div><b>Lenguajes</b><span>Java, Swing, Python, JavaScript, PHP, Kotlin, JSON</span></div>
-          <div><b>Bases de datos</b><span>SQL, PL/SQL, MySQL, Dataverse, ADO</span></div>
-          <div><b>Web</b><span>HTML5, CSS3, Bootstrap, XML, XSLT, XQuery</span></div>
-          <div><b>Integraciones</b><span>Odoo ERP, APIs RESTful, flujos HTTP</span></div>
-          <div><b>Entornos</b><span>Linux, Windows Server, Git / GitHub, Android Studio</span></div>
         </div>
       </div>
 

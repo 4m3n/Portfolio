@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Hameem Afnan Akther Faroquee — Desarrollador de Software en Madrid. Integraciones ERP (Odoo), APIs RESTful, Java, Python y bases de datos. Portfolio, proyectos y CV.">
+  <meta name="description" content="Hameem Afnan Akther Faroquee — Desarrollador de Software en Madrid. 10 meses integrando ERP Odoo, APIs RESTful y bases de datos en producción (Tailored Spain). Portfolio, proyectos y CV.">
   <meta name="author" content="Hameem Afnan Akther Faroquee">
   <meta name="keywords" content="desarrollador software, Madrid, Odoo, ERP, API REST, Java, Python, MySQL, DAM, portfolio">
   <meta name="theme-color" content="#14120f">
@@ -12,13 +12,73 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Hameem Afnan — Desarrollador de Software">
   <meta property="og:locale" content="es_ES">
-  <meta property="og:description" content="Integraciones ERP · APIs RESTful · Desarrollo multiplataforma. Madrid, España.">
-  <meta property="og:image" content="./imagenes/og.png">
+  <meta property="og:description" content="10 meses integrando ERP Odoo y APIs RESTful en producción. Desarrollo multiplataforma. Madrid, España.">
+  <meta property="og:image" content="https://4m3n.github.io/Portfolio/imagenes/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Hameem Afnan — Desarrollador de Software, Madrid">
+  <meta property="og:site_name" content="Hameem Afnan">
+  <meta name="twitter:image" content="https://4m3n.github.io/Portfolio/imagenes/og.png">
+  <meta property="og:url" content="https://4m3n.github.io/Portfolio/">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://4m3n.github.io/Portfolio/">
 
   <title>Hameem Afnan — Desarrollador de Software · Madrid</title>
+
+  <!-- Datos estructurados: permite que Google muestre el panel de persona
+       y que LinkedIn / buscadores entiendan el puesto sin leer el maquetado. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Hameem Afnan Akther Faroquee",
+    "givenName": "Hameem Afnan",
+    "familyName": "Akther Faroquee",
+    "jobTitle": "Desarrollador de Software e Integraciones",
+    "url": "https://4m3n.github.io/Portfolio/",
+    "image": "https://4m3n.github.io/Portfolio/imagenes/mi-cara.webp",
+    "email": "mailto:hameemafnan777@gmail.com",
+    "telephone": "+34632881026",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Madrid",
+      "postalCode": "28021",
+      "addressCountry": "ES"
+    },
+    "sameAs": [
+      "https://github.com/4m3n",
+      "https://www.linkedin.com/in/hameem-afnan"
+    ],
+    "knowsLanguage": [
+      { "@type": "Language", "name": "Spanish" },
+      { "@type": "Language", "name": "Bengali" },
+      { "@type": "Language", "name": "English" },
+      { "@type": "Language", "name": "Hindi" }
+    ],
+    "knowsAbout": [
+      "Odoo ERP", "RESTful API", "Microsoft Dataverse", "Java", "Python",
+      "PHP", "MySQL", "SQL", "JavaScript", "Linux Server", "Godot Engine",
+      "Android Studio", "Kotlin"
+    ],
+    "alumniOf": {
+      "@type": "EducationalOrganization",
+      "name": "DIGITECH",
+      "address": { "@type": "PostalAddress", "addressLocality": "Madrid", "addressCountry": "ES" }
+    },
+    "hasCredential": {
+      "@type": "EducationalOccupationalCredential",
+      "name": "Técnico Superior en Desarrollo de Aplicaciones Multiplataforma",
+      "credentialCategory": "CFGS"
+    },
+    "hasOccupation": {
+      "@type": "Occupation",
+      "name": "Desarrollador de Software e Integraciones",
+      "occupationLocation": { "@type": "City", "name": "Madrid" },
+      "skills": "Odoo ERP, APIs RESTful, Dataverse, SQL, flujos HTTP"
+    }
+  }
+  </script>
 
   <link rel="icon" href="./imagenes/marca.svg" type="image/svg+xml">
   <link rel="icon" href="./imagenes/icono-32.png" sizes="32x32" type="image/png">
@@ -90,6 +150,10 @@
   </div>
 
   <a class="skip" href="#perfil">Ir al contenido</a>
+
+  <!-- Velo del menú móvil: oscurece y, sobre todo, permite cerrar
+       tocando fuera, que es lo que la gente intenta por instinto. -->
+  <div class="scrim" id="scrim" aria-hidden="true"></div>
 
   <!-- ============================================================
        BARRA SUPERIOR
@@ -165,6 +229,21 @@
             Construyo los puentes entre sistemas que nunca fueron pensados para hablarse entre sí. ERP Odoo, APIs RESTful, servidores Linux — y videojuegos cuando acaba la jornada.
           </p>
 
+          <ul class="hero__proof reveal">
+            <li>
+              <b>10</b>
+              <span data-en="months in production">meses en producción</span>
+            </li>
+            <li>
+              <b>3</b>
+              <span data-en="own projects shipped">proyectos propios</span>
+            </li>
+            <li>
+              <b>4</b>
+              <span data-en="languages, two native">idiomas, dos nativos</span>
+            </li>
+          </ul>
+
           <div class="hero__cta reveal">
             <a class="btn btn--solid" href="#proyectos" data-en="VIEW PROJECTS">VER PROYECTOS</a>
             <a class="btn" href="./imagenes/cv-hameem-afnan.pdf" target="_blank" rel="noopener" data-en="DOWNLOAD CV">DESCARGAR CV</a>
@@ -217,8 +296,8 @@
 
       <div class="profile-grid">
         <article class="slab reveal">
-          <p class="drop" data-en="I am a multi-platform developer with real experience in corporate environments, designing and implementing complex integrations between systems that were never meant to talk to each other. I move comfortably between an ERP, a RESTful API and a Linux server, and I especially enjoy the problems that demand understanding the whole architecture before touching a single line of code.">
-            Soy programador multiplataforma con experiencia real en entornos corporativos, diseñando e implementando integraciones complejas entre sistemas que no fueron pensados para hablarse entre sí. Me muevo con soltura entre un ERP, una API RESTful y un servidor Linux, y disfruto especialmente de los problemas que exigen entender la arquitectura completa antes de tocar una sola línea de código.
+          <p class="drop" data-en="I am a multi-platform developer. I spent ten months at Tailored Spain designing and implementing integrations between systems that were never meant to talk to each other, inside a production environment where a mistake is visible the same morning. I move comfortably between an ERP, a RESTful API and a Linux server, and I especially enjoy the problems that demand understanding the whole architecture before touching a single line of code.">
+            Soy programador multiplataforma. Pasé diez meses en Tailored Spain diseñando e implementando integraciones entre sistemas que no fueron pensados para hablarse entre sí, dentro de un entorno de producción donde un error se ve la misma mañana. Me muevo con soltura entre un ERP, una API RESTful y un servidor Linux, y disfruto especialmente de los problemas que exigen entender la arquitectura completa antes de tocar una sola línea de código.
           </p>
           <p data-en="Outside work I develop video games, which is where I learned that a good system is one nobody notices. That obsession with what happens under the surface is what I bring to a team: clean code, documented decisions and integrations that keep running when nobody is watching.">
             Fuera del trabajo desarrollo videojuegos, que es donde aprendí que un buen sistema se nota cuando nadie repara en él. Esa obsesión por lo que ocurre bajo la superficie es lo que aporto a un equipo: código limpio, decisiones documentadas e integraciones que siguen funcionando cuando nadie las mira.
@@ -226,6 +305,7 @@
 
           <dl class="facts">
             <div><dt data-en="BASE">BASE</dt><dd data-en="Madrid, Spain (28021)">Madrid, España (28021)</dd></div>
+            <div><dt data-en="EXPERIENCE">EXPERIENCIA</dt><dd data-en="10 months · Tailored Spain (2025—2026)">10 meses · Tailored Spain (2025—2026)</dd></div>
             <div><dt data-en="SPECIALTY">ESPECIALIDAD</dt><dd data-en="ERP · RESTful APIs · Cloud integration">ERP · APIs RESTful · Integración cloud</dd></div>
             <div><dt data-en="LANGUAGES">IDIOMAS</dt><dd data-en="Spanish · English B2 · Bengali · Hindi">Español · Inglés B2 · Bengalí · Hindi</dd></div>
             <div><dt data-en="EDUCATION">FORMACIÓN</dt><dd data-en="Higher Degree — Multi-Platform App Development">CFGS Desarrollo de Aplicaciones Multiplataforma</dd></div>
@@ -294,9 +374,16 @@
             <b>I</b>
           </div>
           <div class="entry__body">
-            <p class="entry__when"><span class="skewpill">2023 — <span data-en="PRESENT">PRESENTE</span></span> <span class="live" data-en="ONGOING">EN CURSO</span></p>
+            <p class="entry__when">
+              <span class="skewpill">SEP 2025 — JUN 2026</span>
+              <span class="dur"><b>10</b> <span data-en="MONTHS">MESES</span></span>
+              <span class="live live--done" data-en="COMPLETED">COMPLETADO</span>
+            </p>
             <h3 class="entry__role" data-en="Software &amp; Integrations Developer">Desarrollador de Software e Integraciones</h3>
             <p class="entry__org">TAILORED SPAIN</p>
+            <p class="entry__kind" data-en="On-the-job training (FCT) for the Multi-Platform App Development degree — ten months inside a real production environment, with my own tickets and deliverables.">
+              Prácticas de empresa (FCT) del ciclo DAM — diez meses dentro de un entorno de producción real, con tareas y entregables propios.
+            </p>
             <ul class="entry__tasks">
               <li data-en="Development and integration of ERP systems (Odoo) through HTTP flows and RESTful APIs.">Desarrollo e integración de sistemas ERP (Odoo) mediante flujos HTTP y APIs RESTful.</li>
               <li data-en="Management of international web environment migrations (ALM) on Dataverse.">Gestión de migraciones de entornos web internacionales (ALM) sobre Dataverse.</li>
@@ -317,7 +404,11 @@
             <b>II</b>
           </div>
           <div class="entry__body">
-            <p class="entry__when"><span class="skewpill">2022 — <span data-en="PRESENT">PRESENTE</span></span> <span class="live" data-en="ONGOING">EN CURSO</span></p>
+            <p class="entry__when">
+              <span class="skewpill">2022 — <span data-en="PRESENT">PRESENTE</span></span>
+              <span class="dur"><b>4</b> <span data-en="YEARS">AÑOS</span></span>
+              <span class="live" data-en="ONGOING">EN CURSO</span>
+            </p>
             <h3 class="entry__role" data-en="Independent development">Desarrollo independiente</h3>
             <p class="entry__org" data-en="PERSONAL PROJECTS">PROYECTOS PROPIOS</p>
             <ul class="entry__tasks">
@@ -364,6 +455,11 @@
         <div class="feature__body">
           <p class="kicker kicker--rose" data-en="CASE STUDY · ENTERPRISE">CASO DE ESTUDIO · ENTERPRISE</p>
           <h3 class="feature__title"><em>I</em><span data-en="NTEGRATION — ODOO ERP">NTEGRACIÓN ERP ODOO</span></h3>
+          <p class="feature__meta">
+            <span>TAILORED SPAIN</span>
+            <span data-en="10 MONTHS">10 MESES</span>
+            <span data-en="PRODUCTION">PRODUCCIÓN</span>
+          </p>
           <p data-en="Design and implementation of a communication infrastructure between the ERP and the company's satellite systems, through automated flows and RESTful API consumption in a real production environment. It removed manual data entry and the desynchronisation between platforms.">
             Diseño e implementación de una infraestructura de comunicación entre el ERP y los sistemas satélite de la compañía, mediante flujos automatizados y consumo de APIs RESTful en un entorno de producción real. Eliminó la introducción manual de datos y la desincronización entre plataformas.
           </p>
@@ -590,14 +686,32 @@
           </p>
 
           <div class="contact__grid">
-            <a class="ccard" href="mailto:hameemafnan777@gmail.com">
-              <span class="ccard__k">EMAIL</span>
-              <span class="ccard__v">hameemafnan777@gmail.com</span>
-            </a>
-            <a class="ccard" href="tel:+34632881026">
-              <span class="ccard__k" data-en="PHONE">TELÉFONO</span>
-              <span class="ccard__v">(+34) 632 881 026</span>
-            </a>
+            <div class="ccard ccard--copy">
+              <a class="ccard__hit" href="mailto:hameemafnan777@gmail.com">
+                <span class="ccard__k">EMAIL</span>
+                <span class="ccard__v">hameemafnan777@gmail.com</span>
+              </a>
+              <button class="copy" type="button" data-copy="hameemafnan777@gmail.com"
+                      data-label-es="Copiar el email" data-label-en="Copy the email address">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <rect x="9" y="9" width="11" height="12" rx="1.5" />
+                  <path d="M15.5 5.5H5.5a1.5 1.5 0 0 0-1.5 1.5v10" />
+                </svg>
+              </button>
+            </div>
+            <div class="ccard ccard--copy">
+              <a class="ccard__hit" href="tel:+34632881026">
+                <span class="ccard__k" data-en="PHONE">TELÉFONO</span>
+                <span class="ccard__v">(+34) 632 881 026</span>
+              </a>
+              <button class="copy" type="button" data-copy="+34632881026"
+                      data-label-es="Copiar el teléfono" data-label-en="Copy the phone number">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <rect x="9" y="9" width="11" height="12" rx="1.5" />
+                  <path d="M15.5 5.5H5.5a1.5 1.5 0 0 0-1.5 1.5v10" />
+                </svg>
+              </button>
+            </div>
             <a class="ccard" href="https://github.com/4m3n" target="_blank" rel="noopener">
               <span class="ccard__k">GITHUB</span>
               <span class="ccard__v">github.com/4m3n</span>
@@ -627,6 +741,9 @@
   </footer>
 
   <a class="to-top" id="toTop" href="#inicio" aria-label="Volver arriba">↑</a>
+
+  <!-- Aviso efímero. role=status para que también se anuncie en voz. -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="MiPagina.js"></script>
 </body>

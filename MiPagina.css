@@ -383,6 +383,34 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   color: rgba(244, 241, 232, 0.72);
 }
 
+/* Datos duros: la cifra en didone, la glosa en condensada. Tres columnas
+   separadas por filete, que en móvil se apilan en una sola. */
+.hero__proof {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 10.5rem));
+  justify-content: start;
+  gap: 0 clamp(0.9rem, 2.2vw, 1.7rem);
+  margin: 1.9rem 0 0;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--ink-line);
+  max-width: 52ch;
+}
+.hero__proof li { display: grid; gap: 0.3rem; align-content: start; }
+.hero__proof li + li { padding-left: clamp(0.9rem, 2.2vw, 1.8rem); border-left: 1px solid var(--ink-line); }
+.hero__proof b {
+  font-family: var(--display); font-style: italic; font-weight: 900;
+  font-size: clamp(2.1rem, 4.4vw, 2.9rem); line-height: 0.9;
+  color: var(--paper);
+}
+.hero__proof li:first-child b { color: var(--rose); }
+.hero__proof span {
+  font-family: var(--label); font-size: 0.93rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(244, 241, 232, 0.5);
+  line-height: 1.32;
+  text-wrap: balance;
+}
+
 .hero__cta { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 2rem 0 1.5rem; }
 
 .btn {
@@ -706,6 +734,36 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .live--off { color: rgba(244, 241, 232, 0.4); }
 .live--off::before { background: rgba(244, 241, 232, 0.4); animation: none; }
 
+/* Puesto ya cerrado: sigue contando, pero no parpadea. */
+.live--done { color: var(--paper-3); }
+.live--done::before { background: var(--paper-3); animation: none; }
+
+/* Sello de duración — la cifra manda, la unidad acompaña. */
+.dur {
+  display: inline-flex; align-items: baseline; gap: 0.5em;
+  padding: 0.1rem 0.55rem 0.16rem 0.62rem;
+  border: 1px solid var(--rose);
+  font-family: var(--label); font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  font-size: 0.864rem;
+  color: var(--rose);
+}
+.dur b {
+  font-family: var(--display); font-style: italic; font-weight: 900;
+  font-size: 1.35em; letter-spacing: 0; line-height: 1;
+  color: var(--paper);
+}
+
+/* Naturaleza del vínculo (prácticas, contrato…) bajo el nombre de la empresa. */
+.entry__kind {
+  margin: -0.6rem 0 1rem;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--ink-line-2);
+  font-size: 1.05rem; font-style: italic;
+  color: rgba(244, 241, 232, 0.52);
+  line-height: 1.5;
+}
+
 .entry__role { font-size: clamp(1.296rem, 2.515vw, 1.674rem); font-weight: 700; }
 .entry__org {
   margin: 0.3rem 0 1rem;
@@ -742,6 +800,20 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 }
 .chips span:hover { color: var(--ink); }
 .chips span:hover::before { background: var(--paper); border-color: var(--paper); }
+
+/* Procedencia del caso de estudio, en filete fino bajo el titular. */
+.feature__meta {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 0.35rem 0.7rem;
+  margin: 0.55rem 0 1rem;
+  font-family: var(--label); font-size: 0.93rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(244, 241, 232, 0.5);
+}
+.feature__meta span + span::before {
+  content: '·'; margin-right: 0.7rem; color: var(--rose);
+}
+.feature__meta span:first-child { color: var(--rose); }
 
 /* ---------------------------------------------------------------------------
    11. PROYECTOS
@@ -1016,9 +1088,48 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .ccard:hover .ccard__k { color: var(--rose); }
 .ccard--static:hover .ccard__k { color: var(--rose-deep); }
 .ccard__v { font-family: var(--label); font-size: 1.137rem; letter-spacing: 0.04em; overflow-wrap: break-word; }
+/* Tarjeta con acción doble: el enlace ocupa toda la ficha, el botón de
+   copia se recorta a su esquina. Nunca un botón dentro de un enlace. */
+.ccard--copy { position: relative; flex-direction: row; align-items: stretch; gap: 0; padding: 0; }
+.ccard__hit {
+  display: flex; flex-direction: column; gap: 0.18rem;
+  flex: 1; min-width: 0;
+  padding: 0.95rem 3.1rem 0.95rem 1.15rem;
+}
+.copy {
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: 2.9rem;
+  display: grid; place-items: center;
+  background: none; border: 0; border-left: 1px solid rgba(20, 18, 15, 0.14);
+  color: inherit; cursor: pointer;
+  transition: background 0.22s, color 0.22s, border-color 0.22s;
+}
+.copy svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.copy:hover { background: rgba(20, 18, 15, 0.1); }
+.ccard--copy:hover .copy { border-color: rgba(244, 241, 232, 0.22); }
+.ccard--copy:hover .copy:hover { background: rgba(244, 241, 232, 0.14); }
+.copy.is-done { color: var(--aqua-deep); }
+.ccard--copy:hover .copy.is-done { color: var(--aqua); }
+
 .ccard--cv { background: var(--rose); border-color: var(--rose); color: #fff; }
 .ccard--cv .ccard__k { color: rgba(255, 255, 255, 0.85); }
 .ccard--cv:hover { background: var(--ink); border-color: var(--ink); }
+
+/* Aviso efímero de "copiado" */
+.toast {
+  position: fixed; z-index: 300;
+  left: 50%; bottom: 2rem;
+  transform: translate(-50%, 14px);
+  padding: 0.62rem 1.3rem;
+  background: var(--paper); color: var(--ink);
+  font-family: var(--label); font-size: 1.02rem; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  border-left: 3px solid var(--rose);
+  box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.9);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.25s var(--ease), transform 0.35s var(--ease), visibility 0.25s;
+}
+.toast.is-on { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
 
 /* ---------------------------------------------------------------------------
    15. PIE
@@ -1112,6 +1223,18 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   .nav__link::after { left: 0.36rem; right: 0.36rem; }
 }
 
+.scrim {
+  position: fixed; inset: 0; z-index: 44;
+  background: rgba(9, 8, 6, 0.62);
+  backdrop-filter: blur(2px);
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.35s var(--ease), visibility 0.35s;
+}
+.scrim.is-on { opacity: 1; visibility: visible; }
+
+/* El botón de "volver arriba" vive en 45 y se colaría por encima del velo. */
+.menu-open .to-top { opacity: 0; pointer-events: none; }
+
 @media (max-width: 880px) {
   .burger { display: block; }
   .nav {
@@ -1156,6 +1279,11 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   .virtue__rank { width: 36px; height: 36px; font-size: 1.232rem; }
   .entry { grid-template-columns: 1fr; }
   .entry__emblem { width: 46px; aspect-ratio: 1; }
+
+  .hero__proof { grid-template-columns: 1fr; gap: 1.05rem; }
+  .hero__proof li { grid-template-columns: 2.6rem 1fr; align-items: center; gap: 0 0.85rem; }
+  .hero__proof li + li { padding: 1.05rem 0 0; border-left: 0; border-top: 1px solid var(--ink-line); }
+  .hero__proof b { font-size: 2.25rem; }
 }
 
 /* ---------------------------------------------------------------------------
@@ -1180,7 +1308,9 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   #bg-canvas, .fx-strokes, .fx-grain, .fx-lines, .topbar, .to-top,
   .scroll-cue, .progress, .gate, .portrait__ring { display: none !important; }
   .slab, .entry__body, .card, .arch, .feature, .contact { border: 1px solid #bbb; background: #fff; }
-  h1, h2, h3, h4, .facts dd, .ccard__v, .stripe { color: #111; }
+  h1, h2, h3, h4, .facts dd, .ccard__v, .stripe, .hero__proof b { color: #111; }
+  .hero__proof span, .entry__kind { color: #444; }
+  .dur { border-color: #111; color: #111; }
   .stripe::before, .contact::before { display: none; }
   .reveal { opacity: 1; transform: none; }
 }
