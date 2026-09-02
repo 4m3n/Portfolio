@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
 <title>CV — Hameem Afnan Akther Faroquee</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,6 +16,15 @@
 
      Para exportar:  Ctrl+P  →  Guardar como PDF  →  A4,
                      márgenes: ninguno, gráficos de fondo: activados.
+                     El resultado se guarda en imagenes/cv-hameem-afnan.pdf,
+                     que es lo que enlaza la web.
+
+     NO ES UNA PÁGINA DEL SITIO: es la plantilla de la que sale el PDF.
+     El guion bajo del nombre es intencionado — GitHub Pages (Jekyll) no
+     sirve los ficheros que empiezan por "_", así que este queda fuera del
+     sitio publicado en lugar de ser una página huérfana accesible desde
+     fuera. Si algún día se cambia el despliegue a uno que ignore esa
+     regla, el noindex de la cabecera hace de segundo cinturón.
      ========================================================================== */
 
   @page { size: A4; margin: 0; }
