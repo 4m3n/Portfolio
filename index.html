@@ -88,9 +88,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=EB+Garamond:ital,wght@0,400..600;1,400..600&family=Barlow+Condensed:wght@400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="MiPagina.css">
 
-  <!-- Marca de que hay JavaScript. Va aquí, antes del primer pintado, para que
-       el contenido nunca parpadee: sin script todo se ve, con script se anima. -->
-  <script>document.documentElement.classList.add('js');</script>
+  <!-- Marca de que hay JavaScript y paleta guardada. Van aquí, antes del primer
+       pintado, para que nada parpadee: ni el contenido (sin script todo se ve,
+       con script se anima) ni los colores (no se pinta Tinta para luego
+       saltar a Vitela). -->
+  <script>
+    document.documentElement.classList.add('js');
+    try { var t = localStorage.getItem('theme'); if (t && t !== 'tinta') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+  </script>
 </head>
 
 <body>
@@ -136,16 +141,41 @@
        INTRO
        ============================================================ -->
   <div id="gate" class="gate" aria-hidden="true">
-    <div class="gate__mark">
-      <svg viewBox="0 0 200 200" width="180" height="180">
-        <circle class="r-out" cx="100" cy="100" r="86" />
-        <circle class="r-mid" cx="100" cy="100" r="70" />
-        <g class="r-ticks">
-          <path d="M100 6 V26 M100 174 V194 M6 100 H26 M174 100 H194" />
-          <path d="M33 33 L47 47 M167 33 L153 47 M33 167 L47 153 M167 167 L153 153" />
-        </g>
+    <span class="gate__half gate__half--a"></span>
+    <span class="gate__half gate__half--b"></span>
+    <span class="gate__slash"></span>
+    <div class="gate__stage">
+      <div class="gate__mark">
+        <svg viewBox="0 0 200 200" width="180" height="180">
+          <circle class="r-out" cx="100" cy="100" r="86" />
+          <circle class="r-mid" cx="100" cy="100" r="70" />
+          <g class="r-ticks">
+            <path d="M100 6 V26 M100 174 V194 M6 100 H26 M174 100 H194" />
+            <path d="M33 33 L47 47 M167 33 L153 47 M33 167 L47 153 M167 167 L153 153" />
+          </g>
+        </svg>
+        <span class="gate__letter">H</span>
+      </div>
+      <p class="gate__cap">HAMEEM AFNAN</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       BARRIDO ENTRE SECCIONES — tres bandas sesgadas y una cartela
+       ============================================================ -->
+  <div id="wipe" class="wipe" aria-hidden="true" hidden>
+    <span class="wipe__band wipe__band--rose"></span>
+    <span class="wipe__band wipe__band--paper"></span>
+    <span class="wipe__band wipe__band--ink"></span>
+    <div class="wipe__card">
+      <svg class="wipe__ring" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="86" />
+        <circle class="wipe__ring-in" cx="100" cy="100" r="70" />
+        <path d="M100 6 V26 M100 174 V194 M6 100 H26 M174 100 H194" />
       </svg>
-      <span class="gate__letter">H</span>
+      <span class="wipe__flavor"></span>
+      <b class="wipe__num"></b>
+      <span class="wipe__title"><span class="stripe stripe--paper"></span></span>
     </div>
   </div>
 
@@ -191,6 +221,13 @@
     </nav>
 
     <div class="topbar__side">
+      <button id="themeBtn" class="pill-btn theme-btn" type="button" aria-label="Cambiar paleta de colores">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M20.5 3.5 11.2 12.8" />
+          <path d="M9.8 12.4c-2 0-3.5 1.5-3.5 3.3 0 1.4-.9 2.4-2.8 3 1.1 1 2.6 1.6 4.1 1.6 2.7 0 4.9-2.2 4.9-4.9z" fill="currentColor" stroke="none" />
+        </svg>
+        <span class="theme-btn__sw" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
       <button id="langBtn" class="pill-btn" type="button" aria-label="Cambiar idioma / Switch language">
         <span id="langLabel">ES</span>
       </button>
@@ -309,7 +346,7 @@
             <div><dt data-en="SPECIALTY">ESPECIALIDAD</dt><dd data-en="ERP · RESTful APIs · Cloud integration">ERP · APIs RESTful · Integración cloud</dd></div>
             <div><dt data-en="LANGUAGES">IDIOMAS</dt><dd data-en="Spanish · English B2 · Bengali · Hindi">Español · Inglés B2 · Bengalí · Hindi</dd></div>
             <div><dt data-en="EDUCATION">FORMACIÓN</dt><dd data-en="Higher Degree — Multi-Platform App Development">CFGS Desarrollo de Aplicaciones Multiplataforma</dd></div>
-            <div class="facts__hot"><dt data-en="STATUS">ESTADO</dt><dd><span class="dot" aria-hidden="true"></span><span data-en="AVAILABLE FOR HIRE">DISPONIBLE PARA PROYECTOS</span></dd></div>
+            <div class="facts__hot"><dt data-en="STATUS">ESTADO</dt><dd><span class="dot" aria-hidden="true"></span><span data-en="AVAILABLE FOR WORK">DISPONIBLE PARA TRABAJAR</span></dd></div>
           </dl>
         </article>
 
@@ -639,7 +676,7 @@
           <p class="kicker kicker--rose" data-en="XXI · THE SCHOLAR">XXI · EL ERUDITO</p>
           <h3 class="slab__title" data-en="Higher Degree in Multi-Platform Application Development">Técnico Superior en Desarrollo de Aplicaciones Multiplataforma</h3>
           <dl class="facts">
-            <div><dt data-en="Institution">INSTITUCIÓN</dt><dd>DIGI-TECH</dd></div>
+            <div><dt data-en="Institution">INSTITUCIÓN</dt><dd>DIGITECH</dd></div>
             <div><dt data-en="Period">PERÍODO</dt><dd>2024 — 2026</dd></div>
             <div><dt data-en="Level">NIVEL</dt><dd data-en="Higher Vocational Education (CFGS)">Formación Profesional Superior (CFGS)</dd></div>
             <div><dt data-en="Focus">ENFOQUE</dt><dd data-en="Mobile · Web · Desktop · Databases">Móvil · Web · Escritorio · Bases de datos</dd></div>
@@ -713,7 +750,7 @@
             <div class="ccard ccard--copy">
               <a class="ccard__hit" href="mailto:hameemafnan777@gmail.com">
                 <span class="ccard__k">EMAIL</span>
-                <span class="ccard__v">hameemafnan777@gmail.com</span>
+                <span class="ccard__v">hameemafnan777@<wbr>gmail.com</span>
               </a>
               <button class="copy" type="button" data-copy="hameemafnan777@gmail.com"
                       data-label-es="Copiar el email" data-label-en="Copy the email address">

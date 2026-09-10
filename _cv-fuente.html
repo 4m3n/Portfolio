@@ -54,8 +54,11 @@
   .page { position: relative; width: 210mm; height: 297mm; overflow: hidden; }
 
   /* ------------------------------------------------------- CABECERA ----- */
+  /* Sin position: relative a propósito (aquí y en las viñetas). Chrome
+     escribe el texto de los elementos posicionados al final del PDF, y un
+     lector automático de CV (ATS) leía el nombre al final del documento y
+     las tareas separadas de su puesto. La foto sí va posicionada: no es texto. */
   .header {
-    position: relative;
     height: 47mm;
     background: var(--tan);
     border-bottom: 3mm solid var(--navy);
@@ -63,14 +66,23 @@
     padding: 0 10mm 0 78mm;
     text-align: center;
   }
+  /* Sin espaciado negativo: al extraer el texto del PDF se comía el
+     espacio entre palabras y el nombre salía como "HameemAfnan". */
   .name {
     font-size: 25pt; font-weight: 800; line-height: 1.04;
-    color: var(--ink); letter-spacing: -.015em;
+    color: var(--ink);
   }
+  /* Titular: el puesto que se busca, que es lo que filtra un reclutador.
+     La titulación va debajo, como credencial. */
   .title {
     margin-top: 3mm;
-    font-size: 9.4pt; font-weight: 700; line-height: 1.35;
+    font-size: 10.4pt; font-weight: 700; line-height: 1.3;
     letter-spacing: .02em; color: var(--ink);
+  }
+  .cred {
+    margin-top: 1.4mm;
+    font-size: 8.2pt; font-weight: 600; line-height: 1.3;
+    letter-spacing: .03em; color: var(--navy);
   }
 
   /* Foto circular con aro, montada sobre la banda y el lateral */
@@ -116,8 +128,7 @@
   .info a { color: var(--ink); text-decoration: underline; }
 
   /* ------------------------------------------------------ APTITUDES ----- */
-  .skills { display: grid; gap: 1.6mm; }
-  .skills li { list-style: none; font-size: 8.6pt; font-weight: 600; color: var(--ink); }
+  .soft { font-size: 8.2pt; font-weight: 600; line-height: 1.55; color: var(--ink); }
 
   /* -------------------------------------------------------- IDIOMAS ----- */
   .langs { display: grid; gap: 1.7mm; }
@@ -181,12 +192,10 @@
   .job__dur { font-weight: 800; color: var(--ink); }
   .job__org { font-size: 8.6pt; font-weight: 600; color: #6a6459; margin-bottom: 1.6mm; }
   .job__kind { font-weight: 500; font-style: italic; color: #857e70; }
-  .job ul { padding: 0; list-style: none; }
-  .job li { position: relative; padding-left: 3.6mm; margin-bottom: 1.2mm; font-size: 8.7pt; }
-  .job li::before {
-    content: ''; position: absolute; left: 0; top: 1.6mm;
-    width: 1.4mm; height: 1.4mm; border-radius: 50%; background: var(--navy);
-  }
+  /* Viñetas de lista reales (::marker), no un ::before posicionado. */
+  .job ul { padding-left: 3.8mm; list-style: disc; }
+  .job li { padding-left: .6mm; margin-bottom: 1.2mm; font-size: 8.7pt; }
+  .job li::marker { color: var(--navy); }
 </style>
 </head>
 <body>
@@ -199,8 +208,9 @@
 
   <header class="header">
     <div>
-      <h1 class="name">Hameem Afnan,<br>Akther Faroquee</h1>
-      <p class="title">TÉCNICO SUPERIOR EN DESARROLLO DE APLICACIONES<br>MULTIPLATAFORMA</p>
+      <h1 class="name">Hameem Afnan<br>Akther Faroquee</h1>
+      <p class="title">DESARROLLADOR DE SOFTWARE<br>INTEGRACIONES ERP · APIS REST</p>
+      <p class="cred">Técnico Superior en Desarrollo de Aplicaciones Multiplataforma</p>
     </div>
   </header>
 
@@ -210,11 +220,11 @@
     <aside class="aside">
 
       <div class="block">
-        <h2>INFORMACIÓN:</h2>
+        <h2>CONTACTO</h2>
         <div class="info">
           <div>
             <svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="1.5"/><path d="M3 6.5l9 6.5 9-6.5"/></svg>
-            <span>hameemafnan777@gmail.com</span>
+            <span><a href="mailto:hameemafnan777@gmail.com">hameemafnan777@gmail.com</a></span>
           </div>
           <div>
             <svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
@@ -222,7 +232,7 @@
           </div>
           <div>
             <svg viewBox="0 0 24 24"><path d="M5 3.5h4l2 5-2.5 1.5a12 12 0 0 0 5.5 5.5L15.5 13l5 2v4a1.5 1.5 0 0 1-1.7 1.5C10.6 19.6 4.4 13.4 3.5 5.2A1.5 1.5 0 0 1 5 3.5z"/></svg>
-            <span>(+34) 632 881 026</span>
+            <span><a href="tel:+34632881026">(+34) 632 881 026</a></span>
           </div>
           <div>
             <svg class="brand" viewBox="0 0 24 24"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.2 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.62-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.83.58A12 12 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"/></svg>
@@ -239,20 +249,22 @@
         </div>
       </div>
 
+      <!-- Orden de lectura de un reclutador técnico: con qué trabajas,
+           en qué idiomas, qué más has estudiado. Las aptitudes blandas,
+           al final y en una línea: sin contexto aportan poco. -->
       <div class="block">
-        <h2>APTITUDES:</h2>
-        <ul class="skills">
-          <li>RESOLUCIÓN DE PROBLEMAS</li>
-          <li>TRABAJO EN EQUIPO</li>
-          <li>PENSAMIENTO CRÍTICO</li>
-          <li>ADAPTABILIDAD</li>
-          <li>APRENDIZAJE CONTINUO</li>
-          <li>AUTONOMÍA</li>
-        </ul>
+        <h2>TECNOLOGÍAS</h2>
+        <div class="tech">
+          <div><b>Integraciones</b><span>Odoo ERP, APIs RESTful, flujos HTTP</span></div>
+          <div><b>Lenguajes</b><span>Java (Swing), Python, JavaScript, PHP, Kotlin, SQL, PL/SQL</span></div>
+          <div><b>Bases de datos</b><span>MySQL, Microsoft Dataverse, ADO</span></div>
+          <div><b>Web y datos</b><span>HTML5, CSS3, Bootstrap, JSON, XML (XSLT, XQuery)</span></div>
+          <div><b>Entornos</b><span>Linux, Windows Server, Node.js, Git / GitHub, Android Studio, Godot</span></div>
+        </div>
       </div>
 
       <div class="block">
-        <h2>IDIOMAS:</h2>
+        <h2>IDIOMAS</h2>
         <ul class="langs">
           <li><span>ESPAÑOL</span><b>Nativo</b></li>
           <li><span>BENGALÍ</span><b>Nativo</b></li>
@@ -261,23 +273,20 @@
         </ul>
       </div>
 
+      <!-- "Cursos" y no "Certificaciones": ninguno de los dos es un examen
+           certificado, y llamarlo así se desmonta en la primera pregunta. -->
       <div class="block">
-        <h2>TECNOLOGÍAS:</h2>
-        <div class="tech">
-          <div><b>Lenguajes</b><span>Java, Swing, Python, JavaScript, PHP, Kotlin, JSON</span></div>
-          <div><b>Bases de datos</b><span>SQL, PL/SQL, MySQL, Dataverse, ADO</span></div>
-          <div><b>Web</b><span>HTML5, CSS3, Bootstrap, XML, XSLT, XQuery</span></div>
-          <div><b>Integraciones</b><span>Odoo ERP, APIs RESTful, flujos HTTP</span></div>
-          <div><b>Entornos</b><span>Linux, Windows Server, Node.js, Git / GitHub, Android Studio</span></div>
-        </div>
+        <h2>CURSOS</h2>
+        <ul class="certs">
+          <li><strong>Cisco — Curso de redes</strong><em>Completado</em></li>
+          <li><strong>Linux Unhatched</strong><em>En curso</em></li>
+        </ul>
       </div>
 
       <div class="block">
-        <h2>CERTIFICACIONES:</h2>
-        <ul class="certs">
-          <li><strong>CISCO — Curso de redes</strong><em>Completado</em></li>
-          <li><strong>Linux Unhatched</strong><em>En proceso</em></li>
-        </ul>
+        <h2>APTITUDES</h2>
+        <p class="soft">Resolución de problemas · Trabajo en equipo · Pensamiento crítico ·
+          Adaptabilidad · Aprendizaje continuo · Autonomía</p>
       </div>
 
     </aside>
@@ -286,14 +295,14 @@
     <main class="main">
 
       <p class="profile">
-        Programador multiplataforma con <b>10 meses de experiencia en un entorno corporativo real</b> (Tailored
+        Desarrollador de software con <b>10 meses de experiencia en un entorno corporativo real</b> (Tailored
         Spain), especializado en integrar sistemas que no fueron pensados para comunicarse entre sí: ERP Odoo,
         APIs RESTful, bases de datos y servidores Linux. Busco un equipo donde crecer en desarrollo backend
-        e integraciones.
+        e integraciones, en Madrid o en remoto.
       </p>
 
       <div class="block">
-        <h2>EXPERIENCIA:</h2>
+        <h2>EXPERIENCIA</h2>
 
         <div class="job">
           <div class="job__top">
@@ -301,39 +310,37 @@
             <span class="job__when">SEP 2025 — JUN 2026 <b class="job__dur">· 10 MESES</b></span>
           </div>
           <p class="job__org">TAILORED SPAIN <em class="job__kind">· Prácticas de empresa (FCT) del ciclo DAM</em></p>
+          <!-- Verbo de acción + qué + para qué. Si tienes cifras (nº de
+               integraciones, registros sincronizados, horas ahorradas),
+               van aquí: es lo que más pesa en un CV junior. -->
           <ul>
-            <li>Integración de sistemas ERP (Odoo) mediante flujos HTTP y APIs RESTful, eliminando la
-                introducción manual de datos entre plataformas.</li>
-            <li>Migraciones de entornos web internacionales (ALM) sobre Dataverse.</li>
-            <li>Resolución de incidencias críticas de arquitectura web y sincronización de bases de datos
+            <li>Integré el ERP Odoo con los sistemas satélite de la empresa mediante APIs RESTful y
+                flujos HTTP, eliminando la introducción manual de datos entre plataformas.</li>
+            <li>Gestioné migraciones de entornos web internacionales (ALM) en Dataverse.</li>
+            <li>Resolví incidencias críticas de arquitectura web y de sincronización de bases de datos
                 en producción.</li>
+            <li>Automaticé procesos internos entre plataformas heterogéneas.</li>
           </ul>
         </div>
 
+        <!-- Los dos trabajos de comercio en una sola entrada, igual que en
+             la web: cuentan como constancia, no merecen dos bloques. -->
         <div class="job">
           <div class="job__top">
-            <span class="job__role">Dependiente, Reponedor</span>
-            <span class="job__when">JUN 2023 — OCT 2023</span>
+            <span class="job__role">Dependiente y cajero</span>
+            <span class="job__when">2021 — 2023</span>
           </div>
-          <p class="job__org">LOLA REY</p>
-        </div>
-
-        <div class="job">
-          <div class="job__top">
-            <span class="job__role">Dependiente · Cajero</span>
-            <span class="job__when">2021 — 2022</span>
-          </div>
-          <p class="job__org">SOUVENIRS · CAMPAÑAS DE VERANO</p>
+          <p class="job__org">LOLA REY · SOUVENIRS <em class="job__kind">· Venta, caja y reposición de cara al público</em></p>
         </div>
       </div>
 
       <div class="block">
-        <h2>FORMACIÓN:</h2>
+        <h2>FORMACIÓN</h2>
         <div class="edu">
           <div>
-            <strong>Grado Superior — Desarrollo de Aplicaciones Multiplataforma</strong>
+            <strong>Desarrollo de Aplicaciones Multiplataforma</strong>
             <em>2024 — 2026</em>
-            <p>DIGITECH · Madrid</p>
+            <p>Técnico Superior (CFGS) · DIGITECH · Madrid</p>
           </div>
           <div>
             <strong>Bachillerato</strong>
@@ -344,7 +351,7 @@
       </div>
 
       <div class="block">
-        <h2>PROYECTOS:</h2>
+        <h2>PROYECTOS</h2>
         <div class="proj">
           <div>
             <strong>Demonborne</strong>

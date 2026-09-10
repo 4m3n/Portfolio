@@ -9,24 +9,39 @@
    1. TOKENS
    ------------------------------------------------------------------------ */
 :root {
-  /* Tinta */
-  --ink:        #14120f;
-  --ink-2:      #1b1815;
-  --ink-3:      #23201c;
-  --ink-line:   rgba(244, 241, 232, 0.14);
-  --ink-line-2: rgba(244, 241, 232, 0.28);
+  /* Los nombres describen el papel, no el tono: --ink es el FONDO y --paper
+     la FIGURA. En la paleta clara se invierten los valores y todo el diseño
+     (franjas, botones, panel de contacto) se da la vuelta sin tocar reglas.
+     Los -rgb existen para poder dar transparencia: rgb(var(--x-rgb) / .5). */
 
-  /* Papel */
-  --paper:      #f4f1e8;
+  /* Tinta — fondo */
+  --ink:        #14120f;  --ink-rgb:   20 18 15;
+  --ink-2:      #1b1815;
+  --ink-3:      #23201c;  --ink-3-rgb: 35 32 28;
+  --deep:       #0d0b09;  --deep-rgb:  13 11 9;
+  --bg-1:       #221d18;
+  --bg-2:       #16130f;
+
+  /* Papel — figura */
+  --paper:      #f4f1e8;  --paper-rgb: 244 241 232;
   --paper-2:    #ded8c8;
   --paper-3:    #9b968a;
+  --ink-line:   rgb(var(--paper-rgb) / 0.14);
+  --ink-line-2: rgb(var(--paper-rgb) / 0.28);
 
   /* Acentos */
-  --rose:       #e0234f;
+  --rose:       #e0234f;  --rose-rgb:  224 35 79;
   --rose-deep:  #a50f36;
-  --aqua:       #33d4c4;
+  --on-rose:    #fff;     --on-rose-rgb: 255 255 255;
+  --aqua:       #33d4c4;  --aqua-rgb:  51 212 196;
   --aqua-deep:  #157f79;
   --gold:       #e6b23c;
+
+  /* Ambiente */
+  --thumb:      #3b3630;
+  --glow:       0.5;
+  --grain:      0.05;
+  --motes:      1;
 
   /* Tipografía */
   --display: 'Bodoni Moda', 'Didot', 'Times New Roman', serif;
@@ -36,6 +51,82 @@
   --wrap: 1200px;
   --pad:  clamp(1.1rem, 4vw, 3.4rem);
   --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+  /* Arranque seco y frenada brusca: el golpe de los menús de Atlus. */
+  --snap: cubic-bezier(0.7, 0, 0.2, 1);
+  /* Rebote corto para lo que se "estampa". */
+  --pop:  cubic-bezier(0.2, 1.35, 0.4, 1);
+}
+
+/* Paletas. Cada una lleva el nombre de un pigmento o una técnica de la
+   pintura antigua, la misma fuente de la que bebe Metaphor: ReFantazio.
+   Sólo redefinen variables: ninguna regla del resto de la hoja cambia. */
+
+/* Vitela — manuscrito iluminado: pergamino, tinta ferrogálica, bermellón
+   y lapislázuli. La única clara. */
+:root[data-theme="vitela"] {
+  --ink:        #efe5cf;  --ink-rgb:   239 229 207;
+  --ink-2:      #e8dcc2;
+  --ink-3:      #e2d4b6;  --ink-3-rgb: 226 212 182;
+  --deep:       #e3d3b2;  --deep-rgb:  227 211 178;
+  --bg-1:       #f8f0de;
+  --bg-2:       #efe4cb;
+  --paper:      #2a1d14;  --paper-rgb: 42 29 20;
+  --paper-2:    #4b3a2c;
+  --paper-3:    #7a6653;
+  --rose:       #b83a1e;  --rose-rgb:  184 58 30;
+  /* Las variantes -deep se usan sobre --paper; aquí el papel es oscuro,
+     así que el "profundo" tiene que ser el tono claro del pigmento. */
+  --rose-deep:  #e07a5c;
+  --on-rose:    #fbf3e2;  --on-rose-rgb: 251 243 226;
+  --aqua:       #1f4e9a;  --aqua-rgb:  31 78 154;
+  --aqua-deep:  #5b82c9;
+  --gold:       #a87a22;
+  --thumb:      #cdbb96;
+  --glow:       0.3;
+  --grain:      0.08;
+  --motes:      0.55;
+}
+
+/* Lapislázuli — el azul más caro del Renacimiento, con oro en hoja y
+   bermellón como acentos. */
+:root[data-theme="lapis"] {
+  --ink:        #0e1430;  --ink-rgb:   14 20 48;
+  --ink-2:      #121a3b;
+  --ink-3:      #18224a;  --ink-3-rgb: 24 34 74;
+  --deep:       #080c1f;  --deep-rgb:  8 12 31;
+  --bg-1:       #1d2a5e;
+  --bg-2:       #0f1636;
+  --paper:      #f3ead3;  --paper-rgb: 243 234 211;
+  --paper-2:    #d9cdb0;
+  --paper-3:    #9a927f;
+  --rose:       #e2ac3f;  --rose-rgb:  226 172 63;
+  --rose-deep:  #8a5f12;
+  --on-rose:    #1a1206;  --on-rose-rgb: 26 18 6;
+  --aqua:       #ec6a45;  --aqua-rgb:  236 106 69;
+  --aqua-deep:  #a93f22;
+  --gold:       #f0c860;
+  --thumb:      #26336a;
+}
+
+/* Verdaccio — la base verdosa sobre la que los maestros antiguos
+   modelaban la carne, con sanguina y cardenillo. */
+:root[data-theme="verdaccio"] {
+  --ink:        #151811;  --ink-rgb:   21 24 17;
+  --ink-2:      #1a1e15;
+  --ink-3:      #22271b;  --ink-3-rgb: 34 39 27;
+  --deep:       #0c0e09;  --deep-rgb:  12 14 9;
+  --bg-1:       #272c1d;
+  --bg-2:       #181b13;
+  --paper:      #efe3c8;  --paper-rgb: 239 227 200;
+  --paper-2:    #d6c8a6;
+  --paper-3:    #968c75;
+  --rose:       #c2502f;  --rose-rgb:  194 80 47;
+  --rose-deep:  #8f3520;
+  --on-rose:    #fff6e8;  --on-rose-rgb: 255 246 232;
+  --aqua:       #86b995;  --aqua-rgb:  134 185 149;
+  --aqua-deep:  #3f7552;
+  --gold:       #d8a84a;
+  --thumb:      #343a28;
 }
 
 /* ---------------------------------------------------------------------------
@@ -55,7 +146,7 @@ body {
   margin: 0;
   min-height: 100vh;
   background: var(--ink);
-  color: rgba(244, 241, 232, 0.76);
+  color: rgb(var(--paper-rgb) / 0.76);
   font-family: var(--body);
   font-size: clamp(1.165rem, 0.536vw + 1.03rem, 1.299rem);
   line-height: 1.68;
@@ -69,20 +160,20 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--display); color: var(--paper); fo
 p { margin: 0 0 1rem; }
 ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 
-::selection { background: var(--rose); color: #fff; }
+::selection { background: var(--rose); color: var(--on-rose); }
 :focus-visible { outline: 2px solid var(--aqua); outline-offset: 3px; }
 
 .skip {
   position: fixed; top: -100px; left: 1rem; z-index: 999;
-  background: var(--rose); color: #fff; padding: 0.6rem 1rem;
+  background: var(--rose); color: var(--on-rose); padding: 0.6rem 1rem;
   font-family: var(--label); letter-spacing: 0.16em; text-transform: uppercase;
   transition: top 0.25s var(--ease);
 }
 .skip:focus { top: 1rem; }
 
 ::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: #0d0b09; }
-::-webkit-scrollbar-thumb { background: #3b3630; border: 2px solid #0d0b09; }
+::-webkit-scrollbar-track { background: var(--deep); }
+::-webkit-scrollbar-thumb { background: var(--thumb); border: 2px solid var(--deep); }
 ::-webkit-scrollbar-thumb:hover { background: var(--rose); }
 
 /* ---------------------------------------------------------------------------
@@ -103,7 +194,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   filter: url(#fx-torn);
   z-index: -1;
 }
-.stripe--rose { color: #fff; }
+.stripe--rose { color: var(--on-rose); }
 .stripe--rose::before { background: var(--rose); filter: url(#fx-torn-sm); }
 .stripe--paper::before { background: var(--paper); }
 
@@ -128,23 +219,23 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 #bg-canvas {
   position: fixed; inset: 0; z-index: -5;
   width: 100%; height: 100%; display: block;
-  background: radial-gradient(120% 80% at 50% 0%, #221d18 0%, #16130f 45%, #0d0b09 100%);
+  background: radial-gradient(120% 80% at 50% 0%, var(--bg-1) 0%, var(--bg-2) 45%, var(--deep) 100%);
 }
 
 .fx-strokes { position: fixed; inset: 0; z-index: -4; pointer-events: none; overflow: hidden; }
 .stroke {
   position: absolute;
   width: 130vmax; height: 60vmax;
-  opacity: 0.5;
+  opacity: var(--glow);
 }
 .stroke--rose {
   top: -26vmax; left: -30vmax;
-  background: radial-gradient(closest-side, rgba(224, 35, 79, 0.34), transparent 70%);
+  background: radial-gradient(closest-side, rgb(var(--rose-rgb) / 0.34), transparent 70%);
   transform: rotate(-19deg);
 }
 .stroke--aqua {
   bottom: -22vmax; right: -40vmax;
-  background: radial-gradient(closest-side, rgba(51, 212, 196, 0.22), transparent 70%);
+  background: radial-gradient(closest-side, rgb(var(--aqua-rgb) / 0.22), transparent 70%);
   transform: rotate(-13deg);
 }
 
@@ -152,14 +243,14 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   position: fixed; inset: -20%; z-index: -3; pointer-events: none;
   background-image: repeating-linear-gradient(
     -22deg,
-    rgba(244, 241, 232, 0.028) 0 1px,
+    rgb(var(--paper-rgb) / 0.028) 0 1px,
     transparent 1px 140px
   );
 }
 
 .fx-grain {
   position: fixed; inset: -8%; z-index: -2; pointer-events: none;
-  opacity: 0.05;
+  opacity: var(--grain);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: grain 5s steps(6) infinite;
 }
@@ -173,7 +264,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 
 .progress {
   position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 60;
-  background: rgba(244, 241, 232, 0.06);
+  background: rgb(var(--paper-rgb) / 0.06);
 }
 .progress span {
   display: block; height: 100%; width: 100%;
@@ -185,15 +276,56 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 /* ---------------------------------------------------------------------------
    5. INTRO
    ------------------------------------------------------------------------ */
+/* Dos mitades de tinta cortadas en diagonal. Al salir, un tajo magenta
+   recorre el corte y cada mitad huye hacia su lado. Se solapan un pelo
+   para que el antialiasing no deje ver una rendija del fondo. */
 .gate { display: none; }
 .js .gate {
   display: grid;
   position: fixed; inset: 0; z-index: 200;
   place-items: center;
-  background: #0d0b09;
-  transition: opacity 0.5s var(--ease), visibility 0.5s;
+  overflow: hidden;
 }
-.gate.is-gone { opacity: 0; visibility: hidden; }
+.gate.is-gone { visibility: hidden; pointer-events: none; transition: visibility 0s linear 1s; }
+
+.gate__half {
+  position: absolute; inset: 0;
+  background: var(--deep);
+  transition: transform 0.62s var(--snap) 0.24s;
+}
+.gate__half--a { clip-path: polygon(0 0, 100% 0, 100% 36.5%, 0 64.5%); }
+.gate__half--b { clip-path: polygon(0 63.5%, 100% 35.5%, 100% 100%, 0 100%); }
+.gate.is-gone .gate__half--a { transform: translate(-6%, -100%); }
+.gate.is-gone .gate__half--b { transform: translate(6%, 100%); }
+
+.gate__slash {
+  position: absolute; left: 50%; top: 50%; z-index: 2;
+  width: 160vmax; height: 3px; margin: -1.5px 0 0 -80vmax;
+  background: var(--rose);
+  box-shadow: 0 0 18px 2px rgb(var(--rose-rgb) / 0.6);
+  transform: rotate(var(--slash, -14deg));
+  clip-path: inset(-20px 100% -20px 0);
+}
+.gate.is-gone .gate__slash { animation: slash 0.5s var(--snap) forwards; }
+@keyframes slash {
+  0%   { clip-path: inset(-20px 100% -20px 0); opacity: 1; }
+  52%  { clip-path: inset(-20px -20px -20px -20px); opacity: 1; }
+  100% { clip-path: inset(-20px -20px -20px -20px); opacity: 0; }
+}
+
+.gate__stage {
+  position: relative; z-index: 3;
+  display: grid; justify-items: center; gap: 1.1rem;
+  transition: opacity 0.3s var(--ease) 0.16s, transform 0.55s var(--snap) 0.1s;
+}
+.gate.is-gone .gate__stage { opacity: 0; transform: scale(1.25); }
+.gate__cap {
+  margin: 0; padding-left: 0.5em;
+  font-family: var(--label); font-size: 0.95rem; font-weight: 600;
+  letter-spacing: 0.5em; color: rgb(var(--paper-rgb) / 0.6);
+  opacity: 0;
+  animation: pop 0.7s 0.35s var(--ease) forwards;
+}
 
 .gate__mark { position: relative; display: grid; place-items: center; }
 .gate__mark svg { overflow: visible; }
@@ -219,6 +351,80 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 }
 
 /* ---------------------------------------------------------------------------
+   5b. BARRIDO ENTRE SECCIONES
+   Magenta, papel y tinta cruzan la pantalla en bandas sesgadas; cuando la
+   tinta la cubre aparece la cartela del destino y el salto ocurre detrás.
+   Las bandas miden 240vw para que el sesgo no deje esquinas al aire ni en
+   un móvil en vertical. Los movimientos los lleva MiPagina.js (WAAPI).
+   ------------------------------------------------------------------------ */
+.wipe { position: fixed; inset: 0; z-index: 250; overflow: hidden; }
+.wipe__band {
+  position: absolute; top: -10%; left: -70vw;
+  width: 240vw; height: 120%;
+  transform: translateX(-100%) skewX(-18deg);
+  will-change: transform;
+}
+.wipe__band--rose  { background: var(--rose); }
+.wipe__band--paper { background: var(--paper); }
+.wipe__band--ink {
+  background:
+    repeating-linear-gradient(-22deg, rgb(var(--paper-rgb) / 0.035) 0 1px, transparent 1px 110px),
+    var(--deep);
+}
+
+.wipe__card {
+  position: absolute; inset: 0; z-index: 4;
+  display: grid; place-content: center; justify-items: center;
+  padding: 0 var(--pad);
+  text-align: center;
+  opacity: 0;
+}
+.wipe__ring {
+  position: absolute; left: 50%; top: 50%;
+  width: min(72vmin, 540px); height: auto;
+  translate: -50% -50%;
+  overflow: visible;
+}
+.wipe__ring circle, .wipe__ring path { fill: none; stroke: rgb(var(--paper-rgb) / 0.18); stroke-width: 0.7; }
+.wipe__ring .wipe__ring-in { stroke: var(--rose); stroke-width: 1.4; stroke-dasharray: 150 290; opacity: 0.8; }
+
+.wipe__flavor {
+  position: relative;
+  padding-left: 0.5em;
+  font-family: var(--label); font-size: clamp(0.9rem, 1.7vw, 1.15rem); font-weight: 600;
+  letter-spacing: 0.5em; text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 0.8px rgb(var(--paper-rgb) / 0.9);
+}
+.wipe__num {
+  position: relative;
+  font-family: var(--display); font-style: italic; font-weight: 900;
+  font-size: clamp(6rem, 22vw, 13rem); line-height: 0.82;
+  color: var(--paper);
+}
+.wipe__title {
+  position: relative;
+  margin-top: 0.25em;
+  font-family: var(--display); font-weight: 800;
+  font-size: clamp(1.8rem, 5vw, 3.4rem); color: var(--paper);
+}
+.wipe__title .stripe { transform: rotate(-1.5deg); }
+
+/* ---------------------------------------------------------------------------
+   5c. CAMBIO DE PALETA — revelado a pinceladas de acuarela
+   La página con los colores nuevos aparece a través de una máscara pintada
+   en un <canvas> (MiPagina.js) y recorrida fotograma a fotograma sobre la
+   captura que hace la View Transitions API. Aquí sólo se apaga el fundido
+   por defecto y se congelan las transiciones mientras se pinta, para que
+   nada llegue a medio camino entre una paleta y otra.
+   ------------------------------------------------------------------------ */
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after { transition: none !important; }
+::view-transition-old(root),
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+
+/* ---------------------------------------------------------------------------
    6. BARRA SUPERIOR
    ------------------------------------------------------------------------ */
 .topbar {
@@ -229,7 +435,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   transition: background 0.35s var(--ease), border-color 0.35s, padding 0.35s var(--ease);
 }
 .topbar.is-stuck {
-  background: rgba(13, 11, 9, 0.9);
+  background: rgb(var(--deep-rgb) / 0.9);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom-color: var(--ink-line);
@@ -247,7 +453,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .m-h    { fill: var(--ink);   transition: fill 0.3s var(--ease); }
 .m-star { fill: var(--rose);  transition: fill 0.3s var(--ease); }
 .brand:hover .m-slab { fill: var(--rose); }
-.brand:hover .m-h    { fill: #fff; }
+.brand:hover .m-h    { fill: var(--on-rose); }
 .brand:hover .m-star { fill: var(--paper); }
 
 .brand__txt { display: flex; flex-direction: column; line-height: 1.05; min-width: 0; }
@@ -263,12 +469,12 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 
 .nav { display: flex; gap: 0.1rem; }
 .nav__link {
-  position: relative;
+  position: relative; isolation: isolate;
   display: flex; align-items: baseline; gap: 0.35rem;
   padding: 0.42rem 0.66rem;
   font-family: var(--label); font-size: 1.102rem; font-weight: 500;
   letter-spacing: 0.12em; text-transform: uppercase;
-  color: rgba(244, 241, 232, 0.6);
+  color: rgb(var(--paper-rgb) / 0.6);
   transition: color 0.25s var(--ease);
 }
 .nav__link b {
@@ -281,8 +487,18 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   transform: scaleX(0); transform-origin: left;
   transition: transform 0.3s var(--ease);
 }
-.nav__link:hover { color: var(--paper); }
-.nav__link:hover::after { transform: scaleX(1); }
+/* Cursor de menú: una losa de papel sesgada entra por la izquierda y el
+   texto pasa a tinta, como al moverse por los menús del juego. */
+.nav__link::before {
+  content: ''; position: absolute; inset: 0.1rem 0.15rem;
+  background: var(--paper);
+  transform: skewX(-14deg) scaleX(0); transform-origin: left center;
+  transition: transform 0.26s var(--snap);
+  z-index: -1;
+}
+.nav__link:hover, .nav__link:focus-visible { color: var(--ink); }
+.nav__link:hover::before, .nav__link:focus-visible::before { transform: skewX(-14deg) scaleX(1); }
+.nav__link:hover b, .nav__link:focus-visible b { color: var(--rose-deep); opacity: 1; }
 .nav__link.is-current { color: var(--paper); }
 .nav__link.is-current::after { transform: scaleX(1); background: var(--rose); }
 .nav__link.is-current b { opacity: 1; }
@@ -306,6 +522,30 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 }
 .pill-btn:hover { color: var(--ink); }
 .pill-btn:hover::before { background: var(--paper); border-color: var(--paper); }
+
+/* Botón de paleta: un pincel y tres gotas con los pigmentos de la paleta
+   SIGUIENTE, para que se vea qué va a pasar antes de pulsar. */
+.theme-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  min-height: 2.4rem;
+  padding: 0.34rem 0.75rem;
+}
+.theme-btn svg {
+  width: 16px; height: 16px; flex: none;
+  fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round;
+}
+.theme-btn__sw { display: inline-flex; gap: 3px; }
+.theme-btn__sw i {
+  width: 9px; height: 9px;
+  border-radius: 52% 48% 55% 45% / 50% 55% 45% 50%;
+  box-shadow: 0 0 0 1px var(--ink-line-2);
+  transition: transform 0.3s var(--pop);
+}
+.theme-btn__sw i:nth-child(1) { background: var(--sw1, var(--ink)); }
+.theme-btn__sw i:nth-child(2) { background: var(--sw2, var(--rose)); transition-delay: 40ms; }
+.theme-btn__sw i:nth-child(3) { background: var(--sw3, var(--aqua)); transition-delay: 80ms; }
+.theme-btn:hover .theme-btn__sw i,
+.theme-btn:focus-visible .theme-btn__sw i { transform: translateY(-3px); }
 
 .burger {
   display: none;
@@ -339,7 +579,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   font-family: var(--label); font-size: 0.998rem; font-weight: 600;
   letter-spacing: 0.24em; text-transform: uppercase;
 }
-.hero__place { color: rgba(244, 241, 232, 0.5); }
+.hero__place { color: rgb(var(--paper-rgb) / 0.5); }
 
 .hero__name {
   font-family: var(--display);
@@ -366,7 +606,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   margin: 1rem 0 0;
   font-family: var(--label); font-size: clamp(0.986rem, 1.822vw, 1.232rem);
   letter-spacing: 0.4em; text-transform: uppercase;
-  color: rgba(244, 241, 232, 0.45);
+  color: rgb(var(--paper-rgb) / 0.45);
 }
 
 .hero__role {
@@ -380,7 +620,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .hero__lede {
   max-width: 52ch;
   font-size: 1.21rem; font-style: italic;
-  color: rgba(244, 241, 232, 0.72);
+  color: rgb(var(--paper-rgb) / 0.72);
 }
 
 /* Datos duros: la cifra en didone, la glosa en condensada. Tres columnas
@@ -406,7 +646,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .hero__proof span {
   font-family: var(--label); font-size: 0.93rem; font-weight: 500;
   letter-spacing: 0.1em; text-transform: uppercase;
-  color: rgba(244, 241, 232, 0.5);
+  color: rgb(var(--paper-rgb) / 0.5);
   line-height: 1.32;
   text-wrap: balance;
 }
@@ -439,10 +679,10 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .btn:hover::before { border-color: var(--paper); }
 .btn:hover::after { transform: skewX(-12deg) translateY(0); }
 
-.btn--solid { color: #fff; }
+.btn--solid { color: var(--on-rose); }
 .btn--solid::before {
   background: var(--rose); border-color: var(--rose);
-  box-shadow: 0 12px 30px -16px rgba(224, 35, 79, 0.9);
+  box-shadow: 0 12px 30px -16px rgb(var(--rose-rgb) / 0.9);
 }
 .btn--solid:hover { color: var(--ink); }
 
@@ -450,7 +690,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   display: flex; flex-wrap: wrap; gap: 0.35rem 1.5rem;
   font-family: var(--label); font-size: 1.021rem;
   letter-spacing: 0.12em; text-transform: uppercase;
-  color: rgba(244, 241, 232, 0.5);
+  color: rgb(var(--paper-rgb) / 0.5);
 }
 .hero__links a { border-bottom: 1px solid var(--ink-line); padding-bottom: 2px; transition: color 0.25s, border-color 0.25s; }
 .hero__links a:hover { color: var(--aqua); border-color: var(--aqua); }
@@ -460,7 +700,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .portrait { position: relative; width: min(340px, 76vw); aspect-ratio: 1; }
 
 .portrait__ring { position: absolute; inset: -6%; width: 112%; height: 112%; overflow: visible; }
-.p-ring { fill: none; stroke: rgba(244, 241, 232, 0.35); stroke-width: 1; }
+.p-ring { fill: none; stroke: rgb(var(--paper-rgb) / 0.35); stroke-width: 1; }
 .p-ring--dash { stroke-dasharray: 2 8; opacity: 0.6; transform-origin: 160px 160px; animation: spin 70s linear infinite; }
 .p-ticks path { stroke: var(--paper); stroke-width: 1.5; opacity: 0.55; }
 .p-arc {
@@ -504,7 +744,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   transform: translateX(-50%);
   display: flex; flex-direction: column; align-items: center; gap: 0.45rem;
   font-family: var(--label); font-size: 0.864rem; letter-spacing: 0.34em;
-  color: rgba(244, 241, 232, 0.42);
+  color: rgb(var(--paper-rgb) / 0.42);
   transition: color 0.3s;
 }
 .scroll-cue i { width: 1px; height: 40px; background: linear-gradient(var(--paper), transparent); animation: cue 2.2s ease-in-out infinite; }
@@ -530,6 +770,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .section--last { padding-bottom: clamp(2.5rem, 5vw, 4rem); }
 
 .sec-head {
+  position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
   column-gap: clamp(0.7rem, 1.8vw, 1.4rem);
@@ -548,7 +789,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   font-family: var(--label); font-size: clamp(0.858rem, 1.534vw, 1.067rem); font-weight: 600;
   letter-spacing: 0.36em; text-transform: uppercase;
   color: transparent;
-  -webkit-text-stroke: 0.8px rgba(244, 241, 232, 0.85);
+  -webkit-text-stroke: 0.8px rgb(var(--paper-rgb) / 0.85);
   margin-bottom: 0.15rem;
 }
 .sec-head__title {
@@ -561,7 +802,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .lede {
   max-width: 60ch;
   font-size: 1.232rem; font-style: italic;
-  color: rgba(244, 241, 232, 0.7);
+  color: rgb(var(--paper-rgb) / 0.7);
   margin-bottom: 2.2rem;
   padding-left: 0.9rem;
   border-left: 2px solid var(--ink-line-2);
@@ -576,7 +817,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .kicker--rose {
   display: inline-block;
   position: relative; isolation: isolate;
-  color: #fff;
+  color: var(--on-rose);
   padding: 0.1rem 0.6rem;
 }
 .kicker--rose::before {
@@ -590,7 +831,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .slab {
   position: relative;
   padding: clamp(1.4rem, 3.2vw, 2.4rem);
-  background: linear-gradient(180deg, rgba(35, 32, 28, 0.78), rgba(20, 18, 15, 0.86));
+  background: linear-gradient(180deg, rgb(var(--ink-3-rgb) / 0.78), rgb(var(--ink-rgb) / 0.86));
   border: 1px solid var(--ink-line);
   border-left: 2px solid var(--ink-line-2);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
@@ -603,7 +844,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .slab__sub {
   font-family: var(--label); font-size: 0.974rem;
   letter-spacing: 0.16em; text-transform: uppercase;
-  color: rgba(244, 241, 232, 0.45);
+  color: rgb(var(--paper-rgb) / 0.45);
   margin-bottom: 1.6rem;
 }
 
@@ -631,7 +872,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .facts dt {
   font-family: var(--label); font-size: 0.96rem;
   letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(244, 241, 232, 0.42);
+  color: rgb(var(--paper-rgb) / 0.42);
 }
 .facts dd { margin: 0; color: var(--paper); font-size: 1.16rem; }
 .facts__hot dd {
@@ -667,7 +908,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .virtue__track {
   align-self: start;
   display: block; height: 10px; margin-top: 5px;
-  background: rgba(244, 241, 232, 0.08);
+  background: rgb(var(--paper-rgb) / 0.08);
   transform: skewX(-20deg);
 }
 .virtue__track i {
@@ -680,7 +921,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   grid-column: 2;
   margin-top: 0.3rem;
   font-size: 1.09rem; font-style: italic;
-  color: rgba(244, 241, 232, 0.45);
+  color: rgb(var(--paper-rgb) / 0.45);
   line-height: 1.45;
 }
 
@@ -697,7 +938,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 }
 .entry__emblem { position: relative; display: grid; place-items: center; aspect-ratio: 1; }
 .entry__emblem svg { width: 100%; height: 100%; overflow: visible; }
-.e-ring { fill: none; stroke: rgba(244, 241, 232, 0.3); stroke-width: 1.5; transform-origin: 50px 50px; }
+.e-ring { fill: none; stroke: rgb(var(--paper-rgb) / 0.3); stroke-width: 1.5; transform-origin: 50px 50px; }
 .e-ring--in { stroke-dasharray: 4 6; animation: spin 30s linear infinite; }
 .e-star { fill: none; stroke: var(--rose); stroke-width: 1.5; }
 .entry__emblem b {
@@ -709,7 +950,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 
 .entry__body {
   padding: clamp(1.1rem, 2.6vw, 1.8rem);
-  background: linear-gradient(180deg, rgba(35, 32, 28, 0.72), rgba(20, 18, 15, 0.84));
+  background: linear-gradient(180deg, rgb(var(--ink-3-rgb) / 0.72), rgb(var(--ink-rgb) / 0.84));
   border: 1px solid var(--ink-line);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
   transition: border-color 0.35s, transform 0.35s var(--ease);
@@ -731,8 +972,8 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   background: var(--aqua); transform: rotate(45deg);
   animation: blink 2s ease-in-out infinite;
 }
-.live--off { color: rgba(244, 241, 232, 0.4); }
-.live--off::before { background: rgba(244, 241, 232, 0.4); animation: none; }
+.live--off { color: rgb(var(--paper-rgb) / 0.4); }
+.live--off::before { background: rgb(var(--paper-rgb) / 0.4); animation: none; }
 
 /* Puesto ya cerrado: sigue contando, pero no parpadea. */
 .live--done { color: var(--paper-3); }
@@ -760,7 +1001,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   padding-left: 0.9rem;
   border-left: 2px solid var(--ink-line-2);
   font-size: 1.05rem; font-style: italic;
-  color: rgba(244, 241, 232, 0.52);
+  color: rgb(var(--paper-rgb) / 0.52);
   line-height: 1.5;
 }
 
@@ -773,7 +1014,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .entry__tasks { display: grid; gap: 0.45rem; margin-bottom: 1.1rem; }
 .entry__tasks li {
   position: relative; padding-left: 1.25rem;
-  font-size: 1.142rem; color: rgba(244, 241, 232, 0.74);
+  font-size: 1.142rem; color: rgb(var(--paper-rgb) / 0.74);
   line-height: 1.55;
 }
 .entry__tasks li::before {
@@ -789,7 +1030,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   font-family: var(--label); font-size: 0.96rem; font-weight: 500;
   letter-spacing: 0.14em; text-transform: uppercase;
   padding: 0.26rem 0.85rem;
-  color: rgba(244, 241, 232, 0.72);
+  color: rgb(var(--paper-rgb) / 0.72);
   transition: color 0.25s;
 }
 .chips span::before {
@@ -808,7 +1049,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   margin: 0.55rem 0 1rem;
   font-family: var(--label); font-size: 0.93rem; font-weight: 600;
   letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(244, 241, 232, 0.5);
+  color: rgb(var(--paper-rgb) / 0.5);
 }
 .feature__meta span + span::before {
   content: '·'; margin-right: 0.7rem; color: var(--rose);
@@ -825,8 +1066,8 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   padding: clamp(1.6rem, 4vw, 2.8rem);
   margin-bottom: clamp(1.4rem, 3vw, 2.2rem);
   background:
-    linear-gradient(120deg, rgba(224, 35, 79, 0.12) 0%, transparent 52%),
-    linear-gradient(180deg, rgba(35, 32, 28, 0.8), rgba(20, 18, 15, 0.88));
+    linear-gradient(120deg, rgb(var(--rose-rgb) / 0.12) 0%, transparent 52%),
+    linear-gradient(180deg, rgb(var(--ink-3-rgb) / 0.8), rgb(var(--ink-rgb) / 0.88));
   border: 1px solid var(--ink-line-2);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 26px), calc(100% - 26px) 100%, 0 100%);
 }
@@ -840,7 +1081,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   font-size: 1.3em; line-height: 0;
   color: var(--paper);
 }
-.feature__body p { max-width: 60ch; color: rgba(244, 241, 232, 0.74); }
+.feature__body p { max-width: 60ch; color: rgb(var(--paper-rgb) / 0.74); }
 .feature__mark svg { width: clamp(110px, 15vw, 190px); height: auto; overflow: visible; }
 
 /* El caso de Odoo no lleva enlace a repositorio: el codigo es del cliente.
@@ -854,17 +1095,17 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   margin-top: 1rem;
   font-family: var(--label); font-size: 0.9rem; font-weight: 600;
   letter-spacing: 0.16em; text-transform: uppercase;
-  color: rgba(244, 241, 232, 0.52);
+  color: rgb(var(--paper-rgb) / 0.52);
 }
 .feature__body .feature__closed::before {
   content: ''; flex: none;
   width: 7px; height: 7px;
   border: 1px solid var(--aqua); transform: rotate(45deg);
 }
-.f-ring { fill: none; stroke: rgba(244, 241, 232, 0.3); stroke-width: 1; transform-origin: 110px 110px; animation: spin 60s linear infinite; }
+.f-ring { fill: none; stroke: rgb(var(--paper-rgb) / 0.3); stroke-width: 1; transform-origin: 110px 110px; animation: spin 60s linear infinite; }
 .f-ring--in { stroke: var(--aqua); opacity: 0.45; stroke-dasharray: 6 10; animation-duration: 34s; animation-direction: reverse; }
 .f-ticks path { stroke: var(--paper); stroke-width: 1.4; opacity: 0.45; }
-.f-star { fill: rgba(224, 35, 79, 0.18); stroke: var(--rose); stroke-width: 1.4; transform-origin: 110px 110px; animation: breathe 6s ease-in-out infinite; }
+.f-star { fill: rgb(var(--rose-rgb) / 0.18); stroke: var(--rose); stroke-width: 1.4; transform-origin: 110px 110px; animation: breathe 6s ease-in-out infinite; }
 @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
 .cards {
@@ -879,7 +1120,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .card {
   display: flex; flex-direction: column;
   padding: clamp(1.1rem, 2.4vw, 1.5rem);
-  background: linear-gradient(180deg, rgba(35, 32, 28, 0.7), rgba(20, 18, 15, 0.86));
+  background: linear-gradient(180deg, rgb(var(--ink-3-rgb) / 0.7), rgb(var(--ink-rgb) / 0.86));
   border: 1px solid var(--ink-line);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
   transition: transform 0.4s var(--ease), border-color 0.4s;
@@ -895,7 +1136,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 }
 .card__shot::after {
   content: ''; position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(20, 18, 15, 0.85), transparent 55%);
+  background: linear-gradient(to top, rgb(var(--ink-rgb) / 0.85), transparent 55%);
 }
 .card__shot img {
   width: 100%; height: 100%; object-fit: cover;
@@ -909,17 +1150,17 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .card__shot--art {
   display: grid; place-items: center;
   background:
-    radial-gradient(circle at 50% 46%, rgba(51, 212, 196, 0.11), rgba(20, 18, 15, 0) 62%),
+    radial-gradient(circle at 50% 46%, rgb(var(--aqua-rgb) / 0.11), rgb(var(--ink-rgb) / 0) 62%),
     var(--ink);
 }
-.card__shot--art::after { background: linear-gradient(to top, rgba(20, 18, 15, 0.7), transparent 46%); }
+.card__shot--art::after { background: linear-gradient(to top, rgb(var(--ink-rgb) / 0.7), transparent 46%); }
 .card__shot--art svg { width: 58%; height: auto; }
-.b-ring { fill: none; stroke: rgba(244, 241, 232, 0.28); stroke-width: 1.4;
+.b-ring { fill: none; stroke: rgb(var(--paper-rgb) / 0.28); stroke-width: 1.4;
           transform-origin: 60px 60px; animation: spin 48s linear infinite; }
 .b-ring--in { stroke: var(--aqua); opacity: 0.5; stroke-dasharray: 5 9;
               animation-duration: 26s; animation-direction: reverse; }
 .b-ticks path { fill: none; stroke: var(--paper); stroke-width: 1.4; opacity: 0.42; }
-.b-body { fill: rgba(20, 18, 15, 0.55); stroke: var(--paper); stroke-width: 1.6; opacity: 0.8; }
+.b-body { fill: rgb(var(--ink-rgb) / 0.55); stroke: var(--paper); stroke-width: 1.6; opacity: 0.8; }
 .b-ant  { fill: none; stroke: var(--paper); stroke-width: 1.6; opacity: 0.55; }
 .b-eye  { fill: var(--rose); }
 .b-slash { fill: none; stroke: var(--aqua); stroke-width: 2.4; stroke-linecap: round; opacity: 0.85; }
@@ -931,7 +1172,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .card__title { font-size: 1.456rem; font-weight: 800; margin-bottom: 0.55rem; }
 /* Sólo el párrafo descriptivo estira la tarjeta; el epígrafe también es un
    <p> y antes se llevaba el espacio sobrante, descuadrando los títulos. */
-.card p { font-size: 1.16rem; color: rgba(244, 241, 232, 0.7); }
+.card p { font-size: 1.16rem; color: rgb(var(--paper-rgb) / 0.7); }
 .card > p:not(.kicker) { flex: 1; }
 .card .chips { margin-bottom: 1rem; }
 
@@ -952,7 +1193,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   background: var(--paper); transform: skewX(-12deg); z-index: -1;
   transition: background 0.25s;
 }
-.act:hover { color: #fff; }
+.act:hover { color: var(--on-rose); }
 .act:hover::before { background: var(--rose); }
 
 /* ---------------------------------------------------------------------------
@@ -961,7 +1202,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .archs { display: grid; grid-template-columns: repeat(auto-fit, minmax(292px, 1fr)); gap: clamp(1rem, 2.4vw, 1.6rem); }
 .arch {
   padding: 1.4rem;
-  background: linear-gradient(180deg, rgba(35, 32, 28, 0.7), rgba(20, 18, 15, 0.86));
+  background: linear-gradient(180deg, rgb(var(--ink-3-rgb) / 0.7), rgb(var(--ink-rgb) / 0.86));
   border: 1px solid var(--ink-line);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
   transition: transform 0.35s var(--ease), border-color 0.35s;
@@ -976,7 +1217,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 }
 .arch__glyph { grid-row: 1 / 3; width: 38px; height: 38px; }
 .arch__glyph svg { width: 100%; height: 100%; }
-.arch__glyph circle { fill: none; stroke: rgba(244, 241, 232, 0.3); stroke-width: 1.5; }
+.arch__glyph circle { fill: none; stroke: rgb(var(--paper-rgb) / 0.3); stroke-width: 1.5; }
 .arch__glyph path { fill: none; stroke: var(--aqua); stroke-width: 1.5; }
 .arch__head h3 {
   align-self: end;
@@ -999,12 +1240,12 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .skill__p {
   grid-row: 1; grid-column: 2;
   font-family: var(--display); font-style: italic; font-weight: 700;
-  font-size: 1.044rem; color: rgba(244, 241, 232, 0.55);
+  font-size: 1.044rem; color: rgb(var(--paper-rgb) / 0.55);
 }
 .skill__track {
   grid-row: 2; grid-column: 1 / -1;
   display: block; height: 7px;
-  background: rgba(244, 241, 232, 0.08);
+  background: rgb(var(--paper-rgb) / 0.08);
   transform: skewX(-20deg);
 }
 .skill__track i {
@@ -1026,7 +1267,8 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   height: clamp(26px, 3.8vw, 38px); width: auto;
   padding: 0.55rem 0.75rem;
   box-sizing: content-box;
-  background: var(--paper);
+  /* Fijo en todas las paletas: los logos están pensados para fondo claro. */
+  background: #f4f1e8;
   filter: saturate(0.9); opacity: 0.8;
   transition: opacity 0.35s, transform 0.35s var(--ease), filter 0.35s;
 }
@@ -1044,10 +1286,10 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   color: var(--aqua);
   margin-bottom: 0.35rem;
 }
-.mini + p { margin-bottom: 1.3rem; color: rgba(244, 241, 232, 0.72); }
+.mini + p { margin-bottom: 1.3rem; color: rgb(var(--paper-rgb) / 0.72); }
 
 .ticks { display: grid; gap: 0.35rem; }
-.ticks li { position: relative; padding-left: 1.25rem; color: rgba(244, 241, 232, 0.74); }
+.ticks li { position: relative; padding-left: 1.25rem; color: rgb(var(--paper-rgb) / 0.74); }
 .ticks li::before {
   content: ''; position: absolute; left: 0; top: 0.6em;
   width: 7px; height: 7px; background: var(--rose); transform: rotate(45deg);
@@ -1062,7 +1304,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .langs li > span:first-child { font-family: var(--display); font-size: 1.187rem; font-weight: 600; color: var(--paper); }
 .langs li b {
   font-family: var(--label); font-weight: 500; font-size: 0.96rem;
-  letter-spacing: 0.16em; color: rgba(244, 241, 232, 0.45);
+  letter-spacing: 0.16em; color: rgb(var(--paper-rgb) / 0.45);
 }
 .pips { display: inline-flex; gap: 4px; }
 .pips i { width: 10px; height: 10px; border: 1px solid var(--aqua); transform: skewX(-20deg); }
@@ -1085,7 +1327,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 }
 .splats span:nth-child(3n)::before { background: var(--aqua); }
 .splats span:nth-child(3n+2)::before { background: var(--rose); }
-.splats span:nth-child(3n+2) { color: #fff; }
+.splats span:nth-child(3n+2) { color: var(--on-rose); }
 
 /* ---------------------------------------------------------------------------
    14. CONTACTO — panel de papel, tinta oscura
@@ -1107,7 +1349,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   max-width: 22ch; margin: 0 auto 0.7rem;
 }
 .contact__sub {
-  font-style: italic; color: rgba(20, 18, 15, 0.68);
+  font-style: italic; color: rgb(var(--ink-rgb) / 0.68);
   max-width: 50ch; margin: 0 auto 2.2rem;
 }
 
@@ -1118,13 +1360,13 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .ccard {
   display: flex; flex-direction: column; gap: 0.18rem;
   padding: 0.95rem 1.15rem;
-  border: 1px solid rgba(20, 18, 15, 0.2);
-  background: rgba(20, 18, 15, 0.03);
+  border: 1px solid rgb(var(--ink-rgb) / 0.2);
+  background: rgb(var(--ink-rgb) / 0.03);
   transition: background 0.25s, color 0.25s, transform 0.25s var(--ease), border-color 0.25s;
 }
 .ccard:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); transform: translateY(-3px); }
 .ccard--static { cursor: default; }
-.ccard--static:hover { background: rgba(20, 18, 15, 0.03); color: inherit; border-color: rgba(20, 18, 15, 0.2); transform: none; }
+.ccard--static:hover { background: rgb(var(--ink-rgb) / 0.03); color: inherit; border-color: rgb(var(--ink-rgb) / 0.2); transform: none; }
 .ccard__k {
   font-family: var(--label); font-size: 0.888rem; font-weight: 700;
   letter-spacing: 0.26em; color: var(--rose-deep);
@@ -1145,19 +1387,19 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   position: absolute; top: 0; right: 0; bottom: 0;
   width: 2.9rem;
   display: grid; place-items: center;
-  background: none; border: 0; border-left: 1px solid rgba(20, 18, 15, 0.14);
+  background: none; border: 0; border-left: 1px solid rgb(var(--ink-rgb) / 0.14);
   color: inherit; cursor: pointer;
   transition: background 0.22s, color 0.22s, border-color 0.22s;
 }
 .copy svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.copy:hover { background: rgba(20, 18, 15, 0.1); }
-.ccard--copy:hover .copy { border-color: rgba(244, 241, 232, 0.22); }
-.ccard--copy:hover .copy:hover { background: rgba(244, 241, 232, 0.14); }
+.copy:hover { background: rgb(var(--ink-rgb) / 0.1); }
+.ccard--copy:hover .copy { border-color: rgb(var(--paper-rgb) / 0.22); }
+.ccard--copy:hover .copy:hover { background: rgb(var(--paper-rgb) / 0.14); }
 .copy.is-done { color: var(--aqua-deep); }
 .ccard--copy:hover .copy.is-done { color: var(--aqua); }
 
-.ccard--cv { background: var(--rose); border-color: var(--rose); color: #fff; }
-.ccard--cv .ccard__k { color: rgba(255, 255, 255, 0.85); }
+.ccard--cv { background: var(--rose); border-color: var(--rose); color: var(--on-rose); }
+.ccard--cv .ccard__k { color: rgb(var(--on-rose-rgb) / 0.85); }
 .ccard--cv:hover { background: var(--ink); border-color: var(--ink); }
 
 /* Aviso efímero de "copiado" */
@@ -1189,9 +1431,9 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   margin: 0;
   font-family: var(--label); font-size: 0.96rem;
   letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(244, 241, 232, 0.38);
+  color: rgb(var(--paper-rgb) / 0.38);
 }
-.foot p:first-child { color: rgba(244, 241, 232, 0.6); }
+.foot p:first-child { color: rgb(var(--paper-rgb) / 0.6); }
 
 .to-top {
   position: fixed; right: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem);
@@ -1210,36 +1452,105 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   transition: background 0.25s;
 }
 .to-top.is-on { opacity: 1; visibility: visible; }
-.to-top:hover { color: #fff; }
+.to-top:hover { color: var(--on-rose); }
 .to-top:hover::before { background: var(--rose); }
 
 /* ---------------------------------------------------------------------------
    16. APARICIONES
    ------------------------------------------------------------------------ */
-/* Con JS las barras parten de cero y crecen al entrar en pantalla; sin JS
-   se pintan directamente en su valor (la clase .js la añade el script). */
-.js .virtue__track i,
-.js .skill__track i { transform: scaleX(0); }
+/* Estilo Atlus: cada bloque entra sesgado desde la izquierda, los paneles
+   llegan tapados por una hoja de papel que se despega hacia la derecha y las
+   cabeceras estampan su número mientras un tajo magenta las subraya.
+
+   Son animaciones con relleno 'backwards', no transiciones: al terminar, el
+   elemento vuelve a sus propias reglas y los :hover (que también mueven
+   transform) siguen funcionando. --d es el escalonado que pone el script. */
+[tabindex="-1"]:focus { outline: none; }
+
+.js .reveal:not(.is-in) { opacity: 0; }
+.js .reveal.is-in { animation: rise 0.75s var(--ease) var(--d, 0ms) backwards; }
+@keyframes rise {
+  from { opacity: 0; transform: translate3d(-34px, 10px, 0) skewX(-6deg); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Hoja de papel con canto magenta que cubre el panel y se despega. */
+.js .slab.reveal, .js .card.reveal, .js .arch.reveal,
+.js .feature.reveal, .js .entry.reveal .entry__body { position: relative; }
+.js .slab.reveal::after,
+.js .card.reveal::after,
+.js .arch.reveal::after,
+.js .feature.reveal::after,
+.js .entry.reveal .entry__body::after {
+  content: '';
+  position: absolute; inset: 0; z-index: 6;
+  pointer-events: none;
+  background: linear-gradient(90deg, var(--rose) 0 6px, var(--paper) 6px);
+  transform-origin: right center;
+}
+.js .slab.reveal.is-in::after,
+.js .card.reveal.is-in::after,
+.js .arch.reveal.is-in::after,
+.js .feature.reveal.is-in::after,
+.js .entry.reveal.is-in .entry__body::after {
+  animation: peel 0.6s var(--snap) calc(var(--d, 0ms) + 0.22s) forwards;
+}
+@keyframes peel { to { transform: scaleX(0); } }
+
 /* La franja se pinta de izquierda a derecha, como un trazo de pincel.
    El recorte va en el elemento padre, no en el pseudo-elemento filtrado:
    animarlo sobre el filtro obligaría a recalcular el ruido en cada fotograma. */
 .js .reveal .stripe {
   clip-path: inset(-30% 100% -30% -30%);
-  transition: clip-path 0.5s 0.06s var(--ease);
+  transition: clip-path 0.55s var(--snap) calc(var(--d, 0ms) + 0.3s);
 }
 .js .reveal.is-in .stripe { clip-path: inset(-30% -30% -30% -30%); }
 
-.js .sec-head.reveal .sec-head__num {
-  opacity: 0; transform: translateX(-14px);
-  transition: opacity 0.5s var(--ease), transform 0.55s var(--ease);
+/* Cabecera de sección: el número se estampa, el lema entra por la derecha
+   y un tajo magenta cruza por debajo y se desvanece. */
+.js .sec-head.reveal.is-in .sec-head__num { animation: slam 0.6s var(--pop) var(--d, 0ms) backwards; }
+@keyframes slam {
+  0%   { opacity: 0; transform: scale(1.9) rotate(-12deg); }
+  55%  { opacity: 1; }
+  100% { opacity: 1; transform: none; }
 }
-.js .sec-head.reveal.is-in .sec-head__num { opacity: 1; transform: none; }
+.js .sec-head.reveal.is-in .sec-head__flavor { animation: flavor 0.55s var(--snap) calc(var(--d, 0ms) + 0.15s) backwards; }
+@keyframes flavor { from { opacity: 0; transform: translateX(28px); } }
 
-.js .reveal {
-  opacity: 0; transform: translateY(24px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+.js .sec-head.reveal::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -0.9rem;
+  height: 3px;
+  background: linear-gradient(90deg, var(--rose), rgb(var(--rose-rgb) / 0) 75%);
+  transform: scaleX(0); transform-origin: left center;
+  pointer-events: none;
 }
-.js .reveal.is-in { opacity: 1; transform: none; }
+.js .sec-head.reveal.is-in::after { animation: swipe 0.9s var(--snap) calc(var(--d, 0ms) + 0.1s) forwards; }
+@keyframes swipe {
+  0%   { transform: scaleX(0); transform-origin: left center; }
+  50%  { transform: scaleX(1); transform-origin: left center; }
+  51%  { transform: scaleX(1); transform-origin: right center; }
+  100% { transform: scaleX(0); transform-origin: right center; }
+}
+
+/* Con JS las barras parten de cero y crecen al entrar en pantalla; sin JS
+   se pintan directamente en su valor (la clase .js la añade el script). */
+.js .virtue__track i,
+.js .skill__track i { transform: scaleX(0); }
+.js .reveal .virtue__track i,
+.js .reveal .skill__track i { transition-delay: calc(var(--d, 0ms) + 0.35s); }
+
+/* Destello al completarse la barra, como al subir de rango. */
+.virtue__track i, .skill__track i { position: relative; overflow: hidden; }
+.virtue__track i::after, .skill__track i::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8) 50%, transparent);
+  transform: translateX(-100%);
+}
+.js .reveal.is-in .virtue__track i::after,
+.js .reveal.is-in .skill__track i::after {
+  animation: glint 0.75s ease-out calc(var(--d, 0ms) + 1.3s) both;
+}
+@keyframes glint { to { transform: translateX(100%); } }
 
 /* ---------------------------------------------------------------------------
    17. RESPONSIVE
@@ -1270,7 +1581,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 
 .scrim {
   position: fixed; inset: 0; z-index: 44;
-  background: rgba(9, 8, 6, 0.62);
+  background: rgb(var(--deep-rgb) / 0.62);
   backdrop-filter: blur(2px);
   opacity: 0; visibility: hidden;
   transition: opacity 0.35s var(--ease), visibility 0.35s;
@@ -1287,7 +1598,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
     width: min(320px, 85vw);
     flex-direction: column; justify-content: center; gap: 0.2rem;
     padding: 4rem 2rem;
-    background: rgba(13, 11, 9, 0.97);
+    background: rgb(var(--deep-rgb) / 0.97);
     backdrop-filter: blur(16px);
     border-left: 1px solid var(--ink-line-2);
     transform: translateX(100%);
@@ -1337,11 +1648,13 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
     scroll-behavior: auto !important;
   }
-  .reveal { opacity: 1; transform: none; }
+  .js .reveal { opacity: 1 !important; transform: none; }
   #bg-canvas, .fx-grain { display: none; }
 }
 
@@ -1351,11 +1664,13 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 @media print {
   body { background: #fff; color: #111; }
   #bg-canvas, .fx-strokes, .fx-grain, .fx-lines, .topbar, .to-top,
-  .scroll-cue, .progress, .gate, .portrait__ring { display: none !important; }
+  .scroll-cue, .progress, .gate, .wipe, .portrait__ring { display: none !important; }
   .slab, .entry__body, .card, .arch, .feature, .contact { border: 1px solid #bbb; background: #fff; }
   h1, h2, h3, h4, .facts dd, .ccard__v, .stripe, .hero__proof b { color: #111; }
   .hero__proof span, .entry__kind { color: #444; }
   .dur { border-color: #111; color: #111; }
   .stripe::before, .contact::before { display: none; }
-  .reveal { opacity: 1; transform: none; }
+  .js .reveal { opacity: 1 !important; transform: none; animation: none !important; }
+  .js .reveal::after, .js .reveal .entry__body::after { display: none !important; }
+  .js .reveal .stripe { clip-path: none !important; }
 }

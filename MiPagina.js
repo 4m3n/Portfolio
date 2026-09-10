@@ -15,23 +15,424 @@
   document.documentElement.classList.add('js');
 
   /* ===========================================================================
-     1. INTRO
+     0. BARRIDO DE PANTALLA — a lo Metaphor: ReFantazio
+     Tres bandas sesgadas (magenta, papel, tinta) cruzan la pantalla; cuando
+     la tinta la cubre aparece la cartela del destino (lema, número, título),
+     el cambio ocurre detrás y las bandas se retiran por el otro lado.
+     ======================================================================== */
+  const wipe = $('#wipe');
+  const SNAP = 'cubic-bezier(0.7, 0, 0.2, 1)';
+  const SKEW = 'skewX(-18deg)';
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  /* Promesa que se resuelve cuando el barrido empieza a destapar: las
+     apariciones de la sección de destino esperan a ella para no animarse
+     a ciegas detrás de la tinta. null cuando no hay barrido en curso. */
+  let wiping = null;
+
+  const play = (el, frames, opts) =>
+    el.animate(frames, Object.assign({ fill: 'forwards' }, opts)).finished;
+
+  function runWipe(card, onCovered, hold = 0) {
+    if (!wipe || !wipe.animate || REDUCED) { onCovered(); return Promise.resolve(); }
+
+    const bands = $$('.wipe__band', wipe);
+    const box   = $('.wipe__card', wipe);
+    const num   = $('.wipe__num', wipe);
+    const title = $('.wipe__title .stripe', wipe);
+    const flav  = $('.wipe__flavor', wipe);
+    num.textContent   = card.num;
+    title.textContent = card.title;
+    flav.textContent  = card.flavor;
+
+    let release = () => {};
+    let covered = false;
+    wiping = new Promise((r) => { release = r; });
+    wipe.hidden = false;
+
+    const T = 280, GAP = 50;
+    const cardAt  = T + GAP - 40;              /* justo cuando entra la tinta */
+    const readyAt = cardAt + 60 + 240 + 180;   /* título entero y un respiro para leerlo */
+    const t0 = performance.now();
+
+    const cover = Promise.all(bands.map((b, i) => play(b,
+      [{ transform: `translateX(-100%) ${SKEW}` }, { transform: `translateX(0) ${SKEW}` }],
+      { duration: T, delay: i * GAP, easing: SNAP })));
+
+    play(box, [{ opacity: 0 }, { opacity: 1 }], { duration: 100, delay: cardAt });
+    play(num, [
+      { opacity: 0, transform: 'scale(1.9) rotate(-12deg)' },
+      { opacity: 1, transform: 'scale(0.94) rotate(1.5deg)', offset: 0.7 },
+      { opacity: 1, transform: 'none' },
+    ], { duration: 340, delay: cardAt, easing: 'cubic-bezier(0.2, 0.8, 0.3, 1)' });
+    play(flav, [{ opacity: 0, transform: 'translateX(40px)' }, { opacity: 1, transform: 'none' }],
+      { duration: 300, delay: cardAt + 30, easing: SNAP });
+    play(title, [{ clipPath: 'inset(-30% 100% -30% -30%)' }, { clipPath: 'inset(-30% -30% -30% -30%)' }],
+      { duration: 240, delay: cardAt + 60, easing: SNAP });
+    play($('.wipe__ring', wipe), [{ transform: 'rotate(-50deg)' }, { transform: 'rotate(30deg)' }],
+      { duration: 1400, easing: 'cubic-bezier(0.2, 0.7, 0.3, 1)' });
+
+    const finish = () => {
+      wipe.hidden = true;
+      wipe.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+      release();
+      wiping = null;
+    };
+
+    return cover
+      /* La retirada no empieza hasta que la cartela se ha podido leer. */
+      .then(() => { covered = true; onCovered(); return wait(Math.max(hold, readyAt - (performance.now() - t0))); })
+      .then(() => {
+        release();
+        /* Sale primero la tinta: detrás aún queda el papel y luego el
+           magenta, así la retirada se lee en capas, como al entrar. */
+        const out = [...bands].reverse().map((b, i) => play(b,
+          [{ transform: `translateX(0) ${SKEW}` }, { transform: `translateX(100%) ${SKEW}` }],
+          { duration: T, delay: i * GAP, easing: SNAP }));
+        out.push(play(box,
+          [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateX(12vw) skewX(-10deg)' }],
+          { duration: 240, easing: 'cubic-bezier(0.6, 0, 0.9, 0.4)' }));
+        return Promise.all(out);
+      })
+      .then(finish, () => { if (!covered) onCovered(); finish(); });
+  }
+
+  /* Cartela a partir de la propia cabecera de la sección: así sale siempre
+     en el idioma activo sin duplicar textos. */
+  function cardFor(sec) {
+    const en = document.documentElement.dataset.lang === 'en';
+    const head = $('.sec-head', sec);
+    if (!head) return { num: 'H', title: en ? 'Home' : 'Inicio', flavor: en ? 'THE PROLOGUE' : 'EL PRÓLOGO' };
+    const txt = (sel) => { const n = $(sel, head); return n ? n.textContent.trim() : ''; };
+    return { num: txt('.sec-head__num'), title: txt('.sec-head__title'), flavor: txt('.sec-head__flavor') };
+  }
+
+  /* Salto seco: con scroll-behavior: smooth el navegador desplazaría la
+     página detrás de la tinta y el destino llegaría a medio camino. */
+  function jumpTo(el) {
+    const root = document.documentElement;
+    root.style.scrollBehavior = 'auto';
+    el.scrollIntoView({ block: 'start' });
+    root.style.scrollBehavior = '';
+  }
+
+  document.addEventListener('click', (e) => {
+    if (REDUCED || e.defaultPrevented || e.button !== 0 ||
+        e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = e.target.closest && e.target.closest('a[href^="#"]');
+    /* El enlace de salto es para teclado y lector de pantalla: sin teatro. */
+    if (!a || a.classList.contains('skip')) return;
+    const hash = a.getAttribute('href');
+    const target = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
+    if (!target) return;
+
+    e.preventDefault();
+    if (wiping) return;
+
+    runWipe(cardFor(target), () => {
+      jumpTo(target);
+      if (location.hash !== hash) history.pushState(null, '', hash);
+    }).then(() => {
+      /* El foco viaja con la vista, como en un salto de ancla normal. */
+      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+    });
+  });
+
+  /* ===========================================================================
+     1. INTRO — el sello gira, un tajo magenta parte la pantalla en diagonal y
+     las dos mitades se abren. La portada entra mientras se separan.
      ======================================================================== */
   const gate = $('#gate');
+  const heroReveals = $$('.hero .reveal');
+
+  function openHero() {
+    heroReveals.forEach((el, i) => {
+      el.style.setProperty('--d', `${120 + i * 75}ms`);
+      el.classList.add('is-in');
+    });
+  }
 
   function closeGate() {
-    if (!gate || gate.classList.contains('is-gone')) return;
+    if (!gate) { openHero(); return; }
+    if (gate.classList.contains('is-gone')) return;
+    /* El tajo sigue el corte de las dos mitades (del 64 % al 36 % de alto),
+       así que su ángulo depende de la proporción de la pantalla. */
+    gate.style.setProperty('--slash', `${Math.atan2(-0.28 * window.innerHeight, window.innerWidth)}rad`);
     gate.classList.add('is-gone');
-    setTimeout(() => gate.remove(), 800);
+    openHero();
+    setTimeout(() => gate.remove(), 1100);
   }
 
   window.addEventListener('load', () => {
-    setTimeout(closeGate, REDUCED ? 60 : 650);
+    setTimeout(closeGate, REDUCED ? 60 : 550);
   });
   /* Red de seguridad: la intro nunca debe bloquear la página. */
   setTimeout(closeGate, 2000);
   ['click', 'keydown', 'wheel', 'touchstart'].forEach((ev) =>
     window.addEventListener(ev, closeGate, { once: true, passive: true }));
+
+  /* ===========================================================================
+     1b. PALETAS — cambio a pinceladas de acuarela
+     La página nueva se revela a través de una máscara pintada a mano en un
+     <canvas>: seis pasadas de pincel con cerdas que se quedan sin pigmento
+     al final del trazo (pincel seco), charcos, salpicaduras y un último
+     lavado que iguala el color. Cada fotograma va a una hoja de sprites y
+     la View Transitions API la recorre sobre la captura de la página.
+     ======================================================================== */
+  const THEMES = [
+    { id: 'tinta',     es: 'Tinta',       en: 'Ink',          sw: ['#14120f', '#e0234f', '#33d4c4'] },
+    { id: 'vitela',    es: 'Vitela',      en: 'Vellum',       sw: ['#efe5cf', '#b83a1e', '#1f4e9a'] },
+    { id: 'lapis',     es: 'Lapislázuli', en: 'Lapis lazuli', sw: ['#0e1430', '#e2ac3f', '#ec6a45'] },
+    { id: 'verdaccio', es: 'Verdaccio',   en: 'Verdaccio',    sw: ['#151811', '#c2502f', '#86b995'] },
+  ];
+  const themeBtn = $('#themeBtn');
+  const metaTheme = $('meta[name="theme-color"]');
+  const themeIndex = () =>
+    Math.max(0, THEMES.findIndex((t) => t.id === (document.documentElement.dataset.theme || 'tinta')));
+  const nextTheme = () => THEMES[(themeIndex() + 1) % THEMES.length];
+
+  function syncMeta() {
+    const c = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim();
+    if (metaTheme && c) metaTheme.setAttribute('content', c);
+  }
+
+  function labelTheme() {
+    if (!themeBtn) return;
+    const en = document.documentElement.dataset.lang === 'en';
+    const now = THEMES[themeIndex()];
+    const nx = nextTheme();
+    const label = en
+      ? `Colour palette: ${now.en}. Switch to ${nx.en}`
+      : `Paleta de color: ${now.es}. Cambiar a ${nx.es}`;
+    themeBtn.setAttribute('aria-label', label);
+    themeBtn.setAttribute('title', label);
+    nx.sw.forEach((c, i) => themeBtn.style.setProperty(`--sw${i + 1}`, c));
+  }
+
+  function applyTheme(id) {
+    const root = document.documentElement;
+    if (id === 'tinta') root.removeAttribute('data-theme');
+    else root.dataset.theme = id;
+    try { localStorage.setItem('theme', id); } catch (e) { /* modo privado */ }
+    syncMeta();
+    labelTheme();
+    document.dispatchEvent(new CustomEvent('themechange'));
+  }
+
+  const rand = (a, b) => a + Math.random() * (b - a);
+
+  /* Pinta la hoja de fotogramas de la máscara. Resolución baja a propósito
+     (unos 170 000 px por fotograma): al escalarla a pantalla los bordes se
+     ablandan, que es justo como sangra la acuarela sobre papel húmedo. */
+  function paintBrushSheet() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const k = Math.sqrt(170000 / (vw * vh));
+    const W = Math.max(120, Math.round(vw * k));
+    const H = Math.max(120, Math.round(vh * k));
+    const N = 36, COLS = 6, ROWS = 6;
+
+    const work = document.createElement('canvas');
+    work.width = W; work.height = H;
+    const g = work.getContext('2d');
+    const sheet = document.createElement('canvas');
+    sheet.width = W * COLS; sheet.height = H * ROWS;
+    const s = sheet.getContext('2d');
+    if ('filter' in s) s.filter = 'blur(0.8px)';
+
+    /* Seis pasadas en zigzag, de arriba abajo, como quien imprima un lienzo. */
+    const K = 6;
+    const strokes = Array.from({ length: K }, (_, i) => {
+      const ltr = i % 2 === 0;
+      const yc = ((i + 0.5) / K) * H + rand(-0.03, 0.03) * H;
+      const tilt = rand(-0.14, 0.06) * H;
+      const x0 = ltr ? -0.12 * W : 1.12 * W;
+      const x1 = ltr ? 1.12 * W : -0.12 * W;
+      const y0 = yc - tilt / 2;
+      const y1 = yc + tilt / 2;
+      return {
+        p: [x0, y0,
+            x0 + (x1 - x0) * 0.33, y0 + rand(-0.07, 0.07) * H,
+            x0 + (x1 - x0) * 0.66, y1 + rand(-0.07, 0.07) * H,
+            x1, y1],
+        w: (H / K) * rand(1.75, 2.15),
+        start: i * 0.085,
+        dur: rand(0.34, 0.42),
+        done: 0,
+        seed: rand(0, 100),
+        bristles: Array.from({ length: 18 }, () => ({
+          off: rand(-0.5, 0.5), size: rand(0.6, 1.4), ink: rand(0.55, 1), dry: rand(0.55, 0.95),
+        })),
+      };
+    });
+
+    const bez = (p, u) => {
+      const v = 1 - u, a = v * v * v, b = 3 * v * v * u, c = 3 * v * u * u, d = u * u * u;
+      return [a * p[0] + b * p[2] + c * p[4] + d * p[6], a * p[1] + b * p[3] + c * p[5] + d * p[7]];
+    };
+    const tangent = (p, u) => {
+      const v = 1 - u;
+      const x = 3 * v * v * (p[2] - p[0]) + 6 * v * u * (p[4] - p[2]) + 3 * u * u * (p[6] - p[4]);
+      const y = 3 * v * v * (p[3] - p[1]) + 6 * v * u * (p[5] - p[3]) + 3 * u * u * (p[7] - p[5]);
+      const l = Math.hypot(x, y) || 1;
+      return [x / l, y / l];
+    };
+
+    function paint(st, u0, u1) {
+      const len = Math.abs(st.p[6] - st.p[0]) * 1.05;
+      const n = Math.max(1, Math.ceil(((u1 - u0) * len) / 1.8));
+      const r0 = (st.w / st.bristles.length) * 1.25;
+      for (let j = 1; j <= n; j++) {
+        const u = u0 + (u1 - u0) * (j / n);
+        const [x, y] = bez(st.p, u);
+        const [tx, ty] = tangent(st.p, u);
+        const nx = -ty, ny = tx;
+        /* Presión: entra rápido, se sostiene y se afila al levantar. */
+        const pr = Math.min(1, u / 0.05)
+          * (u > 0.82 ? 1 - ((u - 0.82) / 0.18) * 0.55 : 1)
+          * (0.92 + 0.08 * Math.sin(u * 23 + st.seed));
+        const half = st.w * 0.5 * pr;
+
+        g.fillStyle = '#000';
+        st.bristles.forEach((b) => {
+          /* Cada cerda lleva su carga y se seca a su ritmo: de ahí las
+             estrías de pincel seco al final de la pasada. */
+          const load = b.ink * (u < b.dry ? 1 : Math.max(0, 1 - (u - b.dry) / (1.02 - b.dry)));
+          if (load <= 0.02) return;
+          g.globalAlpha = 0.11 * load;
+          g.beginPath();
+          g.arc(x + nx * b.off * half * 2, y + ny * b.off * half * 2,
+            r0 * b.size * (0.6 + 0.4 * pr), 0, Math.PI * 2);
+          g.fill();
+        });
+
+        /* Charcos de pigmento, donde el agua se acumula y seca más oscura. */
+        if (Math.random() < 0.012) {
+          const bx = x + nx * rand(-half, half), by = y + ny * rand(-half, half);
+          const R = st.w * rand(0.35, 0.7);
+          const pool = g.createRadialGradient(bx, by, 0, bx, by, R);
+          pool.addColorStop(0, 'rgba(0,0,0,0.35)');
+          pool.addColorStop(0.7, 'rgba(0,0,0,0.12)');
+          pool.addColorStop(1, 'rgba(0,0,0,0)');
+          g.globalAlpha = 1;
+          g.fillStyle = pool;
+          g.beginPath(); g.arc(bx, by, R, 0, Math.PI * 2); g.fill();
+          g.fillStyle = '#000';
+        }
+        /* Salpicaduras sueltas alrededor del trazo. */
+        if (Math.random() < 0.02) {
+          g.globalAlpha = rand(0.4, 0.8);
+          g.beginPath();
+          g.arc(x + nx * rand(-1.4, 1.4) * half, y + ny * rand(-1.4, 1.4) * half,
+            rand(0.6, 2.2), 0, Math.PI * 2);
+          g.fill();
+        }
+      }
+    }
+
+    const PAINT_END = 0.84;
+    for (let f = 0; f < N; f++) {
+      const t = f / (N - 1);
+      strokes.forEach((st) => {
+        const u = Math.min(1, Math.max(0, (t - st.start) / st.dur));
+        if (u > st.done) { paint(st, st.done, u); st.done = u; }
+      });
+      if (t > PAINT_END) {
+        /* Lavado final: el agua iguala el color y cubre los huecos. */
+        g.globalAlpha = t >= 1 ? 1 : 0.18 + (t - PAINT_END) * 1.4;
+        g.fillStyle = '#000';
+        g.fillRect(0, 0, W, H);
+      }
+      s.drawImage(work, (f % COLS) * W, Math.floor(f / COLS) * H);
+    }
+
+    return new Promise((resolve) => sheet.toBlob((blob) => {
+      if (!blob) { resolve(null); return; }
+      const url = URL.createObjectURL(blob);
+      /* Decodificada antes de empezar: si no, los primeros fotogramas
+         llegarían sin máscara. */
+      const img = new Image();
+      img.src = url;
+      const ready = img.decode ? img.decode() : Promise.resolve();
+      ready.catch(() => {}).then(() => resolve({ url, vw, vh, N, COLS, ROWS }));
+    }, 'image/png'));
+  }
+
+  function brushCss(sh) {
+    const { url, N, COLS, ROWS } = sh;
+    let kf = '';
+    for (let f = 0; f < N; f++) {
+      const x = ((f % COLS) / (COLS - 1)) * 100;
+      const y = (Math.floor(f / COLS) / (ROWS - 1)) * 100;
+      kf += `${((f / (N - 1)) * 100).toFixed(3)}%{-webkit-mask-position:${x}% ${y}%;mask-position:${x}% ${y}%}`;
+    }
+    const size = `${COLS * 100}% ${ROWS * 100}%`;
+    return `@keyframes brush-reveal{${kf}}
+::view-transition-new(root){
+  -webkit-mask-image:url(${url});mask-image:url(${url});
+  -webkit-mask-size:${size};mask-size:${size};
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  animation:brush-reveal 1.6s step-end both;
+}`;
+  }
+
+  /* Una hoja lista de antemano (se pinta en un rato libre) y otra nueva
+     tras cada uso, para que las pinceladas nunca se repitan. */
+  let sheetJob = null;
+  function prepSheet() {
+    sheetJob = new Promise((resolve) => {
+      const go = () => resolve(paintBrushSheet());
+      if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 1500 });
+      else setTimeout(go, 200);
+    });
+    return sheetJob;
+  }
+
+  const canPaint = !REDUCED && typeof document.startViewTransition === 'function';
+  let painting = false;
+
+  async function switchTheme() {
+    if (painting || wiping) return;
+    const next = nextTheme();
+    const en = document.documentElement.dataset.lang === 'en';
+    const announce = () => say(en ? `Palette — ${next.en}` : `Paleta — ${next.es}`);
+
+    if (!canPaint) { applyTheme(next.id); announce(); return; }
+
+    painting = true;
+    let sh = await (sheetJob || prepSheet());
+    if (!sh || sh.vw !== window.innerWidth || sh.vh !== window.innerHeight) {
+      if (sh) URL.revokeObjectURL(sh.url);
+      sh = await paintBrushSheet();
+    }
+    sheetJob = null;
+    if (!sh) { applyTheme(next.id); announce(); painting = false; return; }
+
+    const style = document.createElement('style');
+    style.textContent = brushCss(sh);
+    document.head.appendChild(style);
+
+    const root = document.documentElement;
+    const vt = document.startViewTransition(() => {
+      root.classList.add('theme-switching');
+      applyTheme(next.id);
+    });
+    vt.ready.catch(() => {});
+    vt.finished.catch(() => {}).then(() => {
+      root.classList.remove('theme-switching');
+      style.remove();
+      URL.revokeObjectURL(sh.url);
+      painting = false;
+      announce();
+      prepSheet();
+    });
+  }
+
+  syncMeta();
+  if (themeBtn) themeBtn.addEventListener('click', switchTheme);
+  /* Después de la intro, para no competir con ella por el hilo principal. */
+  if (canPaint) window.addEventListener('load', () => setTimeout(prepSheet, 1800));
 
   /* ===========================================================================
      2. IDIOMA — ES / EN
@@ -100,6 +501,7 @@
 
     labelBars();
     relabelCopies();
+    labelTheme();
     try { localStorage.setItem('lang', lang); } catch (e) { /* modo privado */ }
   }
 
@@ -109,8 +511,16 @@
 
   if (langBtn) {
     langBtn.addEventListener('click', () => {
+      if (wiping) return;
       lang = document.documentElement.dataset.lang === 'es' ? 'en' : 'es';
-      applyLang(lang);
+      const next = lang;
+      /* Cambiar de idioma es cambiar de menú: barrido corto y el texto se
+         sustituye mientras la tinta tapa la pantalla. */
+      runWipe({
+        num: next.toUpperCase(),
+        title: next === 'en' ? 'English' : 'Español',
+        flavor: next === 'en' ? 'LANGUAGE' : 'IDIOMA',
+      }, () => applyLang(next));
     });
   }
 
@@ -170,7 +580,7 @@
 
     /* Trampa de foco: con el panel abierto, el tabulador no debe escaparse
        hacia el contenido que hay detrás y que además está oculto. */
-    const stops = [...$$('.nav__link', nav), $('#langBtn'), menuBtn].filter(Boolean);
+    const stops = [...$$('.nav__link', nav), $('#themeBtn'), $('#langBtn'), menuBtn].filter(Boolean);
     if (!stops.length) return;
     const first = stops[0];
     const last  = stops[stops.length - 1];
@@ -278,23 +688,27 @@
   }
 
   const revealables = $$('.reveal');
+  const show = (el) => { el.classList.add('is-in'); fillBars(el); };
 
   if ('IntersectionObserver' in window && !REDUCED) {
     const io = new IntersectionObserver((entries, obs) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-in');
-        fillBars(entry.target);
         obs.unobserve(entry.target);
+        /* Si llegamos por un barrido, esperamos a que la tinta se retire. */
+        if (wiping) wiping.then(() => show(entry.target));
+        else show(entry.target);
       });
     }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
 
-    /* Escalonado suave dentro de cada rejilla. */
+    /* Escalonado suave dentro de cada rejilla. Va en una variable y no en
+       transition-delay: así no retrasa también los :hover de las tarjetas. */
     revealables.forEach((el) => {
+      if (heroReveals.includes(el)) return;   /* la portada la abre la intro */
       const siblings = [...(el.parentElement ? el.parentElement.children : [])].filter((n) =>
         n.classList && n.classList.contains('reveal'));
       const i = Math.max(0, siblings.indexOf(el));
-      el.style.transitionDelay = `${Math.min(i, 4) * 70}ms`;
+      el.style.setProperty('--d', `${Math.min(i, 4) * 70}ms`);
       io.observe(el);
     });
   } else {
@@ -386,6 +800,22 @@
     let w = 0, h = 0, dpr = 1, motes = [], raf = null, t = 0;
     let wheelCv = null, wheelR = 0;
 
+    /* Los colores salen de la paleta activa (variables CSS) y se releen
+       cada vez que cambia. */
+    let tint = null;
+    function readTint() {
+      const cs = getComputedStyle(document.documentElement);
+      const rgb = (name, fallback) =>
+        (cs.getPropertyValue(name).trim() || fallback).split(/[\s,]+/).join(', ');
+      tint = {
+        paper: rgb('--paper-rgb', '244 241 232'),
+        rose:  rgb('--rose-rgb', '224 35 79'),
+        aqua:  rgb('--aqua-rgb', '51 212 196'),
+        k:     parseFloat(cs.getPropertyValue('--motes')) || 1,
+      };
+    }
+    readTint();
+
     function resize() {
       dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       w = canvas.clientWidth;
@@ -407,7 +837,7 @@
       const c = wheelCv.getContext('2d');
       c.setTransform(dpr, 0, 0, dpr, 0, 0);
       c.translate(size / 2, size / 2);
-      c.strokeStyle = 'rgba(244, 241, 232, 0.04)';
+      c.strokeStyle = `rgba(${tint.paper}, 0.04)`;
       c.lineWidth = 1;
       for (let i = 0; i < 24; i++) {
         const ang = (i / 24) * Math.PI * 2;
@@ -463,11 +893,12 @@
         const twinkle = 0.65 + Math.sin((t * 0.02) + m.phase) * 0.35;
         ctx.beginPath();
         ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+        const a = m.a * twinkle * tint.k;
         ctx.fillStyle = m.tint > 0.82
-          ? `rgba(224, 35, 79, ${m.a * twinkle * 0.9})`
+          ? `rgba(${tint.rose}, ${a * 0.9})`
           : m.tint > 0.68
-            ? `rgba(51, 212, 196, ${m.a * twinkle * 0.8})`
-            : `rgba(244, 241, 232, ${m.a * twinkle * 0.7})`;
+            ? `rgba(${tint.aqua}, ${a * 0.8})`
+            : `rgba(${tint.paper}, ${a * 0.7})`;
         ctx.fill();
       });
 
@@ -479,6 +910,8 @@
       clearTimeout(rt);
       rt = setTimeout(resize, 180);
     });
+
+    document.addEventListener('themechange', () => { readTint(); buildWheel(); });
 
     /* Pausamos el bucle cuando la pestaña no está visible. */
     document.addEventListener('visibilitychange', () => {
