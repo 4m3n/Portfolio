@@ -1,20 +1,4 @@
-/* =============================================================================
-   HAMEEM AFNAN — PORTFOLIO
-   Dirección de arte: tinta y papel rasgado.
-   Franjas blancas de borde roto, didone de altísimo contraste, magenta y
-   turquesa como acentos, barras sesgadas y retículas circulares.
-   ============================================================================= */
-
-/* ---------------------------------------------------------------------------
-   1. TOKENS
-   ------------------------------------------------------------------------ */
 :root {
-  /* Los nombres describen el papel, no el tono: --ink es el FONDO y --paper
-     la FIGURA. En la paleta clara se invierten los valores y todo el diseño
-     (franjas, botones, panel de contacto) se da la vuelta sin tocar reglas.
-     Los -rgb existen para poder dar transparencia: rgb(var(--x-rgb) / .5). */
-
-  /* Tinta — fondo */
   --ink:        #14120f;  --ink-rgb:   20 18 15;
   --ink-2:      #1b1815;
   --ink-3:      #23201c;  --ink-3-rgb: 35 32 28;
@@ -22,14 +6,12 @@
   --bg-1:       #221d18;
   --bg-2:       #16130f;
 
-  /* Papel — figura */
   --paper:      #f4f1e8;  --paper-rgb: 244 241 232;
   --paper-2:    #ded8c8;
   --paper-3:    #9b968a;
   --ink-line:   rgb(var(--paper-rgb) / 0.14);
   --ink-line-2: rgb(var(--paper-rgb) / 0.28);
 
-  /* Acentos */
   --rose:       #e0234f;  --rose-rgb:  224 35 79;
   --rose-deep:  #a50f36;
   --on-rose:    #fff;     --on-rose-rgb: 255 255 255;
@@ -37,13 +19,11 @@
   --aqua-deep:  #157f79;
   --gold:       #e6b23c;
 
-  /* Ambiente */
   --thumb:      #3b3630;
   --glow:       0.5;
   --grain:      0.05;
   --motes:      1;
 
-  /* Tipografía */
   --display: 'Bodoni Moda', 'Didot', 'Times New Roman', serif;
   --body:    'EB Garamond', Georgia, 'Times New Roman', serif;
   --label:   'Barlow Condensed', 'Arial Narrow', sans-serif;
@@ -51,18 +31,10 @@
   --wrap: 1200px;
   --pad:  clamp(1.1rem, 4vw, 3.4rem);
   --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
-  /* Arranque seco y frenada brusca: el golpe de los menús de Atlus. */
   --snap: cubic-bezier(0.7, 0, 0.2, 1);
-  /* Rebote corto para lo que se "estampa". */
   --pop:  cubic-bezier(0.2, 1.35, 0.4, 1);
 }
 
-/* Paletas. Cada una lleva el nombre de un pigmento o una técnica de la
-   pintura antigua, la misma fuente de la que bebe Metaphor: ReFantazio.
-   Sólo redefinen variables: ninguna regla del resto de la hoja cambia. */
-
-/* Vitela — manuscrito iluminado: pergamino, tinta ferrogálica, bermellón
-   y lapislázuli. La única clara. */
 :root[data-theme="vitela"] {
   --ink:        #efe5cf;  --ink-rgb:   239 229 207;
   --ink-2:      #e8dcc2;
@@ -74,8 +46,6 @@
   --paper-2:    #4b3a2c;
   --paper-3:    #7a6653;
   --rose:       #b83a1e;  --rose-rgb:  184 58 30;
-  /* Las variantes -deep se usan sobre --paper; aquí el papel es oscuro,
-     así que el "profundo" tiene que ser el tono claro del pigmento. */
   --rose-deep:  #e07a5c;
   --on-rose:    #fbf3e2;  --on-rose-rgb: 251 243 226;
   --aqua:       #1f4e9a;  --aqua-rgb:  31 78 154;
@@ -87,8 +57,6 @@
   --motes:      0.55;
 }
 
-/* Lapislázuli — el azul más caro del Renacimiento, con oro en hoja y
-   bermellón como acentos. */
 :root[data-theme="lapis"] {
   --ink:        #0e1430;  --ink-rgb:   14 20 48;
   --ink-2:      #121a3b;
@@ -108,8 +76,6 @@
   --thumb:      #26336a;
 }
 
-/* Verdaccio — la base verdosa sobre la que los maestros antiguos
-   modelaban la carne, con sanguina y cardenillo. */
 :root[data-theme="verdaccio"] {
   --ink:        #151811;  --ink-rgb:   21 24 17;
   --ink-2:      #1a1e15;
@@ -129,9 +95,6 @@
   --thumb:      #343a28;
 }
 
-/* ---------------------------------------------------------------------------
-   2. BASE
-   ------------------------------------------------------------------------ */
 *, *::before, *::after { box-sizing: border-box; }
 
 .svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
@@ -176,9 +139,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 ::-webkit-scrollbar-thumb { background: var(--thumb); border: 2px solid var(--deep); }
 ::-webkit-scrollbar-thumb:hover { background: var(--rose); }
 
-/* ---------------------------------------------------------------------------
-   3. FRANJA RASGADA — el gesto central del estilo
-   ------------------------------------------------------------------------ */
 .stripe {
   position: relative;
   display: inline-block;
@@ -198,8 +158,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .stripe--rose::before { background: var(--rose); filter: url(#fx-torn-sm); }
 .stripe--paper::before { background: var(--paper); }
 
-/* Píldora sesgada, como los contadores del juego.
-   El sesgo va siempre en el fondo: el texto se queda recto y legible. */
 .skewpill {
   position: relative; isolation: isolate;
   display: inline-block;
@@ -213,9 +171,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   background: var(--paper); transform: skewX(-14deg); z-index: -1;
 }
 
-/* ---------------------------------------------------------------------------
-   4. AMBIENTE
-   ------------------------------------------------------------------------ */
 #bg-canvas {
   position: fixed; inset: 0; z-index: -5;
   width: 100%; height: 100%; display: block;
@@ -273,12 +228,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   will-change: transform;
 }
 
-/* ---------------------------------------------------------------------------
-   5. INTRO
-   ------------------------------------------------------------------------ */
-/* Dos mitades de tinta cortadas en diagonal. Al salir, un tajo magenta
-   recorre el corte y cada mitad huye hacia su lado. Se solapan un pelo
-   para que el antialiasing no deje ver una rendija del fondo. */
 .gate { display: none; }
 .js .gate {
   display: grid;
@@ -350,13 +299,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   to   { opacity: 1; transform: none; }
 }
 
-/* ---------------------------------------------------------------------------
-   5b. BARRIDO ENTRE SECCIONES
-   Magenta, papel y tinta cruzan la pantalla en bandas sesgadas; cuando la
-   tinta la cubre aparece la cartela del destino y el salto ocurre detrás.
-   Las bandas miden 240vw para que el sesgo no deje esquinas al aire ni en
-   un móvil en vertical. Los movimientos los lleva MiPagina.js (WAAPI).
-   ------------------------------------------------------------------------ */
 .wipe { position: fixed; inset: 0; z-index: 250; overflow: hidden; }
 .wipe__band {
   position: absolute; top: -10%; left: -70vw;
@@ -410,23 +352,12 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 }
 .wipe__title .stripe { transform: rotate(-1.5deg); }
 
-/* ---------------------------------------------------------------------------
-   5c. CAMBIO DE PALETA — revelado a pinceladas de acuarela
-   La página con los colores nuevos aparece a través de una máscara pintada
-   en un <canvas> (MiPagina.js) y recorrida fotograma a fotograma sobre la
-   captura que hace la View Transitions API. Aquí sólo se apaga el fundido
-   por defecto y se congelan las transiciones mientras se pinta, para que
-   nada llegue a medio camino entre una paleta y otra.
-   ------------------------------------------------------------------------ */
 .theme-switching *,
 .theme-switching *::before,
 .theme-switching *::after { transition: none !important; }
 ::view-transition-old(root),
 ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 
-/* ---------------------------------------------------------------------------
-   6. BARRA SUPERIOR
-   ------------------------------------------------------------------------ */
 .topbar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 50;
   display: flex; align-items: center; gap: 1.2rem;
@@ -487,8 +418,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   transform: scaleX(0); transform-origin: left;
   transition: transform 0.3s var(--ease);
 }
-/* Cursor de menú: una losa de papel sesgada entra por la izquierda y el
-   texto pasa a tinta, como al moverse por los menús del juego. */
 .nav__link::before {
   content: ''; position: absolute; inset: 0.1rem 0.15rem;
   background: var(--paper);
@@ -523,8 +452,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .pill-btn:hover { color: var(--ink); }
 .pill-btn:hover::before { background: var(--paper); border-color: var(--paper); }
 
-/* Botón de paleta: un pincel y tres gotas con los pigmentos de la paleta
-   SIGUIENTE, para que se vea qué va a pasar antes de pulsar. */
 .theme-btn {
   display: inline-flex; align-items: center; gap: 0.4rem;
   min-height: 2.4rem;
@@ -558,9 +485,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-/* ---------------------------------------------------------------------------
-   7. PORTADA
-   ------------------------------------------------------------------------ */
 .hero {
   position: relative;
   min-height: 100svh;
@@ -623,8 +547,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   color: rgb(var(--paper-rgb) / 0.72);
 }
 
-/* Datos duros: la cifra en didone, la glosa en condensada. Tres columnas
-   separadas por filete, que en móvil se apilan en una sola. */
 .hero__proof {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 10.5rem));
@@ -695,7 +617,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .hero__links a { border-bottom: 1px solid var(--ink-line); padding-bottom: 2px; transition: color 0.25s, border-color 0.25s; }
 .hero__links a:hover { color: var(--aqua); border-color: var(--aqua); }
 
-/* Retrato con retícula */
 .hero__portrait { display: grid; place-items: center; }
 .portrait { position: relative; width: min(340px, 76vw); aspect-ratio: 1; }
 
@@ -754,14 +675,10 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   50%      { transform: scaleY(1); transform-origin: top; opacity: 1; }
 }
 
-/* En pantallas bajas el indicador de scroll chocaba con los enlaces */
 @media (max-height: 860px) and (min-width: 881px) {
   .scroll-cue { display: none; }
 }
 
-/* ---------------------------------------------------------------------------
-   8. CABECERA DE SECCIÓN
-   ------------------------------------------------------------------------ */
 .section {
   position: relative;
   max-width: var(--wrap); margin: 0 auto;
@@ -825,9 +742,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   background: var(--rose); filter: url(#fx-torn-sm); z-index: -1;
 }
 
-/* ---------------------------------------------------------------------------
-   9. PANELES
-   ------------------------------------------------------------------------ */
 .slab {
   position: relative;
   padding: clamp(1.4rem, 3.2vw, 2.4rem);
@@ -862,7 +776,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   color: var(--paper);
 }
 
-/* Ficha */
 .facts { margin: 1.6rem 0 0; border-top: 1px solid var(--ink-line); }
 .facts > div {
   display: grid; grid-template-columns: minmax(118px, 28%) 1fr; gap: 1rem;
@@ -883,7 +796,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .dot { width: 7px; height: 7px; background: var(--aqua); transform: rotate(45deg); animation: blink 2s ease-in-out infinite; }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
 
-/* Virtudes */
 .virtues { display: grid; gap: 1.3rem; }
 .virtue {
   display: grid;
@@ -925,9 +837,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   line-height: 1.45;
 }
 
-/* ---------------------------------------------------------------------------
-   10. TRAYECTORIA
-   ------------------------------------------------------------------------ */
 .log { display: grid; gap: clamp(1rem, 2.4vw, 1.6rem); }
 
 .entry {
@@ -975,11 +884,9 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .live--off { color: rgb(var(--paper-rgb) / 0.4); }
 .live--off::before { background: rgb(var(--paper-rgb) / 0.4); animation: none; }
 
-/* Puesto ya cerrado: sigue contando, pero no parpadea. */
 .live--done { color: var(--paper-3); }
 .live--done::before { background: var(--paper-3); animation: none; }
 
-/* Sello de duración — la cifra manda, la unidad acompaña. */
 .dur {
   display: inline-flex; align-items: baseline; gap: 0.5em;
   padding: 0.1rem 0.55rem 0.16rem 0.62rem;
@@ -995,7 +902,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   color: var(--paper);
 }
 
-/* Naturaleza del vínculo (prácticas, contrato…) bajo el nombre de la empresa. */
 .entry__kind {
   margin: -0.6rem 0 1rem;
   padding-left: 0.9rem;
@@ -1023,7 +929,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   border: 1px solid var(--aqua); transform: rotate(45deg);
 }
 
-/* Etiquetas técnicas */
 .chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .chips span {
   position: relative; isolation: isolate;
@@ -1042,7 +947,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .chips span:hover { color: var(--ink); }
 .chips span:hover::before { background: var(--paper); border-color: var(--paper); }
 
-/* Procedencia del caso de estudio, en filete fino bajo el titular. */
 .feature__meta {
   display: flex; flex-wrap: wrap; align-items: center;
   gap: 0.35rem 0.7rem;
@@ -1056,9 +960,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 }
 .feature__meta span:first-child { color: var(--rose); }
 
-/* ---------------------------------------------------------------------------
-   11. PROYECTOS
-   ------------------------------------------------------------------------ */
 .feature {
   position: relative;
   display: grid; grid-template-columns: 1fr auto;
@@ -1084,13 +985,8 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .feature__body p { max-width: 60ch; color: rgb(var(--paper-rgb) / 0.74); }
 .feature__mark svg { width: clamp(110px, 15vw, 190px); height: auto; overflow: visible; }
 
-/* El caso de Odoo no lleva enlace a repositorio: el codigo es del cliente.
-   Se dice en la propia tarjeta para que la ausencia se lea como una razon
-   y no como un descuido. */
 .feature__body .feature__closed {
   display: inline-flex; align-items: center; gap: 0.5rem;
-  /* Sin esto hereda el max-width: 60ch del parrafo descriptivo, que en la
-     tipografia condensada de etiqueta parte la linea por la mitad. */
   max-width: none;
   margin-top: 1rem;
   font-family: var(--label); font-size: 0.9rem; font-weight: 600;
@@ -1112,8 +1008,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
   gap: clamp(1rem, 2.4vw, 1.6rem);
 }
-/* Con cuatro tarjetas, auto-fit sólo cabe a tres por fila y deja la última
-   suelta. A partir de tablet las repartimos en dos columnas: 2 × 2. */
 @media (min-width: 700px) {
   .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -1145,8 +1039,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 }
 .card:hover .card__shot img { transform: scale(1.05); filter: none; }
 
-/* Variante sin captura: emblema vectorial con el mismo lenguaje gráfico que
-   la ficha destacada, para que la tarjeta conserve la altura de las demás. */
 .card__shot--art {
   display: grid; place-items: center;
   background:
@@ -1166,12 +1058,8 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .b-slash { fill: none; stroke: var(--aqua); stroke-width: 2.4; stroke-linecap: round; opacity: 0.85; }
 .card:hover .b-eye { fill: var(--gold); }
 
-/* Reservamos dos líneas para el epígrafe: así los títulos de las tres
-   tarjetas quedan a la misma altura aunque el texto sea más largo. */
 .card .kicker { line-height: 1.35; min-height: 2.7em; }
 .card__title { font-size: 1.456rem; font-weight: 800; margin-bottom: 0.55rem; }
-/* Sólo el párrafo descriptivo estira la tarjeta; el epígrafe también es un
-   <p> y antes se llevaba el espacio sobrante, descuadrando los títulos. */
 .card p { font-size: 1.16rem; color: rgb(var(--paper-rgb) / 0.7); }
 .card > p:not(.kicker) { flex: 1; }
 .card .chips { margin-bottom: 1rem; }
@@ -1196,9 +1084,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .act:hover { color: var(--on-rose); }
 .act:hover::before { background: var(--rose); }
 
-/* ---------------------------------------------------------------------------
-   12. HABILIDADES
-   ------------------------------------------------------------------------ */
 .archs { display: grid; grid-template-columns: repeat(auto-fit, minmax(292px, 1fr)); gap: clamp(1rem, 2.4vw, 1.6rem); }
 .arch {
   padding: 1.4rem;
@@ -1267,16 +1152,12 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   height: clamp(26px, 3.8vw, 38px); width: auto;
   padding: 0.55rem 0.75rem;
   box-sizing: content-box;
-  /* Fijo en todas las paletas: los logos están pensados para fondo claro. */
   background: #f4f1e8;
   filter: saturate(0.9); opacity: 0.8;
   transition: opacity 0.35s, transform 0.35s var(--ease), filter 0.35s;
 }
 .stack img:hover { opacity: 1; filter: none; transform: translateY(-5px); }
 
-/* ---------------------------------------------------------------------------
-   13. FORMACIÓN
-   ------------------------------------------------------------------------ */
 .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: clamp(1rem, 2.4vw, 1.6rem); align-items: start; }
 
 .rule { border: 0; height: 1px; background: var(--ink-line); margin: 1.6rem 0 1.1rem; }
@@ -1310,7 +1191,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .pips i { width: 10px; height: 10px; border: 1px solid var(--aqua); transform: skewX(-20deg); }
 .pips i.on { background: var(--aqua); }
 
-/* Manchas de tinta para las aptitudes */
 .splats { display: flex; flex-wrap: wrap; gap: 0.7rem 0.85rem; }
 .splats span {
   position: relative; isolation: isolate;
@@ -1329,9 +1209,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .splats span:nth-child(3n+2)::before { background: var(--rose); }
 .splats span:nth-child(3n+2) { color: var(--on-rose); }
 
-/* ---------------------------------------------------------------------------
-   14. CONTACTO — panel de papel, tinta oscura
-   ------------------------------------------------------------------------ */
 .contact { position: relative; isolation: isolate; padding: 0.6rem; }
 .contact::before {
   content: ''; position: absolute; inset: 0;
@@ -1375,8 +1252,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .ccard:hover .ccard__k { color: var(--rose); }
 .ccard--static:hover .ccard__k { color: var(--rose-deep); }
 .ccard__v { font-family: var(--label); font-size: 1.137rem; letter-spacing: 0.04em; overflow-wrap: break-word; }
-/* Tarjeta con acción doble: el enlace ocupa toda la ficha, el botón de
-   copia se recorta a su esquina. Nunca un botón dentro de un enlace. */
 .ccard--copy { position: relative; flex-direction: row; align-items: stretch; gap: 0; padding: 0; }
 .ccard__hit {
   display: flex; flex-direction: column; gap: 0.18rem;
@@ -1402,7 +1277,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .ccard--cv .ccard__k { color: rgb(var(--on-rose-rgb) / 0.85); }
 .ccard--cv:hover { background: var(--ink); border-color: var(--ink); }
 
-/* Aviso efímero de "copiado" */
 .toast {
   position: fixed; z-index: 300;
   left: 50%; bottom: 2rem;
@@ -1418,9 +1292,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 }
 .toast.is-on { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
 
-/* ---------------------------------------------------------------------------
-   15. PIE
-   ------------------------------------------------------------------------ */
 .foot {
   display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
   padding: 2.4rem var(--pad) 3rem;
@@ -1455,16 +1326,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 .to-top:hover { color: var(--on-rose); }
 .to-top:hover::before { background: var(--rose); }
 
-/* ---------------------------------------------------------------------------
-   16. APARICIONES
-   ------------------------------------------------------------------------ */
-/* Estilo Atlus: cada bloque entra sesgado desde la izquierda, los paneles
-   llegan tapados por una hoja de papel que se despega hacia la derecha y las
-   cabeceras estampan su número mientras un tajo magenta las subraya.
-
-   Son animaciones con relleno 'backwards', no transiciones: al terminar, el
-   elemento vuelve a sus propias reglas y los :hover (que también mueven
-   transform) siguen funcionando. --d es el escalonado que pone el script. */
 [tabindex="-1"]:focus { outline: none; }
 
 .js .reveal:not(.is-in) { opacity: 0; }
@@ -1474,7 +1335,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   to   { opacity: 1; transform: none; }
 }
 
-/* Hoja de papel con canto magenta que cubre el panel y se despega. */
 .js .slab.reveal, .js .card.reveal, .js .arch.reveal,
 .js .feature.reveal, .js .entry.reveal .entry__body { position: relative; }
 .js .slab.reveal::after,
@@ -1497,17 +1357,12 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 }
 @keyframes peel { to { transform: scaleX(0); } }
 
-/* La franja se pinta de izquierda a derecha, como un trazo de pincel.
-   El recorte va en el elemento padre, no en el pseudo-elemento filtrado:
-   animarlo sobre el filtro obligaría a recalcular el ruido en cada fotograma. */
 .js .reveal .stripe {
   clip-path: inset(-30% 100% -30% -30%);
   transition: clip-path 0.55s var(--snap) calc(var(--d, 0ms) + 0.3s);
 }
 .js .reveal.is-in .stripe { clip-path: inset(-30% -30% -30% -30%); }
 
-/* Cabecera de sección: el número se estampa, el lema entra por la derecha
-   y un tajo magenta cruza por debajo y se desvanece. */
 .js .sec-head.reveal.is-in .sec-head__num { animation: slam 0.6s var(--pop) var(--d, 0ms) backwards; }
 @keyframes slam {
   0%   { opacity: 0; transform: scale(1.9) rotate(-12deg); }
@@ -1532,14 +1387,11 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   100% { transform: scaleX(0); transform-origin: right center; }
 }
 
-/* Con JS las barras parten de cero y crecen al entrar en pantalla; sin JS
-   se pintan directamente en su valor (la clase .js la añade el script). */
 .js .virtue__track i,
 .js .skill__track i { transform: scaleX(0); }
 .js .reveal .virtue__track i,
 .js .reveal .skill__track i { transition-delay: calc(var(--d, 0ms) + 0.35s); }
 
-/* Destello al completarse la barra, como al subir de rango. */
 .virtue__track i, .skill__track i { position: relative; overflow: hidden; }
 .virtue__track i::after, .skill__track i::after {
   content: ''; position: absolute; inset: 0;
@@ -1552,9 +1404,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 }
 @keyframes glint { to { transform: translateX(100%); } }
 
-/* ---------------------------------------------------------------------------
-   17. RESPONSIVE
-   ------------------------------------------------------------------------ */
 @media (max-width: 1040px) {
   .hero__inner { grid-template-columns: 1fr; gap: 2.6rem; }
   .hero__portrait { order: -1; }
@@ -1564,8 +1413,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   .feature__mark { order: -1; justify-self: start; }
 }
 
-/* Entre tablet grande y escritorio pequeño la navegación va justa: se
-   sacrifican los numeritos y el espaciado, nunca el tamaño de la letra. */
 @media (max-width: 1280px) and (min-width: 881px) {
   .nav__link { padding: 0.42rem 0.5rem; letter-spacing: 0.06em; }
   .nav__link b { display: none; }
@@ -1588,7 +1435,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 }
 .scrim.is-on { opacity: 1; visibility: visible; }
 
-/* El botón de "volver arriba" vive en 45 y se colaría por encima del velo. */
 .menu-open .to-top { opacity: 0; pointer-events: none; }
 
 @media (max-width: 880px) {
@@ -1642,9 +1488,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   .hero__proof b { font-size: 2.25rem; }
 }
 
-/* ---------------------------------------------------------------------------
-   18. MOVIMIENTO REDUCIDO
-   ------------------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
@@ -1658,9 +1501,6 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
   #bg-canvas, .fx-grain { display: none; }
 }
 
-/* ---------------------------------------------------------------------------
-   19. IMPRESIÓN
-   ------------------------------------------------------------------------ */
 @media print {
   body { background: #fff; color: #111; }
   #bg-canvas, .fx-strokes, .fx-grain, .fx-lines, .topbar, .to-top,

@@ -1,8 +1,3 @@
-/* =============================================================================
-   HAMEEM AFNAN — PORTFOLIO
-   Intro, idioma ES/EN, navegación, apariciones al hacer scroll,
-   barras animadas y fondo generativo en canvas.
-   ============================================================================= */
 (() => {
   'use strict';
 
@@ -10,24 +5,13 @@
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
   const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* La clase 'js' ya la puso el <script> en línea del <head>; la reafirmamos
-     por si este fichero se usa suelto en otra página. */
   document.documentElement.classList.add('js');
 
-  /* ===========================================================================
-     0. BARRIDO DE PANTALLA — a lo Metaphor: ReFantazio
-     Tres bandas sesgadas (magenta, papel, tinta) cruzan la pantalla; cuando
-     la tinta la cubre aparece la cartela del destino (lema, número, título),
-     el cambio ocurre detrás y las bandas se retiran por el otro lado.
-     ======================================================================== */
   const wipe = $('#wipe');
   const SNAP = 'cubic-bezier(0.7, 0, 0.2, 1)';
   const SKEW = 'skewX(-18deg)';
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
-  /* Promesa que se resuelve cuando el barrido empieza a destapar: las
-     apariciones de la sección de destino esperan a ella para no animarse
-     a ciegas detrás de la tinta. null cuando no hay barrido en curso. */
   let wiping = null;
 
   const play = (el, frames, opts) =>
@@ -51,8 +35,8 @@
     wipe.hidden = false;
 
     const T = 280, GAP = 50;
-    const cardAt  = T + GAP - 40;              /* justo cuando entra la tinta */
-    const readyAt = cardAt + 60 + 240 + 180;   /* título entero y un respiro para leerlo */
+    const cardAt  = T + GAP - 40;
+    const readyAt = cardAt + 60 + 240 + 180;
     const t0 = performance.now();
 
     const cover = Promise.all(bands.map((b, i) => play(b,
@@ -80,12 +64,9 @@
     };
 
     return cover
-      /* La retirada no empieza hasta que la cartela se ha podido leer. */
       .then(() => { covered = true; onCovered(); return wait(Math.max(hold, readyAt - (performance.now() - t0))); })
       .then(() => {
         release();
-        /* Sale primero la tinta: detrás aún queda el papel y luego el
-           magenta, así la retirada se lee en capas, como al entrar. */
         const out = [...bands].reverse().map((b, i) => play(b,
           [{ transform: `translateX(0) ${SKEW}` }, { transform: `translateX(100%) ${SKEW}` }],
           { duration: T, delay: i * GAP, easing: SNAP }));
@@ -97,8 +78,6 @@
       .then(finish, () => { if (!covered) onCovered(); finish(); });
   }
 
-  /* Cartela a partir de la propia cabecera de la sección: así sale siempre
-     en el idioma activo sin duplicar textos. */
   function cardFor(sec) {
     const en = document.documentElement.dataset.lang === 'en';
     const head = $('.sec-head', sec);
@@ -107,8 +86,6 @@
     return { num: txt('.sec-head__num'), title: txt('.sec-head__title'), flavor: txt('.sec-head__flavor') };
   }
 
-  /* Salto seco: con scroll-behavior: smooth el navegador desplazaría la
-     página detrás de la tinta y el destino llegaría a medio camino. */
   function jumpTo(el) {
     const root = document.documentElement;
     root.style.scrollBehavior = 'auto';
@@ -120,7 +97,6 @@
     if (REDUCED || e.defaultPrevented || e.button !== 0 ||
         e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     const a = e.target.closest && e.target.closest('a[href^="#"]');
-    /* El enlace de salto es para teclado y lector de pantalla: sin teatro. */
     if (!a || a.classList.contains('skip')) return;
     const hash = a.getAttribute('href');
     const target = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
@@ -133,16 +109,11 @@
       jumpTo(target);
       if (location.hash !== hash) history.pushState(null, '', hash);
     }).then(() => {
-      /* El foco viaja con la vista, como en un salto de ancla normal. */
       if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
       target.focus({ preventScroll: true });
     });
   });
 
-  /* ===========================================================================
-     1. INTRO — el sello gira, un tajo magenta parte la pantalla en diagonal y
-     las dos mitades se abren. La portada entra mientras se separan.
-     ======================================================================== */
   const gate = $('#gate');
   const heroReveals = $$('.hero .reveal');
 
@@ -156,8 +127,6 @@
   function closeGate() {
     if (!gate) { openHero(); return; }
     if (gate.classList.contains('is-gone')) return;
-    /* El tajo sigue el corte de las dos mitades (del 64 % al 36 % de alto),
-       así que su ángulo depende de la proporción de la pantalla. */
     gate.style.setProperty('--slash', `${Math.atan2(-0.28 * window.innerHeight, window.innerWidth)}rad`);
     gate.classList.add('is-gone');
     openHero();
@@ -167,19 +136,10 @@
   window.addEventListener('load', () => {
     setTimeout(closeGate, REDUCED ? 60 : 550);
   });
-  /* Red de seguridad: la intro nunca debe bloquear la página. */
   setTimeout(closeGate, 2000);
   ['click', 'keydown', 'wheel', 'touchstart'].forEach((ev) =>
     window.addEventListener(ev, closeGate, { once: true, passive: true }));
 
-  /* ===========================================================================
-     1b. PALETAS — cambio a pinceladas de acuarela
-     La página nueva se revela a través de una máscara pintada a mano en un
-     <canvas>: seis pasadas de pincel con cerdas que se quedan sin pigmento
-     al final del trazo (pincel seco), charcos, salpicaduras y un último
-     lavado que iguala el color. Cada fotograma va a una hoja de sprites y
-     la View Transitions API la recorre sobre la captura de la página.
-     ======================================================================== */
   const THEMES = [
     { id: 'tinta',     es: 'Tinta',       en: 'Ink',          sw: ['#14120f', '#e0234f', '#33d4c4'] },
     { id: 'vitela',    es: 'Vitela',      en: 'Vellum',       sw: ['#efe5cf', '#b83a1e', '#1f4e9a'] },
@@ -214,7 +174,7 @@
     const root = document.documentElement;
     if (id === 'tinta') root.removeAttribute('data-theme');
     else root.dataset.theme = id;
-    try { localStorage.setItem('theme', id); } catch (e) { /* modo privado */ }
+    try { localStorage.setItem('theme', id); } catch (e) {}
     syncMeta();
     labelTheme();
     document.dispatchEvent(new CustomEvent('themechange'));
@@ -222,9 +182,6 @@
 
   const rand = (a, b) => a + Math.random() * (b - a);
 
-  /* Pinta la hoja de fotogramas de la máscara. Resolución baja a propósito
-     (unos 170 000 px por fotograma): al escalarla a pantalla los bordes se
-     ablandan, que es justo como sangra la acuarela sobre papel húmedo. */
   function paintBrushSheet() {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
@@ -241,7 +198,6 @@
     const s = sheet.getContext('2d');
     if ('filter' in s) s.filter = 'blur(0.8px)';
 
-    /* Seis pasadas en zigzag, de arriba abajo, como quien imprima un lienzo. */
     const K = 6;
     const strokes = Array.from({ length: K }, (_, i) => {
       const ltr = i % 2 === 0;
@@ -288,7 +244,6 @@
         const [x, y] = bez(st.p, u);
         const [tx, ty] = tangent(st.p, u);
         const nx = -ty, ny = tx;
-        /* Presión: entra rápido, se sostiene y se afila al levantar. */
         const pr = Math.min(1, u / 0.05)
           * (u > 0.82 ? 1 - ((u - 0.82) / 0.18) * 0.55 : 1)
           * (0.92 + 0.08 * Math.sin(u * 23 + st.seed));
@@ -296,8 +251,6 @@
 
         g.fillStyle = '#000';
         st.bristles.forEach((b) => {
-          /* Cada cerda lleva su carga y se seca a su ritmo: de ahí las
-             estrías de pincel seco al final de la pasada. */
           const load = b.ink * (u < b.dry ? 1 : Math.max(0, 1 - (u - b.dry) / (1.02 - b.dry)));
           if (load <= 0.02) return;
           g.globalAlpha = 0.11 * load;
@@ -307,7 +260,6 @@
           g.fill();
         });
 
-        /* Charcos de pigmento, donde el agua se acumula y seca más oscura. */
         if (Math.random() < 0.012) {
           const bx = x + nx * rand(-half, half), by = y + ny * rand(-half, half);
           const R = st.w * rand(0.35, 0.7);
@@ -320,7 +272,6 @@
           g.beginPath(); g.arc(bx, by, R, 0, Math.PI * 2); g.fill();
           g.fillStyle = '#000';
         }
-        /* Salpicaduras sueltas alrededor del trazo. */
         if (Math.random() < 0.02) {
           g.globalAlpha = rand(0.4, 0.8);
           g.beginPath();
@@ -339,7 +290,6 @@
         if (u > st.done) { paint(st, st.done, u); st.done = u; }
       });
       if (t > PAINT_END) {
-        /* Lavado final: el agua iguala el color y cubre los huecos. */
         g.globalAlpha = t >= 1 ? 1 : 0.18 + (t - PAINT_END) * 1.4;
         g.fillStyle = '#000';
         g.fillRect(0, 0, W, H);
@@ -350,8 +300,6 @@
     return new Promise((resolve) => sheet.toBlob((blob) => {
       if (!blob) { resolve(null); return; }
       const url = URL.createObjectURL(blob);
-      /* Decodificada antes de empezar: si no, los primeros fotogramas
-         llegarían sin máscara. */
       const img = new Image();
       img.src = url;
       const ready = img.decode ? img.decode() : Promise.resolve();
@@ -377,8 +325,6 @@
 }`;
   }
 
-  /* Una hoja lista de antemano (se pinta en un rato libre) y otra nueva
-     tras cada uso, para que las pinceladas nunca se repitan. */
   let sheetJob = null;
   function prepSheet() {
     sheetJob = new Promise((resolve) => {
@@ -396,7 +342,7 @@
     if (painting || wiping) return;
     const next = nextTheme();
     const en = document.documentElement.dataset.lang === 'en';
-    const announce = () => say(en ? `Palette — ${next.en}` : `Paleta — ${next.es}`);
+    const announce = () => say(en ? `Palette: ${next.en}` : `Paleta: ${next.es}`);
 
     if (!canPaint) { applyTheme(next.id); announce(); return; }
 
@@ -431,23 +377,18 @@
 
   syncMeta();
   if (themeBtn) themeBtn.addEventListener('click', switchTheme);
-  /* Después de la intro, para no competir con ella por el hilo principal. */
   if (canPaint) window.addEventListener('load', () => setTimeout(prepSheet, 1800));
 
-  /* ===========================================================================
-     2. IDIOMA — ES / EN
-     ======================================================================== */
   const langBtn   = $('#langBtn');
   const langLabel = $('#langLabel');
   const i18nNodes = $$('[data-en]');
 
-  /* Guardamos el español original la primera vez. */
   i18nNodes.forEach((el) => { el.dataset.es = el.textContent.trim(); });
 
   const META = {
     es: {
-      title: 'Hameem Afnan — Desarrollador de Software · Madrid',
-      desc:  'Hameem Afnan Akther Faroquee — Desarrollador de Software en Madrid. 10 meses integrando ERP Odoo, APIs RESTful y bases de datos en producción (Tailored Spain). Portfolio, proyectos y CV.',
+      title: 'Hameem Afnan | Desarrollador de Software · Madrid',
+      desc:  'Hameem Afnan Akther Faroquee, desarrollador de software en Madrid. 10 meses integrando ERP Odoo, APIs RESTful y bases de datos en producción (Tailored Spain). Portfolio, proyectos y CV.',
       og:    '10 meses integrando ERP Odoo y APIs RESTful en producción. Desarrollo multiplataforma. Madrid, España.',
       loc:   'es_ES',
       menu:  'Abrir menú',
@@ -459,8 +400,8 @@
       copied:'Copiado al portapapeles',
     },
     en: {
-      title: 'Hameem Afnan — Software Developer · Madrid',
-      desc:  'Hameem Afnan Akther Faroquee — Software Developer in Madrid. Ten months integrating Odoo ERP, RESTful APIs and databases in production (Tailored Spain). Portfolio, projects and CV.',
+      title: 'Hameem Afnan | Software Developer · Madrid',
+      desc:  'Hameem Afnan Akther Faroquee, software developer in Madrid. Ten months integrating Odoo ERP, RESTful APIs and databases in production (Tailored Spain). Portfolio, projects and CV.',
       og:    'Ten months integrating Odoo ERP and RESTful APIs in production. Multi-platform development. Madrid, Spain.',
       loc:   'en_GB',
       menu:  'Open menu',
@@ -483,8 +424,6 @@
     });
     if (langLabel) langLabel.textContent = lang.toUpperCase();
 
-    /* El <title> y las descripciones también son contenido: si no se
-       traducen, lo que se comparte en LinkedIn sigue saliendo en español. */
     document.title = META[lang].title;
     setAttr('meta[name="description"]',        'content', META[lang].desc);
     setAttr('meta[property="og:description"]', 'content', META[lang].og);
@@ -502,11 +441,11 @@
     labelBars();
     relabelCopies();
     labelTheme();
-    try { localStorage.setItem('lang', lang); } catch (e) { /* modo privado */ }
+    try { localStorage.setItem('lang', lang); } catch (e) {}
   }
 
   let lang = 'es';
-  try { lang = localStorage.getItem('lang') || 'es'; } catch (e) { /* noop */ }
+  try { lang = localStorage.getItem('lang') || 'es'; } catch (e) {}
   if (lang === 'en') applyLang('en'); else applyLang('es');
 
   if (langBtn) {
@@ -514,8 +453,6 @@
       if (wiping) return;
       lang = document.documentElement.dataset.lang === 'es' ? 'en' : 'es';
       const next = lang;
-      /* Cambiar de idioma es cambiar de menú: barrido corto y el texto se
-         sustituye mientras la tinta tapa la pantalla. */
       runWipe({
         num: next.toUpperCase(),
         title: next === 'en' ? 'English' : 'Español',
@@ -524,16 +461,12 @@
     });
   }
 
-  /* ===========================================================================
-     3. BARRA SUPERIOR · MENÚ MÓVIL
-     ======================================================================== */
   const topbar  = $('#topbar');
   const nav     = $('#nav');
   const menuBtn = $('#menuBtn');
   const scrim   = $('#scrim');
   const isOpen  = () => !!nav && nav.classList.contains('is-open');
 
-  /* Quién tenía el foco antes de abrir, para devolvérselo al cerrar. */
   let lastFocused = null;
 
   function setMenu(open) {
@@ -549,9 +482,6 @@
     const l = document.documentElement.dataset.lang === 'en' ? 'en' : 'es';
     menuBtn.setAttribute('aria-label', open ? META[l].close : META[l].menu);
 
-    /* El panel es un diálogo de hecho: fuera de él no hay nada que leer.
-       'inert' saca el fondo del árbol de accesibilidad además de bloquear el
-       ratón; donde no exista, la trampa de foco ya cubre lo esencial. */
     document.body.style.overflow = open ? 'hidden' : '';
     document.documentElement.classList.toggle('menu-open', open);
     ['main', '.foot'].forEach((sel) => {
@@ -578,8 +508,6 @@
     if (e.key === 'Escape') { setMenu(false); return; }
     if (e.key !== 'Tab' || !isOpen()) return;
 
-    /* Trampa de foco: con el panel abierto, el tabulador no debe escaparse
-       hacia el contenido que hay detrás y que además está oculto. */
     const stops = [...$$('.nav__link', nav), $('#themeBtn'), $('#langBtn'), menuBtn].filter(Boolean);
     if (!stops.length) return;
     const first = stops[0];
@@ -588,24 +516,17 @@
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
 
-  /* Al pasar a escritorio el panel deja de existir: si quedó abierto,
-     el body se habría quedado bloqueado sin nada visible que lo explique. */
   const wide = window.matchMedia('(min-width: 881px)');
   const onWide = (e) => { if (e.matches) setMenu(false); };
   if (wide.addEventListener) wide.addEventListener('change', onWide);
   else if (wide.addListener) wide.addListener(onWide);
 
-  /* ===========================================================================
-     4. SCROLL — barra de progreso, estado de la topbar, volver arriba
-     ======================================================================== */
   const bar   = $('#progressBar');
   const toTop = $('#toTop');
   let ticking = false;
   let maxScroll = 0;
   let winH = window.innerHeight;
 
-  /* Medimos una sola vez por cambio de tamaño: leerlo en cada fotograma
-     obligaba al navegador a recalcular la maquetación mientras se hace scroll. */
   function measure() {
     winH = window.innerHeight;
     maxScroll = document.documentElement.scrollHeight - winH;
@@ -630,17 +551,12 @@
     measureTimer = setTimeout(() => { measure(); onScroll(); }, 150);
   }, { passive: true });
   window.addEventListener('load', measure);
-  /* Las tipografías web llegan tarde y reflujan la página: si no volvemos a
-     medir, la barra de progreso se queda corta o se llena antes de tiempo. */
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(() => { measure(); onScroll(); }).catch(() => {});
   }
   measure();
   onScroll();
 
-  /* ===========================================================================
-     5. SCROLLSPY
-     ======================================================================== */
   const links    = $$('.nav__link');
   const sections = links
     .map((a) => document.querySelector(a.getAttribute('href')))
@@ -653,7 +569,6 @@
         links.forEach((a) => {
           const here = a.getAttribute('href') === `#${entry.target.id}`;
           a.classList.toggle('is-current', here);
-          /* Un lector de pantalla no ve el subrayado: necesita el atributo. */
           if (here) a.setAttribute('aria-current', 'true');
           else a.removeAttribute('aria-current');
         });
@@ -662,9 +577,6 @@
     sections.forEach((s) => spy.observe(s));
   }
 
-  /* ===========================================================================
-     6. APARICIONES + BARRAS
-     ======================================================================== */
   function fillBars(root) {
     $$('.virtue, .skill', root).forEach((el) => {
       const fill = $('i', el);
@@ -672,8 +584,6 @@
     });
   }
 
-  /* Las barras son puro decorado en el DOM: sin esto, un lector de pantalla
-     lee "Java" y se queda sin el dato, que es justo la mitad del mensaje. */
   function labelBars() {
     const en = document.documentElement.dataset.lang === 'en';
     $$('.virtue, .skill').forEach((el) => {
@@ -695,16 +605,13 @@
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         obs.unobserve(entry.target);
-        /* Si llegamos por un barrido, esperamos a que la tinta se retire. */
         if (wiping) wiping.then(() => show(entry.target));
         else show(entry.target);
       });
     }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
 
-    /* Escalonado suave dentro de cada rejilla. Va en una variable y no en
-       transition-delay: así no retrasa también los :hover de las tarjetas. */
     revealables.forEach((el) => {
-      if (heroReveals.includes(el)) return;   /* la portada la abre la intro */
+      if (heroReveals.includes(el)) return;
       const siblings = [...(el.parentElement ? el.parentElement.children : [])].filter((n) =>
         n.classList && n.classList.contains('reveal'));
       const i = Math.max(0, siblings.indexOf(el));
@@ -716,11 +623,6 @@
     fillBars(document);
   }
 
-  /* ===========================================================================
-     7. COPIAR AL PORTAPAPELES
-     Un mailto: no siempre abre nada útil; poder copiar el dato de un toque
-     es la diferencia entre que te escriban y que no.
-     ======================================================================== */
   const toast = $('#toast');
   let toastTimer;
 
@@ -732,7 +634,6 @@
     toastTimer = setTimeout(() => toast.classList.remove('is-on'), 2200);
   }
 
-  /* Reserva para contextos sin navigator.clipboard (http, navegadores viejos). */
   function legacyCopy(text) {
     const ta = document.createElement('textarea');
     ta.value = text;
@@ -766,12 +667,10 @@
       if (!ok) ok = legacyCopy(text);
 
       if (ok) {
-        say(`${META[l].copied} — ${text}`);
+        say(`${META[l].copied}: ${text}`);
         btn.classList.add('is-done');
         setTimeout(() => btn.classList.remove('is-done'), 1600);
       } else {
-        /* Dejamos el dato seleccionado en la propia tarjeta: Ctrl+C sigue
-           funcionando aunque el navegador nos niegue el portapapeles. */
         const val = $('.ccard__v', btn.closest('.ccard'));
         if (val && window.getSelection) {
           const r = document.createRange();
@@ -784,15 +683,9 @@
     });
   });
 
-  /* ===========================================================================
-     8. AÑO EN EL PIE
-     ======================================================================== */
   const year = $('#year');
   if (year) year.textContent = String(new Date().getFullYear());
 
-  /* ===========================================================================
-     9. FONDO GENERATIVO — brasas doradas y una rueda heráldica lejana
-     ======================================================================== */
   const canvas = $('#bg-canvas');
 
   if (canvas && !REDUCED) {
@@ -800,8 +693,6 @@
     let w = 0, h = 0, dpr = 1, motes = [], raf = null, t = 0;
     let wheelCv = null, wheelR = 0;
 
-    /* Los colores salen de la paleta activa (variables CSS) y se releen
-       cada vez que cambia. */
     let tint = null;
     function readTint() {
       const cs = getComputedStyle(document.documentElement);
@@ -827,7 +718,6 @@
       seed();
     }
 
-    /* La rueda es estática: la rasterizamos una vez fuera de pantalla. */
     function buildWheel() {
       wheelR = Math.max(w, h) * 0.42;
       const size = Math.ceil(wheelR * 2 + 4);
@@ -867,7 +757,6 @@
       }));
     }
 
-    /* Rueda tenue girando despacio: sólo se rota el mapa de bits ya pintado. */
     function wheel() {
       if (!wheelCv) return;
       const size = wheelCv.width / dpr;
@@ -913,7 +802,6 @@
 
     document.addEventListener('themechange', () => { readTint(); buildWheel(); });
 
-    /* Pausamos el bucle cuando la pestaña no está visible. */
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) { cancelAnimationFrame(raf); raf = null; }
       else if (!raf) raf = requestAnimationFrame(frame);

@@ -3,36 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="robots" content="noindex, nofollow">
-<title>CV — Hameem Afnan Akther Faroquee</title>
+<title>CV - Hameem Afnan Akther Faroquee</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* ==========================================================================
-     CV — Hameem Afnan Akther Faroquee
-     Mismo diseño de siempre (banda tan, franja azul, foto circular, lateral
-     crema) con la maquetación rehecha: rejillas alineadas, ritmo constante
-     entre secciones y contenido actualizado.
-
-     Para exportar:  Ctrl+P  →  Guardar como PDF  →  A4,
-                     márgenes: ninguno, gráficos de fondo: activados.
-                     El resultado se guarda en imagenes/cv-hameem-afnan.pdf,
-                     que es lo que enlaza la web.
-
-     NO ES UNA PÁGINA DEL SITIO: es la plantilla de la que sale el PDF.
-     El guion bajo del nombre es intencionado — GitHub Pages (Jekyll) no
-     sirve los ficheros que empiezan por "_", así que este queda fuera del
-     sitio publicado en lugar de ser una página huérfana accesible desde
-     fuera. Si algún día se cambia el despliegue a uno que ignore esa
-     regla, el noindex de la cabecera hace de segundo cinturón.
-     ========================================================================== */
 
   @page { size: A4; margin: 0; }
 
   :root {
-    --tan:    #cdbb95;   /* banda superior    */
-    --cream:  #fce9c6;   /* columna izquierda */
-    --navy:   #17346c;   /* franja y filetes  */
+    --tan:    #cdbb95;
+    --cream:  #fce9c6;
+    --navy:   #17346c;
     --ink:    #1a1a18;
     --ink-2:  #33322e;
   }
@@ -53,11 +35,6 @@
 
   .page { position: relative; width: 210mm; height: 297mm; overflow: hidden; }
 
-  /* ------------------------------------------------------- CABECERA ----- */
-  /* Sin position: relative a propósito (aquí y en las viñetas). Chrome
-     escribe el texto de los elementos posicionados al final del PDF, y un
-     lector automático de CV (ATS) leía el nombre al final del documento y
-     las tareas separadas de su puesto. La foto sí va posicionada: no es texto. */
   .header {
     height: 47mm;
     background: var(--tan);
@@ -66,14 +43,10 @@
     padding: 0 10mm 0 78mm;
     text-align: center;
   }
-  /* Sin espaciado negativo: al extraer el texto del PDF se comía el
-     espacio entre palabras y el nombre salía como "HameemAfnan". */
   .name {
     font-size: 25pt; font-weight: 800; line-height: 1.04;
     color: var(--ink);
   }
-  /* Titular: el puesto que se busca, que es lo que filtra un reclutador.
-     La titulación va debajo, como credencial. */
   .title {
     margin-top: 3mm;
     font-size: 10.4pt; font-weight: 700; line-height: 1.3;
@@ -85,7 +58,6 @@
     letter-spacing: .03em; color: var(--navy);
   }
 
-  /* Foto circular con aro, montada sobre la banda y el lateral */
   .photo {
     position: absolute; left: 9mm; top: 6mm;
     width: 52mm; height: 52mm; border-radius: 50%;
@@ -94,16 +66,14 @@
   }
   .photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
 
-  /* --------------------------------------------------------- CUERPO ----- */
   .body { display: grid; grid-template-columns: 68mm 1fr; height: calc(297mm - 50mm); }
 
   .aside {
     background: var(--cream);
-    padding: 19mm 8mm 8mm;   /* aire arriba para la foto que se le monta encima */
+    padding: 19mm 8mm 8mm;
   }
   .main { padding: 4mm 9mm 5mm 8mm; }
 
-  /* Titulares de sección */
   h2 {
     font-size: 13pt; font-weight: 800; color: var(--ink);
     letter-spacing: -.01em; line-height: 1.1;
@@ -118,7 +88,6 @@
   .main .block { margin-bottom: 5mm; }
   .block:last-child { margin-bottom: 0; }
 
-  /* --------------------------------------------------- INFORMACIÓN ------ */
   .info { display: grid; gap: 2.1mm; }
   .info div { display: grid; grid-template-columns: 6mm 1fr; align-items: center; gap: 2.2mm; }
   .info svg { width: 5mm; height: 5mm; stroke: var(--ink); fill: none;
@@ -127,10 +96,8 @@
   .info span { font-size: 7.8pt; font-weight: 600; color: var(--ink); }
   .info a { color: var(--ink); text-decoration: underline; }
 
-  /* ------------------------------------------------------ APTITUDES ----- */
   .soft { font-size: 8.2pt; font-weight: 600; line-height: 1.55; color: var(--ink); }
 
-  /* -------------------------------------------------------- IDIOMAS ----- */
   .langs { display: grid; gap: 1.7mm; }
   .langs li {
     list-style: none;
@@ -139,7 +106,6 @@
   }
   .langs b { font-weight: 500; color: #5c554a; font-size: 8pt; }
 
-  /* --------------------------------------------------------- PERFIL ----- */
   .profile {
     font-size: 9.2pt; font-weight: 500; line-height: 1.62;
     color: var(--ink-2);
@@ -147,7 +113,6 @@
   }
   .profile b { font-weight: 700; color: var(--ink); }
 
-  /* ------------------------------------------------------ FORMACIÓN ----- */
   .edu { display: grid; gap: 4mm; }
   .edu > div { display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: baseline; }
   .edu strong { font-size: 9.6pt; font-weight: 700; color: var(--ink); }
@@ -157,7 +122,6 @@
   }
   .edu p { grid-column: 1 / -1; margin-top: -.4mm; font-size: 8.6pt; }
 
-  /* ------------------------------------------------------ PROYECTOS ----- */
   .proj { display: grid; gap: 3.2mm; }
   .proj > div { display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: baseline; }
   .proj strong { font-size: 9.6pt; font-weight: 700; color: var(--ink); }
@@ -168,7 +132,6 @@
   .proj p { grid-column: 1 / -1; margin-top: -.2mm; font-size: 8.6pt; }
   .proj u { text-decoration: none; font-weight: 600; color: var(--navy); }
 
-  /* ------------------------------- COMPETENCIAS TÉC. (columna izq.) ----- */
   .tech { display: grid; gap: 1.5mm; }
   .tech b {
     display: block;
@@ -177,13 +140,11 @@
   }
   .tech span { display: block; font-size: 8.1pt; font-weight: 500; color: var(--ink-2); }
 
-  /* ------------------------------- CERTIFICACIONES (columna izq.) ------ */
   .certs { display: grid; gap: 1.8mm; }
   .certs li { list-style: none; }
   .certs strong { display: block; font-size: 8.4pt; font-weight: 700; color: var(--ink); }
   .certs em { font-style: normal; font-size: 7.6pt; font-weight: 600; color: #6a6459; }
 
-  /* ----------------------------------------------------- EXPERIENCIA ---- */
   .job { margin-bottom: 5.5mm; }
   .job:last-child { margin-bottom: 0; }
   .job__top { display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: baseline; }
@@ -192,7 +153,6 @@
   .job__dur { font-weight: 800; color: var(--ink); }
   .job__org { font-size: 8.6pt; font-weight: 600; color: #6a6459; margin-bottom: 1.6mm; }
   .job__kind { font-weight: 500; font-style: italic; color: #857e70; }
-  /* Viñetas de lista reales (::marker), no un ::before posicionado. */
   .job ul { padding-left: 3.8mm; list-style: disc; }
   .job li { padding-left: .6mm; margin-bottom: 1.2mm; font-size: 8.7pt; }
   .job li::marker { color: var(--navy); }
@@ -201,7 +161,6 @@
 <body>
 <div class="page">
 
-  <!-- ====================================================== CABECERA ==== -->
   <div class="photo">
     <img src="./imagenes/mi-cara.webp" alt="Hameem Afnan Akther Faroquee">
   </div>
@@ -216,7 +175,6 @@
 
   <div class="body">
 
-    <!-- ================================================ COLUMNA IZQ. ==== -->
     <aside class="aside">
 
       <div class="block">
@@ -249,9 +207,6 @@
         </div>
       </div>
 
-      <!-- Orden de lectura de un reclutador técnico: con qué trabajas,
-           en qué idiomas, qué más has estudiado. Las aptitudes blandas,
-           al final y en una línea: sin contexto aportan poco. -->
       <div class="block">
         <h2>TECNOLOGÍAS</h2>
         <div class="tech">
@@ -273,12 +228,10 @@
         </ul>
       </div>
 
-      <!-- "Cursos" y no "Certificaciones": ninguno de los dos es un examen
-           certificado, y llamarlo así se desmonta en la primera pregunta. -->
       <div class="block">
         <h2>CURSOS</h2>
         <ul class="certs">
-          <li><strong>Cisco — Curso de redes</strong><em>Completado</em></li>
+          <li><strong>Curso de redes de Cisco</strong><em>Completado</em></li>
           <li><strong>Linux Unhatched</strong><em>En curso</em></li>
         </ul>
       </div>
@@ -291,7 +244,6 @@
 
     </aside>
 
-    <!-- ================================================ COLUMNA DCHA. === -->
     <main class="main">
 
       <p class="profile">
@@ -307,12 +259,9 @@
         <div class="job">
           <div class="job__top">
             <span class="job__role">Desarrollador de Software e Integraciones</span>
-            <span class="job__when">SEP 2025 — JUN 2026 <b class="job__dur">· 10 MESES</b></span>
+            <span class="job__when">SEP 2025 - JUN 2026 <b class="job__dur">· 10 MESES</b></span>
           </div>
           <p class="job__org">TAILORED SPAIN <em class="job__kind">· Prácticas de empresa (FCT) del ciclo DAM</em></p>
-          <!-- Verbo de acción + qué + para qué. Si tienes cifras (nº de
-               integraciones, registros sincronizados, horas ahorradas),
-               van aquí: es lo que más pesa en un CV junior. -->
           <ul>
             <li>Integré el ERP Odoo con los sistemas satélite de la empresa mediante APIs RESTful y
                 flujos HTTP, eliminando la introducción manual de datos entre plataformas.</li>
@@ -323,12 +272,10 @@
           </ul>
         </div>
 
-        <!-- Los dos trabajos de comercio en una sola entrada, igual que en
-             la web: cuentan como constancia, no merecen dos bloques. -->
         <div class="job">
           <div class="job__top">
             <span class="job__role">Dependiente y cajero</span>
-            <span class="job__when">2021 — 2023</span>
+            <span class="job__when">2021 - 2023</span>
           </div>
           <p class="job__org">LOLA REY · SOUVENIRS <em class="job__kind">· Venta, caja y reposición de cara al público</em></p>
         </div>
@@ -339,7 +286,7 @@
         <div class="edu">
           <div>
             <strong>Desarrollo de Aplicaciones Multiplataforma</strong>
-            <em>2024 — 2026</em>
+            <em>2024 - 2026</em>
             <p>Técnico Superior (CFGS) · DIGITECH · Madrid</p>
           </div>
           <div>
@@ -369,7 +316,7 @@
             <p>Comandos slash, moderación automática y sistema de niveles con perfiles persistentes.</p>
           </div>
           <div>
-            <strong>GeekHub — Tienda online</strong>
+            <strong>GeekHub: tienda online</strong>
             <em>PHP · MYSQL · JAVASCRIPT</em>
             <p>Front y back propios: catálogo, slider de destacados y diseño responsive.</p>
           </div>
