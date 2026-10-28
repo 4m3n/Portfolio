@@ -423,6 +423,7 @@
       el.textContent = lang === 'en' ? el.dataset.en : el.dataset.es;
     });
     if (langLabel) langLabel.textContent = lang.toUpperCase();
+    $$('[data-cv]').forEach((a) => a.setAttribute('href', lang === 'en' ? './imagenes/CV_Hameem_Afnan_EN.pdf' : './imagenes/cv-hameem-afnan.pdf'));
 
     document.title = META[lang].title;
     setAttr('meta[name="description"]',        'content', META[lang].desc);
@@ -438,7 +439,6 @@
     const skip = $('.skip');
     if (skip) skip.textContent = META[lang].skip;
 
-    labelBars();
     relabelCopies();
     labelTheme();
     try { localStorage.setItem('lang', lang); } catch (e) {}
@@ -577,28 +577,8 @@
     sections.forEach((s) => spy.observe(s));
   }
 
-  function fillBars(root) {
-    $$('.virtue, .skill', root).forEach((el) => {
-      const fill = $('i', el);
-      if (fill) fill.style.transform = `scaleX(${(+el.dataset.pct || 0) / 100})`;
-    });
-  }
-
-  function labelBars() {
-    const en = document.documentElement.dataset.lang === 'en';
-    $$('.virtue, .skill').forEach((el) => {
-      const pct  = +el.dataset.pct || 0;
-      const name = ($('.skill__n', el) || $('.virtue__name', el) || {}).textContent || '';
-      const track = $('.skill__track', el) || $('.virtue__track', el);
-      if (!track) return;
-      track.setAttribute('role', 'img');
-      track.setAttribute('aria-label',
-        en ? `${name.trim()}: ${pct} out of 100` : `${name.trim()}: ${pct} sobre 100`);
-    });
-  }
-
   const revealables = $$('.reveal');
-  const show = (el) => { el.classList.add('is-in'); fillBars(el); };
+  const show = (el) => { el.classList.add('is-in'); };
 
   if ('IntersectionObserver' in window && !REDUCED) {
     const io = new IntersectionObserver((entries, obs) => {
@@ -620,7 +600,6 @@
     });
   } else {
     revealables.forEach((el) => el.classList.add('is-in'));
-    fillBars(document);
   }
 
   const toast = $('#toast');
